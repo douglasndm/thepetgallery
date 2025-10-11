@@ -57,6 +57,7 @@
 		"uuid": "^13.0.0"
 	},
 	"devDependencies": {
+		"@react-native/eslint-config": "^0.82.0",
 		"@types/react": "~19.1.10",
 		"@types/react-dom": "^19",
 		"@types/react-native-get-random-values": "^1",
