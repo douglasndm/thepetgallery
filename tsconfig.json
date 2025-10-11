@@ -3,10 +3,15 @@
 	"compilerOptions": {
 		"jsx": "react-jsx",
 		"jsxImportSource": "react",
+		"allowJs": true,
 		"outDir": "./dist",
-		"target": "ESNext",
-		"moduleResolution": "node",
-		"baseUrl": ".",
+		"composite": true,
+		"noEmit": false,
+		"emitDeclarationOnly": true,
+		"isolatedModules": false,
+		"strict": true,
+		"resolveJsonModule": true,
+		"baseUrl": "./",
 		"paths": {
 			"@app/*": ["src/*"],
 			"@assets/*": ["assets/*"],
@@ -16,6 +21,7 @@
 			"@services/*": ["src/services/*"],
 			"@views/*": ["src/views/*"],
 			"@utils/*": ["src/utils/*"]
-		}
+		},
+		"allowSyntheticDefaultImports": true
 	}
 }
