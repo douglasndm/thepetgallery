@@ -9,9 +9,9 @@ import { version } from './package.json';
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
 	...config,
-	name: 'thepetgallery',
+	name: 'The Pet Gallery',
 	slug: 'the-pet-gallery',
-	icon: './assets/images/Logo/appstore.png',
+	icon: './assets/images/logo/appstore.png',
 	orientation: 'portrait',
 	version: version,
 	runtimeVersion: {

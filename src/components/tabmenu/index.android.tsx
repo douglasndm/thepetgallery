@@ -40,20 +40,20 @@ const TabMenu: React.FC<Props> = (props: Props) => {
 			<Content style={{ paddingBottom: Math.max(insets.bottom, 25) }}>
 				<Button onPress={navigateDog}>
 					<Icon
-						source={require('@assets/images/dog-head.png')}
+						source={require('@assets/images/doghead.png')}
 						isSelected={props.currentRoute === 'DogsView'}
 					/>
 				</Button>
 				<Button onPress={navigateCat}>
 					<Icon
-						source={require('@assets/images/cat-head.png')}
+						source={require('@assets/images/cathead.png')}
 						isSelected={props.currentRoute === 'CatsView'}
 					/>
 				</Button>
 
 				<Button onPress={navigatePlaces}>
 					<Icon
-						source={require('@assets/images/pets-hospital.png')}
+						source={require('@assets/images/petshospital.png')}
 						isSelected={props.currentRoute === 'PlacesList'}
 					/>
 				</Button>
@@ -69,7 +69,7 @@ const TabMenu: React.FC<Props> = (props: Props) => {
 
 				<Button onPress={navigateAbout}>
 					<Icon
-						source={require('@assets/images/navigation-menu-1.png')}
+						source={require('@assets/images/navigationmenu.png')}
 						isSelected={props.currentRoute === 'About'}
 					/>
 				</Button>

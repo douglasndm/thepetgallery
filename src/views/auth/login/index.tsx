@@ -18,7 +18,7 @@ import {
 import { signInWithGoogle } from '@utils/auth/login/google';
 import { registerLogin } from '@utils/auth/login/register';
 
-import GoogleButtonSVG from '@assets/images/buttons/signin/google_pt-br.svg';
+import GoogleButtonSVG from '@assets/images/buttons/signin/google_ptbr.svg';
 
 import Header from '@components/header';
 
