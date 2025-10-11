@@ -1,0 +1,58 @@
+{
+	"cli": {
+		"version": ">= 16.19.2",
+		"appVersionSource": "remote"
+	},
+	"build": {
+		"development": {
+			"developmentClient": false,
+			"distribution": "internal",
+			"channel": "development",
+			"credentialsSource": "local",
+			"extends": "production"
+		},
+		"preview": {
+			"distribution": "internal",
+			"channel": "preview",
+			"credentialsSource": "remote",
+			"extends": "production"
+		},
+		"production": {
+			"autoIncrement": true,
+			"channel": "production",
+			"credentialsSource": "remote"
+		}
+	},
+	"submit": {
+		"production": {
+			"android": {
+				"track": "production",
+				"changesNotSentForReview": true
+			},
+			"ios": {
+				"appleId": "douglasndm@outlook.com",
+				"ascAppId": "1549418617",
+				"appleTeamId": "F3ZQ4BPF29"
+			}
+		},
+		"preview": {
+			"extends": "production",
+			"android": {
+				"track": "beta",
+				"changesNotSentForReview": false
+			},
+			"ios": {
+				"appleId": "douglasndm@outlook.com",
+				"ascAppId": "1549418617",
+				"appleTeamId": "F3ZQ4BPF29"
+			}
+		},
+		"development": {
+			"extends": "production",
+			"android": {
+				"track": "internal",
+				"changesNotSentForReview": false
+			}
+		}
+	}
+}
