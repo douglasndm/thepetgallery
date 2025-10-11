@@ -23,5 +23,6 @@
 			"@utils/*": ["src/utils/*"]
 		},
 		"allowSyntheticDefaultImports": true
-	}
+	},
+	"include": ["**/*.ts", "**/*.tsx", "src", "**/*.json"]
 }
