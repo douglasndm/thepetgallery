@@ -4,6 +4,7 @@ const configs: plugins = [
 	'@react-native-firebase/app',
 	'@react-native-firebase/app-check',
 	'@react-native-firebase/auth',
+	'@react-native-google-signin/google-signin',
 	[
 		'@sentry/react-native/expo',
 		{

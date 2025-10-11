@@ -11,10 +11,6 @@ const configs: extra = {
 	APPCHECK_DEBUG_TOKEN_ANDROID:
 		process.env.APPCHECK_DEBUG_TOKEN_ANDROID ?? '',
 	APPCHECK_DEBUG_TOKEN_IOS: process.env.APPCHECK_DEBUG_TOKEN_IOS ?? '',
-
-	GOOGLE_CLIENT_ID_ANDROID: process.env.GOOGLE_CLIENT_ID_ANDROID ?? '',
-	GOOGLE_REVERSED_CLIENT_ID_IOS:
-		process.env.GOOGLE_REVERSED_CLIENT_ID_IOS ?? '',
 };
 
 export default configs;

@@ -25,7 +25,7 @@ import Notifications from './components/notifications';
 import Routes from './routes';
 
 GoogleSignin.configure({
-	webClientId: EnvConfig.GOOGLE_CLIENT_ID_ANDROID,
+	webClientId: 'autoDetect',
 });
 
 const navigationIntegration = Sentry.reactNavigationIntegration({
