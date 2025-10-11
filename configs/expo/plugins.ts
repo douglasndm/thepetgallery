@@ -13,6 +13,7 @@ const configs: plugins = [
 			organization: 'douglasndm',
 		},
 	],
+	'expo-apple-authentication',
 	[
 		'expo-asset',
 		{
@@ -27,6 +28,14 @@ const configs: plugins = [
 				deploymentTarget: '15.5',
 				forceStaticLinking: ['RNFBApp'],
 			},
+		},
+	],
+	[
+		'expo-notifications',
+		{
+			color: '#ffffff',
+			defaultChannel: 'default',
+			enableBackgroundRemoteNotifications: true,
 		},
 	],
 ];
