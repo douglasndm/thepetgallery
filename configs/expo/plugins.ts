@@ -18,5 +18,15 @@ const configs: plugins = [
 			assets: ['./assets/animations/', './assets/images/'],
 		},
 	],
+	[
+		'expo-build-properties',
+		{
+			ios: {
+				useFrameworks: 'static',
+				deploymentTarget: '15.5',
+				forceStaticLinking: ['RNFBApp'],
+			},
+		},
+	],
 ];
 export default configs;
