@@ -31,6 +31,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 		googleServicesFile:
 			process.env.GOOGLE_SERVICES_PLIST ??
 			'./configs/GoogleService-Info.plist',
+		usesAppleSignIn: true,
 	},
 
 	plugins: pluginsConfigs,
