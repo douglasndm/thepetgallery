@@ -27,6 +27,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 		package: 'dev.douglasndm.thepetgallery',
 	},
 	ios: {
+		bundleIdentifier: 'dev.douglasndm.thepetgallery',
 		googleServicesFile:
 			process.env.GOOGLE_SERVICES_PLIST ??
 			'./configs/GoogleService-Info.plist',
