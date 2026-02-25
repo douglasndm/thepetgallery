@@ -6,6 +6,7 @@ import {
 	getDocs,
 } from '@react-native-firebase/firestore';
 import Icon from '@react-native-vector-icons/ionicons';
+import { useTranslation } from 'react-i18next';
 
 import { organizeData } from '@utils/adoptionsPlaces/organizeData';
 import { convertUFToStateName } from '@utils/UF';
@@ -27,6 +28,7 @@ import {
 } from './styles';
 
 const PlacesList: React.FC = () => {
+	const { t } = useTranslation();
 	const [isLoading, setIsLoading] = useState(true);
 
 	const [organizedData, setOrganizedData] = useState<GroupedAdoptionPlace>(
@@ -91,7 +93,7 @@ const PlacesList: React.FC = () => {
 		<Container>
 			<Header />
 
-			<Title>Lugares para adoção</Title>
+			<Title>{t('places.title')}</Title>
 			<Content>
 				{isLoading && <Loading />}
 

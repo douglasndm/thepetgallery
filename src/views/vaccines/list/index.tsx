@@ -5,6 +5,7 @@ import {
 	useRouter,
 } from 'expo-router';
 import { collection, doc, getDocs } from '@react-native-firebase/firestore';
+import { useTranslation } from 'react-i18next';
 
 import { getUserPetsReference } from '@services/firebase/firestore';
 import { captureException } from '@services/exceptionsHandler';
@@ -27,6 +28,7 @@ import {
 
 const VaccinesList: React.FC = () => {
 	const router = useRouter();
+	const { t } = useTranslation();
 	const { petId } = useLocalSearchParams<{ petId: string }>();
 
 	const [isLoading, setIsLoading] = useState(true);
@@ -113,7 +115,7 @@ const VaccinesList: React.FC = () => {
 			<Header />
 
 			<ActionButton
-				title="Adicionar vacina"
+				title={t('vaccines.addVaccine')}
 				iconName="create-outline"
 				onPress={navigateToAddVaccine}
 			/>
@@ -136,7 +138,7 @@ const VaccinesList: React.FC = () => {
 								<VaccineName>{vaccine.name}</VaccineName>
 								{!!formattedDate && (
 									<VaccineDate>
-										{`Data da aplicação: ${formattedDate}`}
+										{`${t('vaccines.dateAdministeredPrefix')}: ${formattedDate}`}
 									</VaccineDate>
 								)}
 							</TextContainer>

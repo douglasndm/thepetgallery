@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Dialog, Text, Button } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import { getAuth, deleteUser } from '@react-native-firebase/auth';
+import { useTranslation } from 'react-i18next';
 import {
 	getFirestore,
 	collection,
@@ -20,6 +21,7 @@ interface Props {
 
 const DeleteAccount: React.FC<Props> = (props: Props) => {
 	const router = useRouter();
+	const { t } = useTranslation();
 
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -65,7 +67,7 @@ const DeleteAccount: React.FC<Props> = (props: Props) => {
 			await deleteUser(user);
 
 			showMessage({
-				message: 'Conta excluida com sucesso',
+				message: t('profile.accountDeletedSuccess'),
 				type: 'success',
 			});
 
@@ -78,18 +80,17 @@ const DeleteAccount: React.FC<Props> = (props: Props) => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [router]);
+	}, [router, t]);
 
 	return (
 		<Dialog visible={props.visible} onDismiss={hideDialog}>
-			<Dialog.Title>Você tem certeza?</Dialog.Title>
+			<Dialog.Title>{t('common.confirmDeleteTitle')}</Dialog.Title>
 
 			{isLoading && <Loading />}
 
 			<Dialog.Content>
 				<Text variant="bodyMedium">
-					Você vai excluir sua conta, incluindo pets e vacinas
-					cadastradas, essa operação não pode ser desfeita.
+					{t('profile.deleteDescription')}
 				</Text>
 			</Dialog.Content>
 			<Dialog.Actions>
@@ -98,10 +99,10 @@ const DeleteAccount: React.FC<Props> = (props: Props) => {
 					textColor="red"
 					disabled={isLoading}
 				>
-					Apagar
+					{t('common.delete')}
 				</Button>
 				<Button onPress={hideDialog} disabled={isLoading}>
-					Manter
+					{t('common.keep')}
 				</Button>
 			</Dialog.Actions>
 		</Dialog>

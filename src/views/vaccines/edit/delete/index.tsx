@@ -3,6 +3,7 @@ import { Dialog, Text, Button } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import { doc, collection, deleteDoc } from '@react-native-firebase/firestore';
 import { showMessage } from 'react-native-flash-message';
+import { useTranslation } from 'react-i18next';
 
 import { getUserPetsReference } from '@services/firebase/firestore';
 import { captureException } from '@services/exceptionsHandler';
@@ -18,6 +19,7 @@ interface Props {
 
 const DeleteVaccine: React.FC<Props> = (props: Props) => {
 	const router = useRouter();
+	const { t } = useTranslation();
 
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -39,7 +41,7 @@ const DeleteVaccine: React.FC<Props> = (props: Props) => {
 				await deleteDoc(vaccineDoc);
 
 				showMessage({
-					message: 'Vacina excluida com sucesso',
+					message: t('vaccines.deletedSuccess'),
 					type: 'success',
 				});
 
@@ -56,18 +58,17 @@ const DeleteVaccine: React.FC<Props> = (props: Props) => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [props.petId, props.vaccineId, router]);
+	}, [props.petId, props.vaccineId, router, t]);
 
 	return (
 		<Dialog visible={props.visible} onDismiss={hideDialog}>
-			<Dialog.Title>Você tem certeza?</Dialog.Title>
+			<Dialog.Title>{t('common.confirmDeleteTitle')}</Dialog.Title>
 
 			{isLoading && <Loading />}
 
 			<Dialog.Content>
 				<Text variant="bodyMedium">
-					Você vai excluir essa vacina, essa operação não pode ser
-					desfeita
+					{t('vaccines.deleteDescription')}
 				</Text>
 			</Dialog.Content>
 			<Dialog.Actions>
@@ -76,10 +77,10 @@ const DeleteVaccine: React.FC<Props> = (props: Props) => {
 					textColor="red"
 					disabled={isLoading}
 				>
-					Apagar
+					{t('common.delete')}
 				</Button>
 				<Button onPress={hideDialog} disabled={isLoading}>
-					Manter
+					{t('common.keep')}
 				</Button>
 			</Dialog.Actions>
 		</Dialog>

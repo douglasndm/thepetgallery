@@ -1,6 +1,7 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import LottieView from 'lottie-react-native';
+import { useTranslation } from 'react-i18next';
 
 import { Container, Content, Text } from './styles';
 
@@ -10,6 +11,8 @@ const noConnection = Platform.select({
 });
 
 const NoInternet: React.FC = () => {
+	const { t } = useTranslation();
+
 	return (
 		<Container>
 			<Content>
@@ -22,7 +25,7 @@ const NoInternet: React.FC = () => {
 					autoPlay
 					loop
 				/>
-				<Text>No internet connection</Text>
+				<Text>{t('offline.noInternet')}</Text>
 			</Content>
 		</Container>
 	);

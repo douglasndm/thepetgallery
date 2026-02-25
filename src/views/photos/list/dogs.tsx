@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import { fetchPictures } from '@services/api';
 
@@ -15,6 +16,7 @@ import {
 } from './styles';
 
 const ListPics: React.FC = () => {
+	const { t } = useTranslation();
 	const [images, setImages] = useState<APIItem[]>([]);
 	const [page, setPage] = useState(0);
 	const [loading, setLoading] = useState(false);
@@ -53,11 +55,11 @@ const ListPics: React.FC = () => {
 				<Header />
 
 				<PhotosTitleContainer>
-					<PhotosTitle>Fotos de doguinhos</PhotosTitle>
+					<PhotosTitle>{t('photos.dogsTitle')}</PhotosTitle>
 				</PhotosTitleContainer>
 			</>
 		);
-	}, []);
+	}, [t]);
 
 	const handleScroll = useCallback(
 		(event: NativeSyntheticEvent<NativeScrollEvent>) => {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'expo-router';
 import { getAuth, FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { useTranslation } from 'react-i18next';
 
 import Header from '@components/header';
 import Button from '@components/button';
@@ -11,6 +12,7 @@ import { Container, Content, Name, Email } from './styles';
 
 const Profile: React.FC = () => {
 	const router = useRouter();
+	const { t } = useTranslation();
 
 	const [user, setUser] = useState<FirebaseAuthTypes.User | null>();
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -41,10 +43,10 @@ const Profile: React.FC = () => {
 				<Name>{user?.displayName}</Name>
 				<Email>{user?.email}</Email>
 
-				<Button title="Sair da conta" onPress={handleLogout} />
+				<Button title={t('profile.logout')} onPress={handleLogout} />
 
 				<Button
-					title="Apagar conta"
+					title={t('profile.deleteAccount')}
 					onPress={switchShowDeleteModal}
 					style={{ marginTop: 10 }}
 				/>

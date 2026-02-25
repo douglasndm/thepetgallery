@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Dialog, Text, Button } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import { showMessage } from 'react-native-flash-message';
+import { useTranslation } from 'react-i18next';
 
 import { getUserPetsReference } from '@services/firebase/firestore';
 import { captureException } from '@services/exceptionsHandler';
@@ -16,6 +17,7 @@ interface Props {
 
 const DeletePet: React.FC<Props> = (props: Props) => {
 	const router = useRouter();
+	const { t } = useTranslation();
 
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -33,7 +35,7 @@ const DeletePet: React.FC<Props> = (props: Props) => {
 				await petsReference.doc(props.petId).delete();
 
 				showMessage({
-					message: 'Pet excluido com sucesso',
+					message: t('pets.deletedSuccess'),
 					type: 'success',
 				});
 
@@ -47,18 +49,17 @@ const DeletePet: React.FC<Props> = (props: Props) => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [props.petId, router]);
+	}, [props.petId, router, t]);
 
 	return (
 		<Dialog visible={props.visible} onDismiss={hideDialog}>
-			<Dialog.Title>Você tem certeza?</Dialog.Title>
+			<Dialog.Title>{t('common.confirmDeleteTitle')}</Dialog.Title>
 
 			{isLoading && <Loading />}
 
 			<Dialog.Content>
 				<Text variant="bodyMedium">
-					Você vai excluir esse pet, essa operação não pode ser
-					desfeita
+					{t('pets.deleteDescription')}
 				</Text>
 			</Dialog.Content>
 			<Dialog.Actions>
@@ -67,10 +68,10 @@ const DeletePet: React.FC<Props> = (props: Props) => {
 					textColor="red"
 					disabled={isLoading}
 				>
-					Apagar
+					{t('common.delete')}
 				</Button>
 				<Button onPress={hideDialog} disabled={isLoading}>
-					Manter
+					{t('common.keep')}
 				</Button>
 			</Dialog.Actions>
 		</Dialog>

@@ -11,6 +11,7 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import '@services/sentry';
 import '@services/firebase/appchecker';
 import '@utils/permissions/notifications';
+import '@app/i18n';
 
 import CurrentPhotoContext from '@contexts/currentPhoto';
 

@@ -1,7 +1,9 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { doc, getDoc, collection } from '@react-native-firebase/firestore';
+import { useTranslation } from 'react-i18next';
 
+import { getCurrentLanguage } from '@app/i18n';
 import { getUserPetsReference } from '@services/firebase/firestore';
 import { captureException } from '@services/exceptionsHandler';
 
@@ -13,6 +15,7 @@ import { Container, Content, Name, MoreInfo } from './styles';
 
 const VaccinesDetails: React.FC = () => {
 	const router = useRouter();
+	const { t } = useTranslation();
 	const { petId, id } = useLocalSearchParams<{ petId: string; id: string }>();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -83,7 +86,7 @@ const VaccinesDetails: React.FC = () => {
 
 			<ActionButton
 				iconName="create-outline"
-				title="Editar vacina"
+				title={t('vaccines.editVaccine')}
 				onPress={navigateToEditVaccine}
 			/>
 
@@ -95,20 +98,26 @@ const VaccinesDetails: React.FC = () => {
 
 					{vaccine?.date_administered && (
 						<MoreInfo>
-							Aplicada em:{' '}
-							{vaccine.date_administered.toLocaleDateString('pt-BR')}
+							{t('vaccines.appliedOnPrefix')}:{' '}
+							{vaccine.date_administered.toLocaleDateString(
+								getCurrentLanguage()
+							)}
 						</MoreInfo>
 					)}
 
 					{vaccine?.next_dose_date && (
 						<MoreInfo>
-							Próxima dose em:{' '}
-							{vaccine.next_dose_date.toLocaleDateString('pt-BR')}
+							{t('vaccines.nextDosePrefix')}:{' '}
+							{vaccine.next_dose_date.toLocaleDateString(
+								getCurrentLanguage()
+							)}
 						</MoreInfo>
 					)}
 
 					{vaccine?.notes && (
-						<MoreInfo>Observações: {vaccine.notes}</MoreInfo>
+						<MoreInfo>
+							{t('vaccines.notesPrefix')}: {vaccine.notes}
+						</MoreInfo>
 					)}
 				</Content>
 			)}

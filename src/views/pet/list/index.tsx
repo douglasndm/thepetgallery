@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useFocusEffect, useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
 import { getUserPetsReference } from '@services/firebase/firestore';
 import { captureException } from '@services/exceptionsHandler';
@@ -23,6 +24,7 @@ import {
 
 const PetList: React.FC = () => {
 	const router = useRouter();
+	const { t } = useTranslation();
 
 	const [pets, setPets] = useState<IPet[]>([]);
 
@@ -78,7 +80,7 @@ const PetList: React.FC = () => {
 
 			<ActionButtonContainer onPress={navigateToAddPet}>
 				<ActionButtonIcon name="add" />
-				<ActionButtonText>Adicionar pet</ActionButtonText>
+				<ActionButtonText>{t('pets.addPet')}</ActionButtonText>
 			</ActionButtonContainer>
 
 			{pets.map(pet => {
@@ -108,7 +110,7 @@ const PetList: React.FC = () => {
 
 			{pets.length <= 0 && (
 				<EmptyListName>
-					Cadastre seus pets para facilitar o acompanhamento deles
+					{t('pets.emptyState')}
 				</EmptyListName>
 			)}
 

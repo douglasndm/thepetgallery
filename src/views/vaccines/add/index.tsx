@@ -3,6 +3,7 @@ import { Modal, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { showMessage } from 'react-native-flash-message';
 import DatePicker from 'react-native-ui-datepicker';
+import { useTranslation } from 'react-i18next';
 
 import { captureException } from '@services/exceptionsHandler';
 
@@ -29,6 +30,7 @@ import {
 
 const VaccinesAdd: React.FC = () => {
 	const router = useRouter();
+	const { t } = useTranslation();
 	const { petId } = useLocalSearchParams<{ petId: string }>();
 
 	const [isLoading, setIsLoading] = useState(false);
@@ -52,7 +54,7 @@ const VaccinesAdd: React.FC = () => {
 		try {
 			if (name.trim() === '') {
 				return showMessage({
-					message: 'Por favor, informe o nome da vacina.',
+					message: t('vaccines.nameRequired'),
 					type: 'warning',
 				});
 			}
@@ -70,7 +72,7 @@ const VaccinesAdd: React.FC = () => {
 			});
 
 			showMessage({
-				message: 'Vacina cadastrada com sucesso.',
+				message: t('vaccines.addedSuccess'),
 				type: 'success',
 			});
 
@@ -83,7 +85,7 @@ const VaccinesAdd: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [petId, router, administeredDate, showUseDate, nextDoseDate, showUseNextDate, name, notes]);
+	}, [petId, router, administeredDate, showUseDate, nextDoseDate, showUseNextDate, name, notes, t]);
 
 	const switchAdministeredDateModal = useCallback(() => {
 		setIsModalAdministeredDateVisible(prevValue => !prevValue);
@@ -102,7 +104,7 @@ const VaccinesAdd: React.FC = () => {
 			) : (
 				<Content>
 					<Input
-						placeholder="Nome da vacina"
+						placeholder={t('vaccines.namePlaceholder')}
 						value={name}
 						onChangeText={setName}
 					/>
@@ -112,7 +114,7 @@ const VaccinesAdd: React.FC = () => {
 							<DateText>
 								{showUseDate
 									? formatDate(administeredDate)
-									: 'Adicionar data da aplicação'}
+									: t('vaccines.addAdministeredDate')}
 							</DateText>
 						</DateTextContent>
 
@@ -133,7 +135,7 @@ const VaccinesAdd: React.FC = () => {
 							<DateText>
 								{showUseNextDate
 									? formatDate(nextDoseDate)
-									: 'Adicionar proxima dose'}
+									: t('vaccines.addNextDoseDate')}
 							</DateText>
 						</DateTextContent>
 
@@ -150,13 +152,13 @@ const VaccinesAdd: React.FC = () => {
 					</DateContainer>
 
 					<Input
-						placeholder="Observações"
+						placeholder={t('vaccines.notesPlaceholder')}
 						multiline
 						value={notes}
 						onChangeText={setNotes}
 					/>
 
-					<Button title="Adicionar vacina" onPress={handleSave} />
+					<Button title={t('vaccines.addVaccine')} onPress={handleSave} />
 				</Content>
 			)}
 
@@ -170,7 +172,7 @@ const VaccinesAdd: React.FC = () => {
 						justifyContent: 'center',
 					}}
 				>
-					<Label>Data da aplicação</Label>
+					<Label>{t('vaccines.administeredDateLabel')}</Label>
 					<DatePicker
 						mode="single"
 						date={administeredDate}
@@ -195,7 +197,7 @@ const VaccinesAdd: React.FC = () => {
 						justifyContent: 'center',
 					}}
 				>
-					<Label>Data da próxima dose</Label>
+					<Label>{t('vaccines.nextDoseDateLabel')}</Label>
 					<DatePicker
 						mode="single"
 						date={nextDoseDate}

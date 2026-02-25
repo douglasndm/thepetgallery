@@ -3,6 +3,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import RadioGroup, { RadioButtonProps } from 'react-native-radio-buttons-group';
 import DateTimePicker from 'react-native-ui-datepicker';
 import { showMessage } from 'react-native-flash-message';
+import { useTranslation } from 'react-i18next';
 
 import { getUserPetsReference } from '@services/firebase/firestore';
 import { captureException } from '@services/exceptionsHandler';
@@ -19,6 +20,7 @@ import { Container, Content, Input, Label } from '../add/styles';
 
 const EditPet: React.FC = () => {
 	const router = useRouter();
+	const { t } = useTranslation();
 	const { id } = useLocalSearchParams<{ id: string }>();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -100,7 +102,7 @@ const EditPet: React.FC = () => {
 				});
 
 				showMessage({
-					message: 'Pet atualizado com sucesso',
+					message: t('pets.updatedSuccess'),
 					type: 'success',
 				});
 
@@ -111,43 +113,43 @@ const EditPet: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [name, species, breed, weight, healthNotes, useBirthDate, date, router, id]);
+	}, [name, species, breed, weight, healthNotes, useBirthDate, date, router, id, t]);
 
 	const radioButtons: RadioButtonProps[] = useMemo(
 		() => [
 			{
 				id: 'dog',
-				label: 'Cachorro',
+				label: t('pets.dog'),
 				value: 'dog',
 			},
 			{
 				id: 'cat',
-				label: 'Gato',
+				label: t('pets.cat'),
 				value: 'cat',
 			},
 			{
 				id: 'null',
-				label: 'Outro',
+				label: t('pets.other'),
 				value: undefined,
 			},
 		],
-		[]
+		[t]
 	);
 
 	const useBirthDateRadioButtons: RadioButtonProps[] = useMemo(
 		() => [
 			{
 				id: 'yes',
-				label: 'Sim',
+				label: t('common.yes'),
 				value: 'yes',
 			},
 			{
 				id: 'no',
-				label: 'Não',
+				label: t('common.no'),
 				value: 'no',
 			},
 		],
-		[]
+		[t]
 	);
 
 	useEffect(() => {
@@ -167,7 +169,7 @@ const EditPet: React.FC = () => {
 
 			<ActionButton
 				iconName="trash-outline"
-				title="Excluir pet"
+				title={t('pets.deletePet')}
 				onPress={() => setShowDeleteDialog(true)}
 			/>
 
@@ -176,12 +178,12 @@ const EditPet: React.FC = () => {
 			) : (
 				<Content>
 					<Input
-						placeholder="Nome do pet"
+						placeholder={t('pets.namePlaceholder')}
 						value={name}
 						onChangeText={setName}
 					/>
 
-					<Label>Espécie</Label>
+					<Label>{t('pets.speciesLabel')}</Label>
 
 					<RadioGroup
 						radioButtons={radioButtons}
@@ -194,26 +196,26 @@ const EditPet: React.FC = () => {
 					/>
 
 					<Input
-						placeholder="Raça"
+						placeholder={t('pets.breedPlaceholder')}
 						value={breed}
 						onChangeText={setBreed}
 					/>
 					<Input
-						placeholder="Peso"
+						placeholder={t('pets.weightPlaceholder')}
 						keyboardType="numeric"
 						value={weight}
 						onChangeText={handleWeightChange}
 					/>
 
 					<Input
-						placeholder="Observações"
+						placeholder={t('pets.notesPlaceholder')}
 						multiline
 						numberOfLines={5}
 						value={healthNotes}
 						onChangeText={setHealthNotes}
 					/>
 
-					<Label>Editar data de nascimento</Label>
+					<Label>{t('pets.editBirthDateLabel')}</Label>
 					<RadioGroup
 						radioButtons={useBirthDateRadioButtons}
 						onPress={selected => {
@@ -232,7 +234,7 @@ const EditPet: React.FC = () => {
 
 					{useBirthDate && (
 						<>
-							<Label>Data de nascimento</Label>
+							<Label>{t('pets.birthDateLabel')}</Label>
 
 							<DateTimePicker
 								mode="single"
@@ -246,7 +248,7 @@ const EditPet: React.FC = () => {
 						</>
 					)}
 
-					<Button title="Salvar" onPress={handleUpdate} />
+					<Button title={t('common.save')} onPress={handleUpdate} />
 				</Content>
 			)}
 

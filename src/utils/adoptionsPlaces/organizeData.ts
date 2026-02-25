@@ -1,3 +1,5 @@
+import i18n from '@app/i18n';
+
 function organizeData(places: IAdoptionPlace[]): GroupedAdoptionPlace {
 	const groupedData: GroupedAdoptionPlace = {};
 
@@ -21,7 +23,10 @@ function organizeData(places: IAdoptionPlace[]): GroupedAdoptionPlace {
 	});
 
 	// Adicionar os itens sem UF no final
-	groupedData['Sem UF'] = { withCity: [], withoutCity: itemsWithoutUF };
+	groupedData[i18n.t('places.withoutUF')] = {
+		withCity: [],
+		withoutCity: itemsWithoutUF,
+	};
 
 	return groupedData;
 }

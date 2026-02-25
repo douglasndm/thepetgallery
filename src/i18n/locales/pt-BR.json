@@ -1,0 +1,128 @@
+{
+	"tabs": {
+		"dogs": "Dogs",
+		"cats": "Cats",
+		"places": "Lugares",
+		"pets": "Pets",
+		"settings": "Config"
+	},
+	"common": {
+		"yes": "Sim",
+		"no": "Não",
+		"save": "Salvar",
+		"delete": "Apagar",
+		"keep": "Manter",
+		"confirmDeleteTitle": "Você tem certeza?"
+	},
+	"settings": {
+		"title": "Configurações",
+		"description": "Gerencie sua conta e acesse informações do app.",
+		"viewAccount": "Ver informações da conta",
+		"login": "Fazer login",
+		"aboutApp": "Sobre o aplicativo",
+		"language": "Idioma",
+		"portugueseBrazil": "Português (Brasil)",
+		"englishUS": "Inglês (EUA)"
+	},
+	"about": {
+		"title": "Sobre",
+		"tagline": "Sua dose diária de lambeijo",
+		"developedBy": "Desenvolvido por Douglas Nunes de Mattos",
+		"moreAppsPrefix": "Mais aplicativos ",
+		"moreAppsLink": "aqui",
+		"sendPlaceText": "Quer enviar um lugar de adoção ou abrigos que precisam de doação? Entre em contato comigo no ",
+		"sendPlaceOr": " ou no ",
+		"viewAccount": "Ver informações da conta",
+		"attribution": {
+			"logoPrefix": "Logo de pikisuperstar no ",
+			"dogLoadingPrefix": "Animação de carregamento de doguinhos de Syed Asim Ali Shah no ",
+			"catLoadingPrefix": "Animação de carregamento de gatinhos de Evgeny Marinin no ",
+			"headerPrefix": "Animação do Header por Diane Picchiottino no ",
+			"aboutPrefix": "Animação no sobre por Eugene Croquette no ",
+			"offlinePrefix": "Animação de falta de conexão de Hishara Dilshan HishD no ",
+			"lottieFiles": "LottieFiles",
+			"freepik": "Freepik",
+			"linkedin": "LinkedIn",
+			"bluesky": "Bluesky"
+		}
+	},
+	"login": {
+		"title": "Faça login para ativar as notificações de lembretes!",
+		"description1": "Ao entrar na sua conta, você habilita as funções de notificações personalizadas, como lembretes de vacinas, medicamentos e cuidados importantes para o seu pet. Nunca mais perca uma data crucial e mantenha a saúde do seu animal de estimação em dia.",
+		"description2": "Se ainda não tem uma conta, cadastre-se agora e comece a usufruir de todos os benefícios!",
+		"signInGoogle": "Continuar com Google"
+	},
+	"profile": {
+		"logout": "Sair da conta",
+		"deleteAccount": "Apagar conta",
+		"accountDeletedSuccess": "Conta excluída com sucesso",
+		"deleteDescription": "Você vai excluir sua conta, incluindo pets e vacinas cadastradas. Essa operação não pode ser desfeita."
+	},
+	"pets": {
+		"addPet": "Adicionar pet",
+		"emptyState": "Cadastre seus pets para facilitar o acompanhamento deles",
+		"namePlaceholder": "Nome do pet",
+		"speciesLabel": "Espécie",
+		"breedPlaceholder": "Raça",
+		"weightPlaceholder": "Peso",
+		"notesPlaceholder": "Observações",
+		"addBirthDateLabel": "Adicionar data de nascimento",
+		"editBirthDateLabel": "Editar data de nascimento",
+		"birthDateLabel": "Data de nascimento",
+		"updatedSuccess": "Pet atualizado com sucesso",
+		"createdSuccess": "Pet cadastrado com sucesso",
+		"deletedSuccess": "Pet excluído com sucesso",
+		"deletePet": "Excluir pet",
+		"editPet": "Editar pet",
+		"deleteDescription": "Você vai excluir esse pet. Essa operação não pode ser desfeita.",
+		"viewVaccines": "Ver vacinas",
+		"speciesPrefix": "Espécie",
+		"breedPrefix": "Raça",
+		"birthPrefix": "Nascimento",
+		"weightPrefix": "Peso",
+		"extraDataPrefix": "Dados adicionais",
+		"dog": "Cachorro",
+		"cat": "Gato",
+		"other": "Outro"
+	},
+	"vaccines": {
+		"addVaccine": "Adicionar vacina",
+		"editVaccine": "Editar vacina",
+		"deleteVaccine": "Excluir vacina",
+		"namePlaceholder": "Nome da vacina",
+		"notesPlaceholder": "Observações",
+		"addedSuccess": "Vacina cadastrada com sucesso.",
+		"updatedSuccess": "Vacina atualizada com sucesso.",
+		"deletedSuccess": "Vacina excluída com sucesso",
+		"nameRequired": "Por favor, informe o nome da vacina.",
+		"addAdministeredDate": "Adicionar data da aplicação",
+		"addNextDoseDate": "Adicionar próxima dose",
+		"administeredDateLabel": "Data da aplicação",
+		"nextDoseDateLabel": "Data da próxima dose",
+		"dateAdministeredPrefix": "Data da aplicação",
+		"appliedOnPrefix": "Aplicada em",
+		"nextDosePrefix": "Próxima dose em",
+		"notesPrefix": "Observações",
+		"deleteDescription": "Você vai excluir essa vacina. Essa operação não pode ser desfeita."
+	},
+	"places": {
+		"title": "Lugares para adoção",
+		"noState": "Sem estado cadastrado",
+		"withoutUF": "Sem UF"
+	},
+	"offline": {
+		"noInternet": "Sem conexão com a internet"
+	},
+	"notifications": {
+		"defaultTitle": "Notificação"
+	},
+	"images": {
+		"saveToGallery": "Salvar na galeria",
+		"savePermissionError": "O aplicativo não tem permissão para salvar arquivos no seu telefone",
+		"saveSuccess": "Imagem salva com sucesso!"
+	},
+	"photos": {
+		"catsTitle": "Fotos de gatinhos",
+		"dogsTitle": "Fotos de doguinhos"
+	}
+}

@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { getAuth, FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { useTranslation } from 'react-i18next';
 
+import { setAppLanguage } from '@app/i18n';
 import Header from '@components/header';
 import Button from '@components/button';
 import Padding from '@components/padding';
@@ -17,6 +19,7 @@ const BUTTON_STYLE = {
 
 const SettingsView: React.FC = () => {
 	const router = useRouter();
+	const { t } = useTranslation();
 	const [user, setUser] = useState<FirebaseAuthTypes.User | null>(
 		getAuth().currentUser
 	);
@@ -46,20 +49,33 @@ const SettingsView: React.FC = () => {
 		<Container>
 			<Header />
 			<Content>
-				<Title>Configurações</Title>
-				<Description>
-					Gerencie sua conta e acesse informações do app.
-				</Description>
+				<Title>{t('settings.title')}</Title>
+				<Description>{t('settings.description')}</Description>
 
 				<Button
-					title={user ? 'Ver informações da conta' : 'Fazer login'}
+					title={user ? t('settings.viewAccount') : t('settings.login')}
 					onPress={handleAuth}
 					style={BUTTON_STYLE}
 				/>
 
 				<Button
-					title="Sobre o aplicativo"
+					title={t('settings.aboutApp')}
 					onPress={navigateToAbout}
+					style={[BUTTON_STYLE, { marginTop: 10 }]}
+				/>
+
+				<Description style={{ marginTop: 30, marginBottom: 10 }}>
+					{t('settings.language')}
+				</Description>
+
+				<Button
+					title={t('settings.portugueseBrazil')}
+					onPress={() => setAppLanguage('pt-BR')}
+					style={BUTTON_STYLE}
+				/>
+				<Button
+					title={t('settings.englishUS')}
+					onPress={() => setAppLanguage('en-US')}
 					style={[BUTTON_STYLE, { marginTop: 10 }]}
 				/>
 			</Content>

@@ -1,0 +1,128 @@
+{
+	"tabs": {
+		"dogs": "Dogs",
+		"cats": "Cats",
+		"places": "Places",
+		"pets": "Pets",
+		"settings": "Settings"
+	},
+	"common": {
+		"yes": "Yes",
+		"no": "No",
+		"save": "Save",
+		"delete": "Delete",
+		"keep": "Keep",
+		"confirmDeleteTitle": "Are you sure?"
+	},
+	"settings": {
+		"title": "Settings",
+		"description": "Manage your account and access app information.",
+		"viewAccount": "View account information",
+		"login": "Sign in",
+		"aboutApp": "About the app",
+		"language": "Language",
+		"portugueseBrazil": "Portuguese (Brazil)",
+		"englishUS": "English (US)"
+	},
+	"about": {
+		"title": "About",
+		"tagline": "Your daily dose of pet love",
+		"developedBy": "Developed by Douglas Nunes de Mattos",
+		"moreAppsPrefix": "More apps ",
+		"moreAppsLink": "here",
+		"sendPlaceText": "Want to send an adoption place or shelters that need donations? Contact me on ",
+		"sendPlaceOr": " or on ",
+		"viewAccount": "View account information",
+		"attribution": {
+			"logoPrefix": "Logo by pikisuperstar on ",
+			"dogLoadingPrefix": "Dog loading animation by Syed Asim Ali Shah on ",
+			"catLoadingPrefix": "Cat loading animation by Evgeny Marinin on ",
+			"headerPrefix": "Header animation by Diane Picchiottino on ",
+			"aboutPrefix": "About animation by Eugene Croquette on ",
+			"offlinePrefix": "No connection animation by Hishara Dilshan HishD on ",
+			"lottieFiles": "LottieFiles",
+			"freepik": "Freepik",
+			"linkedin": "LinkedIn",
+			"bluesky": "Bluesky"
+		}
+	},
+	"login": {
+		"title": "Sign in to enable reminder notifications!",
+		"description1": "When you sign in, you enable personalized notifications such as vaccine reminders, medications, and other important care for your pet. Never miss an important date and keep your pet healthy.",
+		"description2": "If you don't have an account yet, sign up now and start enjoying all benefits!",
+		"signInGoogle": "Continue with Google"
+	},
+	"profile": {
+		"logout": "Sign out",
+		"deleteAccount": "Delete account",
+		"accountDeletedSuccess": "Account deleted successfully",
+		"deleteDescription": "You are about to delete your account, including registered pets and vaccines. This action cannot be undone."
+	},
+	"pets": {
+		"addPet": "Add pet",
+		"emptyState": "Register your pets to keep track of them more easily",
+		"namePlaceholder": "Pet name",
+		"speciesLabel": "Species",
+		"breedPlaceholder": "Breed",
+		"weightPlaceholder": "Weight",
+		"notesPlaceholder": "Notes",
+		"addBirthDateLabel": "Add birth date",
+		"editBirthDateLabel": "Edit birth date",
+		"birthDateLabel": "Birth date",
+		"updatedSuccess": "Pet updated successfully",
+		"createdSuccess": "Pet added successfully",
+		"deletedSuccess": "Pet deleted successfully",
+		"deletePet": "Delete pet",
+		"editPet": "Edit pet",
+		"deleteDescription": "You are about to delete this pet. This action cannot be undone.",
+		"viewVaccines": "View vaccines",
+		"speciesPrefix": "Species",
+		"breedPrefix": "Breed",
+		"birthPrefix": "Birth",
+		"weightPrefix": "Weight",
+		"extraDataPrefix": "Additional data",
+		"dog": "Dog",
+		"cat": "Cat",
+		"other": "Other"
+	},
+	"vaccines": {
+		"addVaccine": "Add vaccine",
+		"editVaccine": "Edit vaccine",
+		"deleteVaccine": "Delete vaccine",
+		"namePlaceholder": "Vaccine name",
+		"notesPlaceholder": "Notes",
+		"addedSuccess": "Vaccine added successfully.",
+		"updatedSuccess": "Vaccine updated successfully.",
+		"deletedSuccess": "Vaccine deleted successfully",
+		"nameRequired": "Please provide the vaccine name.",
+		"addAdministeredDate": "Add application date",
+		"addNextDoseDate": "Add next dose",
+		"administeredDateLabel": "Application date",
+		"nextDoseDateLabel": "Next dose date",
+		"dateAdministeredPrefix": "Application date",
+		"appliedOnPrefix": "Applied on",
+		"nextDosePrefix": "Next dose on",
+		"notesPrefix": "Notes",
+		"deleteDescription": "You are about to delete this vaccine. This action cannot be undone."
+	},
+	"places": {
+		"title": "Adoption places",
+		"noState": "No state registered",
+		"withoutUF": "No state code"
+	},
+	"offline": {
+		"noInternet": "No internet connection"
+	},
+	"notifications": {
+		"defaultTitle": "Notification"
+	},
+	"images": {
+		"saveToGallery": "Save to gallery",
+		"savePermissionError": "The app does not have permission to save files on your phone",
+		"saveSuccess": "Image saved successfully!"
+	},
+	"photos": {
+		"catsTitle": "Cat photos",
+		"dogsTitle": "Dog photos"
+	}
+}

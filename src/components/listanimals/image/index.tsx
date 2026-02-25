@@ -4,6 +4,7 @@ import ContextMenu, {
 	ContextMenuOnPressNativeEvent,
 } from 'react-native-context-menu-view';
 import LottieView from 'lottie-react-native';
+import { useTranslation } from 'react-i18next';
 
 import { captureException } from '@services/exceptionsHandler';
 
@@ -31,6 +32,7 @@ interface Props {
 }
 
 const Image: React.FC<Props> = ({ item, type = 'Dog', index }: Props) => {
+	const { t } = useTranslation();
 	const [isLoading, setIsLoading] = useState(true);
 
 	const photoContext = useContext(CurrentPhotoContext);
@@ -86,7 +88,7 @@ const Image: React.FC<Props> = ({ item, type = 'Dog', index }: Props) => {
 	return (
 		<Container style={{ marginRight: index % 2 === 0 ? 10 : 0 }}>
 			<ContextMenu
-				actions={[{ title: 'Salvar na galeria' }]}
+				actions={[{ title: t('images.saveToGallery') }]}
 				onPress={handleContextPress}
 			>
 				<MemorizedImage />

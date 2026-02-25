@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import RadioGroup, { RadioButtonProps } from 'react-native-radio-buttons-group';
 import DateTimePicker from 'react-native-ui-datepicker';
 import { showMessage } from 'react-native-flash-message';
+import { useTranslation } from 'react-i18next';
 
 import { captureException } from '@services/exceptionsHandler';
 
@@ -16,6 +17,7 @@ import { Container, Content, Input, Label } from './styles';
 
 const AddPet: React.FC = () => {
 	const router = useRouter();
+	const { t } = useTranslation();
 
 	const [isSaving, setIsSaving] = useState<boolean>(false);
 
@@ -47,7 +49,7 @@ const AddPet: React.FC = () => {
 			});
 
 			showMessage({
-				message: 'Pet cadastrado com sucesso',
+				message: t('pets.createdSuccess'),
 				type: 'success',
 			});
 
@@ -57,7 +59,7 @@ const AddPet: React.FC = () => {
 		} finally {
 			setIsSaving(false);
 		}
-	}, [name, species, breed, weight, healthNotes, date, useBirthDate, router]);
+	}, [name, species, breed, weight, healthNotes, date, useBirthDate, router, t]);
 
 	const handleWeightChange = useCallback((value: string) => {
 		const regex = /^-?\d*(\.\d*)?$/;
@@ -70,37 +72,37 @@ const AddPet: React.FC = () => {
 		() => [
 			{
 				id: 'dog',
-				label: 'Cachorro',
+				label: t('pets.dog'),
 				value: 'dog',
 			},
 			{
 				id: 'cat',
-				label: 'Gato',
+				label: t('pets.cat'),
 				value: 'cat',
 			},
 			{
 				id: 'null',
-				label: 'Outro',
+				label: t('pets.other'),
 				value: undefined,
 			},
 		],
-		[]
+		[t]
 	);
 
 	const useBirthDateRadioButtons: RadioButtonProps[] = useMemo(
 		() => [
 			{
 				id: 'yes',
-				label: 'Sim',
+				label: t('common.yes'),
 				value: 'yes',
 			},
 			{
 				id: 'no',
-				label: 'Não',
+				label: t('common.no'),
 				value: 'no',
 			},
 		],
-		[]
+		[t]
 	);
 
 	return (
@@ -109,12 +111,12 @@ const AddPet: React.FC = () => {
 
 			<Content>
 				<Input
-					placeholder="Nome do pet"
+					placeholder={t('pets.namePlaceholder')}
 					value={name}
 					onChangeText={setName}
 				/>
 
-				<Label>Espécie</Label>
+				<Label>{t('pets.speciesLabel')}</Label>
 
 				<RadioGroup
 					radioButtons={radioButtons}
@@ -127,25 +129,25 @@ const AddPet: React.FC = () => {
 				/>
 
 				<Input
-					placeholder="Raça"
+					placeholder={t('pets.breedPlaceholder')}
 					value={breed}
 					onChangeText={setBreed}
 				/>
 				<Input
-					placeholder="Peso"
+					placeholder={t('pets.weightPlaceholder')}
 					keyboardType="numeric"
 					value={weight?.toString()}
 					onChangeText={handleWeightChange}
 				/>
 
 				<Input
-					placeholder="Observações"
+					placeholder={t('pets.notesPlaceholder')}
 					multiline
 					numberOfLines={5}
 					value={healthNotes}
 					onChangeText={setHealthNotes}
 				/>
-				<Label>Adicionar data de nascimento</Label>
+				<Label>{t('pets.addBirthDateLabel')}</Label>
 
 				<RadioGroup
 					radioButtons={useBirthDateRadioButtons}
@@ -165,7 +167,7 @@ const AddPet: React.FC = () => {
 
 				{useBirthDate && (
 					<>
-						<Label>Data de nascimento</Label>
+						<Label>{t('pets.birthDateLabel')}</Label>
 
 						<DateTimePicker
 							mode="single"
@@ -180,7 +182,7 @@ const AddPet: React.FC = () => {
 				)}
 
 				<Button
-					title="Salvar"
+					title={t('common.save')}
 					onPress={handleSave}
 					disabled={isSaving}
 				/>

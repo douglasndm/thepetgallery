@@ -1,3 +1,5 @@
+import { getCurrentLanguage } from '@app/i18n';
+
 function formatDate(date: Date): string {
 	const options: Intl.DateTimeFormatOptions = {
 		year: 'numeric',
@@ -5,9 +7,10 @@ function formatDate(date: Date): string {
 		day: 'numeric',
 	} as const;
 
-	const formattedDate = new Intl.DateTimeFormat('pt-BR', options).format(
-		date
-	);
+	const formattedDate = new Intl.DateTimeFormat(
+		getCurrentLanguage(),
+		options
+	).format(date);
 
 	return formattedDate;
 }

@@ -3,6 +3,7 @@ import { Platform, Linking } from 'react-native';
 import { useRouter } from 'expo-router';
 import { getAuth } from '@react-native-firebase/auth';
 import LottieView from 'lottie-react-native';
+import { useTranslation } from 'react-i18next';
 
 import Header from '@components/header';
 import Button from '@components/button';
@@ -26,6 +27,7 @@ const dogDancing = Platform.select({
 
 const Menu: React.FC = () => {
 	const router = useRouter();
+	const { t } = useTranslation();
 
 	const navigateToAccount = useCallback(() => {
 		router.push('/profile');
@@ -34,12 +36,12 @@ const Menu: React.FC = () => {
 	return (
 		<Container>
 			<Header />
-			<Title>Sobre</Title>
+			<Title>{t('about.title')}</Title>
 			<Content>
 				<AppName>The Pet Gallery</AppName>
-				<Info>Sua dose diária de lambeijo</Info>
+				<Info>{t('about.tagline')}</Info>
 
-				<Info>Desenvolvido por Douglas Nunes de Mattos</Info>
+				<Info>{t('about.developedBy')}</Info>
 
 				<LottieView
 					source={dogDancing}
@@ -58,21 +60,20 @@ const Menu: React.FC = () => {
 
 				<AttibuitionContainer>
 					<Attibution>
-						Mais aplicativos{' '}
+						{t('about.moreAppsPrefix')}
 						<AttibutionLink
 							onPress={() =>
 								Linking.openURL('https://douglasndm.dev')
 							}
 						>
-							aqui
+							{t('about.moreAppsLink')}
 						</AttibutionLink>
 					</Attibution>
 				</AttibuitionContainer>
 
 				<AttibuitionContainer>
 					<Attibution>
-						Quer enviar um lugar de adocão ou abrigos que precisam
-						de doação? Entre em contato comigo no{' '}
+						{t('about.sendPlaceText')}
 						<AttibutionLink
 							onPress={() =>
 								Linking.openURL(
@@ -80,9 +81,9 @@ const Menu: React.FC = () => {
 								)
 							}
 						>
-							LinkedIn
+							{t('about.attribution.linkedin')}
 						</AttibutionLink>{' '}
-						ou no{' '}
+						{t('about.sendPlaceOr')}
 						<AttibutionLink
 							onPress={() =>
 								Linking.openURL(
@@ -90,14 +91,14 @@ const Menu: React.FC = () => {
 								)
 							}
 						>
-							Bluesky
+							{t('about.attribution.bluesky')}
 						</AttibutionLink>
 					</Attibution>
 				</AttibuitionContainer>
 
 				<AttibuitionContainer>
 					<Attibution>
-						Logo de pikisuperstar no{' '}
+						{t('about.attribution.logoPrefix')}
 						<AttibutionLink
 							onPress={() =>
 								Linking.openURL(
@@ -105,15 +106,14 @@ const Menu: React.FC = () => {
 								)
 							}
 						>
-							Freepik
+							{t('about.attribution.freepik')}
 						</AttibutionLink>
 					</Attibution>
 				</AttibuitionContainer>
 
 				<AttibuitionContainer>
 					<Attibution>
-						Animação de carregamento de doguinhos de Syed Asim Ali
-						Shah no{' '}
+						{t('about.attribution.dogLoadingPrefix')}
 						<AttibutionLink
 							onPress={() =>
 								Linking.openURL(
@@ -121,15 +121,14 @@ const Menu: React.FC = () => {
 								)
 							}
 						>
-							LottieFiles
+							{t('about.attribution.lottieFiles')}
 						</AttibutionLink>
 					</Attibution>
 				</AttibuitionContainer>
 
 				<AttibuitionContainer>
 					<Attibution>
-						Animação de carregamento de gatinhos de Evgeny Marinin
-						no{' '}
+						{t('about.attribution.catLoadingPrefix')}
 						<AttibutionLink
 							onPress={() =>
 								Linking.openURL(
@@ -137,14 +136,14 @@ const Menu: React.FC = () => {
 								)
 							}
 						>
-							LottieFiles
+							{t('about.attribution.lottieFiles')}
 						</AttibutionLink>
 					</Attibution>
 				</AttibuitionContainer>
 
 				<AttibuitionContainer>
 					<Attibution>
-						Animação do Header por Diane Picchiottino no{' '}
+						{t('about.attribution.headerPrefix')}
 						<AttibutionLink
 							onPress={() =>
 								Linking.openURL(
@@ -152,14 +151,14 @@ const Menu: React.FC = () => {
 								)
 							}
 						>
-							LottieFiles
+							{t('about.attribution.lottieFiles')}
 						</AttibutionLink>
 					</Attibution>
 				</AttibuitionContainer>
 
 				<AttibuitionContainer>
 					<Attibution>
-						Animação no sobre por Eugene Croquette no{' '}
+						{t('about.attribution.aboutPrefix')}
 						<AttibutionLink
 							onPress={() =>
 								Linking.openURL(
@@ -167,14 +166,14 @@ const Menu: React.FC = () => {
 								)
 							}
 						>
-							LottieFiles
+							{t('about.attribution.lottieFiles')}
 						</AttibutionLink>
 					</Attibution>
 				</AttibuitionContainer>
 
 				<AttibuitionContainer>
 					<Attibution>
-						Animação de falta de conexão de Hishara Dilshan HishD no{' '}
+						{t('about.attribution.offlinePrefix')}{' '}
 						<AttibutionLink
 							onPress={() =>
 								Linking.openURL(
@@ -182,7 +181,7 @@ const Menu: React.FC = () => {
 								)
 							}
 						>
-							LottieFiles
+							{t('about.attribution.lottieFiles')}
 						</AttibutionLink>
 					</Attibution>
 				</AttibuitionContainer>
@@ -190,7 +189,7 @@ const Menu: React.FC = () => {
 
 			{getAuth().currentUser && (
 				<Button
-					title="Ver informações da conta"
+					title={t('about.viewAccount')}
 					style={{ marginTop: 20 }}
 					onPress={navigateToAccount}
 				/>

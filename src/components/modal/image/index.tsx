@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useState } from 'react';
 import { Modal } from 'react-native';
 import FlashMessage from 'react-native-flash-message';
+import { useTranslation } from 'react-i18next';
 
 import { captureException } from '@services/exceptionsHandler';
 
@@ -22,6 +23,7 @@ import {
 
 const image: React.FC = () => {
 	const photoContext = useContext(CurrentPhotoContext);
+	const { t } = useTranslation();
 
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -81,7 +83,7 @@ const image: React.FC = () => {
 					)}
 
 					<Button onPress={savePhoto}>
-						<Text>Salvar</Text>
+						<Text>{t('common.save')}</Text>
 					</Button>
 				</ImageContainer>
 			</Container>

@@ -4,7 +4,9 @@ import {
 	useLocalSearchParams,
 	useRouter,
 } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
+import { getCurrentLanguage } from '@app/i18n';
 import { getUserPetsReference } from '@services/firebase/firestore';
 import { captureException } from '@services/exceptionsHandler';
 
@@ -29,6 +31,7 @@ import {
 
 const PetDetails: React.FC = () => {
 	const router = useRouter();
+	const { t } = useTranslation();
 	const { id } = useLocalSearchParams<{ id: string }>();
 
 	const [isLoading, setIsLoading] = useState(true);
@@ -107,9 +110,10 @@ const PetDetails: React.FC = () => {
 			month: 'long',
 			day: 'numeric',
 		} as const;
-		const formattedDate = new Intl.DateTimeFormat('pt-BR', options).format(
-			date
-		);
+		const formattedDate = new Intl.DateTimeFormat(
+			getCurrentLanguage(),
+			options
+		).format(date);
 
 		return formattedDate;
 	}, [petInfo]);
@@ -140,7 +144,7 @@ const PetDetails: React.FC = () => {
 			{!isLoading && (
 				<ActionButtonContainer onPress={navigateToEditPet}>
 					<ActionButtonIcon name="create-outline" />
-					<ActionButtonText>Editar pet</ActionButtonText>
+					<ActionButtonText>{t('pets.editPet')}</ActionButtonText>
 				</ActionButtonContainer>
 			)}
 
@@ -154,26 +158,40 @@ const PetDetails: React.FC = () => {
 
 					{petInfo?.species && (
 						<Species>
-							Especie:{' '}
-							{petInfo?.species === 'dog' ? 'Cachorro' : 'Gato'}
+							{t('pets.speciesPrefix')}:{' '}
+							{petInfo?.species === 'dog'
+								? t('pets.dog')
+								: t('pets.cat')}
 						</Species>
 					)}
 
-					{petInfo?.breed && <Breed>Raça: {petInfo?.breed}</Breed>}
+					{petInfo?.breed && (
+						<Breed>
+							{t('pets.breedPrefix')}: {petInfo?.breed}
+						</Breed>
+					)}
 
-					{birthDate && <BirthDate>Nascimento: {birthDate}</BirthDate>}
+					{birthDate && (
+						<BirthDate>
+							{t('pets.birthPrefix')}: {birthDate}
+						</BirthDate>
+					)}
 
-					{petInfo?.weight && <Weight>Peso: {petInfo?.weight}KG</Weight>}
+					{petInfo?.weight && (
+						<Weight>
+							{t('pets.weightPrefix')}: {petInfo?.weight}KG
+						</Weight>
+					)}
 
 					{petInfo?.health_notes && (
 						<HealthNotes>
-							Dados adicionais: {petInfo?.health_notes}
+							{t('pets.extraDataPrefix')}: {petInfo?.health_notes}
 						</HealthNotes>
 					)}
 				</Content>
 			)}
 
-			<Button title="Ver vacinas" onPress={navigateToVaccines} />
+			<Button title={t('pets.viewVaccines')} onPress={navigateToVaccines} />
 		</Container>
 	);
 };

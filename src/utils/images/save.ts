@@ -2,6 +2,7 @@ import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import RNFetchBlob from 'rn-fetch-blob';
 import { showMessage } from 'react-native-flash-message';
 
+import i18n from '@app/i18n';
 import { requestSavePermission } from '@utils/permissions/check';
 
 async function saveImageOnGallery(path: string): Promise<void> {
@@ -11,8 +12,7 @@ async function saveImageOnGallery(path: string): Promise<void> {
 
 	if (!hasPermission) {
 		showMessage({
-			message:
-				'O aplicativo não tem permissão para salvar arquivos no seu telefone',
+			message: i18n.t('images.savePermissionError'),
 			type: 'danger',
 		});
 		return;
@@ -31,7 +31,7 @@ async function saveImageOnGallery(path: string): Promise<void> {
 	});
 
 	showMessage({
-		message: 'Imagem salva com sucesso!',
+		message: i18n.t('images.saveSuccess'),
 		type: 'success',
 	});
 }

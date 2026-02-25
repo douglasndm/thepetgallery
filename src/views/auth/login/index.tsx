@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { getAuth } from '@react-native-firebase/auth';
+import { useTranslation } from 'react-i18next';
 import {
 	appleAuth,
 	appleAuthAndroid,
@@ -17,8 +18,6 @@ import {
 import { signInWithGoogle } from '@utils/auth/login/google';
 import { registerLogin } from '@utils/auth/login/register';
 
-import GoogleButtonSVG from '@assets/images/buttons/signin/google_ptbr.svg';
-
 import Header from '@components/header';
 
 import {
@@ -28,11 +27,13 @@ import {
 	TextDescription,
 	LoginContainer,
 	LoginButton,
+	LoginButtonText,
 	Loading,
 } from './styles';
 
 const Login: React.FC = () => {
 	const router = useRouter();
+	const { t } = useTranslation();
 
 	const [isSigning, setIsSigning] = useState(false);
 	const isAppleSignInSupported =
@@ -91,21 +92,10 @@ const Login: React.FC = () => {
 		<Container>
 			<Header />
 			<PageContent>
-				<TextTitle>
-					Faça login para ativar as notificações de lembretes!
-				</TextTitle>
-				<TextDescription>
-					Ao entrar na sua conta, você habilita as funções de
-					notificações personalizadas, como lembretes de vacinas,
-					medicamentos e cuidados importantes para o seu pet. Nunca
-					mais perca uma data crucial e mantenha a saúde do seu animal
-					de estimação em dia.
-				</TextDescription>
+				<TextTitle>{t('login.title')}</TextTitle>
+				<TextDescription>{t('login.description1')}</TextDescription>
 
-				<TextDescription>
-					Se ainda não tem uma conta, cadastre-se agora e comece a
-					usufruir de todos os benefícios!
-				</TextDescription>
+				<TextDescription>{t('login.description2')}</TextDescription>
 
 				{isSigning ? (
 					<Loading />
@@ -124,7 +114,9 @@ const Login: React.FC = () => {
 						)}
 
 						<LoginButton onPress={signInGoogle}>
-							<GoogleButtonSVG width={160} height={45} />
+							<LoginButtonText>
+								{t('login.signInGoogle')}
+							</LoginButtonText>
 						</LoginButton>
 					</LoginContainer>
 				)}
