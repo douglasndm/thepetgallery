@@ -47,7 +47,7 @@ const ListPics: React.FC = () => {
 
 	useEffect(() => {
 		loadData();
-	}, []);
+	}, [loadData]);
 
 	const ListHeader = useCallback(() => {
 		return (

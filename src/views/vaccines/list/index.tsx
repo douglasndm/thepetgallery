@@ -1,9 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import {
-	useFocusEffect,
-	useLocalSearchParams,
-	useRouter,
-} from 'expo-router';
+import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { collection, doc, getDocs } from '@react-native-firebase/firestore';
 import { useTranslation } from 'react-i18next';
 
@@ -126,13 +122,17 @@ const VaccinesList: React.FC = () => {
 				let formattedDate: string | null = null;
 
 				if (vaccine.date_administered) {
-					formattedDate = formatDate(new Date(vaccine.date_administered));
+					formattedDate = formatDate(
+						new Date(vaccine.date_administered)
+					);
 				}
 
 				return (
 					<VaccineContainer key={vaccine.id}>
 						<VaccineContent
-							onPress={() => navigateToVaccine(vaccine.id.toString())}
+							onPress={() =>
+								navigateToVaccine(vaccine.id.toString())
+							}
 						>
 							<TextContainer>
 								<VaccineName>{vaccine.name}</VaccineName>

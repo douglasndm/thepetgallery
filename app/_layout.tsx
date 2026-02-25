@@ -31,8 +31,9 @@ const RootLayout: React.FC = () => {
 	const pathname = usePathname();
 	const previousPathRef = useRef<string | undefined>(undefined);
 
-	const [currentPhoto, setCurrentPhoto] =
-		React.useState<APIItem | null>(null);
+	const [currentPhoto, setCurrentPhoto] = React.useState<APIItem | null>(
+		null
+	);
 
 	const { isInternetReachable } = useNetInfo();
 

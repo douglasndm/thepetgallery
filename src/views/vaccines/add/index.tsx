@@ -85,7 +85,17 @@ const VaccinesAdd: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [petId, router, administeredDate, showUseDate, nextDoseDate, showUseNextDate, name, notes, t]);
+	}, [
+		petId,
+		router,
+		administeredDate,
+		showUseDate,
+		nextDoseDate,
+		showUseNextDate,
+		name,
+		notes,
+		t,
+	]);
 
 	const switchAdministeredDateModal = useCallback(() => {
 		setIsModalAdministeredDateVisible(prevValue => !prevValue);
@@ -158,7 +168,10 @@ const VaccinesAdd: React.FC = () => {
 						onChangeText={setNotes}
 					/>
 
-					<Button title={t('vaccines.addVaccine')} onPress={handleSave} />
+					<Button
+						title={t('vaccines.addVaccine')}
+						onPress={handleSave}
+					/>
 				</Content>
 			)}
 
@@ -178,7 +191,9 @@ const VaccinesAdd: React.FC = () => {
 						date={administeredDate}
 						onChange={change => {
 							if (change.date) {
-								setAdministeredDate(new Date(String(change.date)));
+								setAdministeredDate(
+									new Date(String(change.date))
+								);
 
 								setShowUseDate(true);
 							}

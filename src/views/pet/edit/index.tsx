@@ -113,7 +113,18 @@ const EditPet: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [name, species, breed, weight, healthNotes, useBirthDate, date, router, id, t]);
+	}, [
+		name,
+		species,
+		breed,
+		weight,
+		healthNotes,
+		useBirthDate,
+		date,
+		router,
+		id,
+		t,
+	]);
 
 	const radioButtons: RadioButtonProps[] = useMemo(
 		() => [

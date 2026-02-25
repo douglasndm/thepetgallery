@@ -1,9 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import {
-	useFocusEffect,
-	useLocalSearchParams,
-	useRouter,
-} from 'expo-router';
+import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 import { getCurrentLanguage } from '@app/i18n';
@@ -191,7 +187,10 @@ const PetDetails: React.FC = () => {
 				</Content>
 			)}
 
-			<Button title={t('pets.viewVaccines')} onPress={navigateToVaccines} />
+			<Button
+				title={t('pets.viewVaccines')}
+				onPress={navigateToVaccines}
+			/>
 		</Container>
 	);
 };

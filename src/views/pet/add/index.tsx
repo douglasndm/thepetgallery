@@ -59,7 +59,17 @@ const AddPet: React.FC = () => {
 		} finally {
 			setIsSaving(false);
 		}
-	}, [name, species, breed, weight, healthNotes, date, useBirthDate, router, t]);
+	}, [
+		name,
+		species,
+		breed,
+		weight,
+		healthNotes,
+		date,
+		useBirthDate,
+		router,
+		t,
+	]);
 
 	const handleWeightChange = useCallback((value: string) => {
 		const regex = /^-?\d*(\.\d*)?$/;

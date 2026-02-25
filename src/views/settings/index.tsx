@@ -53,7 +53,9 @@ const SettingsView: React.FC = () => {
 				<Description>{t('settings.description')}</Description>
 
 				<Button
-					title={user ? t('settings.viewAccount') : t('settings.login')}
+					title={
+						user ? t('settings.viewAccount') : t('settings.login')
+					}
 					onPress={handleAuth}
 					style={BUTTON_STYLE}
 				/>

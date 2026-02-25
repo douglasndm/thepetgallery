@@ -61,7 +61,7 @@ const PlacesList: React.FC = () => {
 
 	useEffect(() => {
 		loadData();
-	}, []);
+	}, [loadData]);
 
 	const sections = useMemo(() => {
 		const organized = Object.keys(organizedData).map(uf => {

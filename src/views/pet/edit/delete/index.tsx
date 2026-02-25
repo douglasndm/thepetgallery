@@ -58,9 +58,7 @@ const DeletePet: React.FC<Props> = (props: Props) => {
 			{isLoading && <Loading />}
 
 			<Dialog.Content>
-				<Text variant="bodyMedium">
-					{t('pets.deleteDescription')}
-				</Text>
+				<Text variant="bodyMedium">{t('pets.deleteDescription')}</Text>
 			</Dialog.Content>
 			<Dialog.Actions>
 				<Button

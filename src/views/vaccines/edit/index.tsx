@@ -95,7 +95,18 @@ const VaccinesEdit: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [petId, id, router, administeredDate, showUseDate, nextDoseDate, showUseNextDate, name, notes, t]);
+	}, [
+		petId,
+		id,
+		router,
+		administeredDate,
+		showUseDate,
+		nextDoseDate,
+		showUseNextDate,
+		name,
+		notes,
+		t,
+	]);
 
 	const loadData = useCallback(async () => {
 		if (!petId || !id) {
@@ -222,7 +233,10 @@ const VaccinesEdit: React.FC = () => {
 						onChangeText={setNotes}
 					/>
 
-					<Button title={t('vaccines.editVaccine')} onPress={handleUpdate} />
+					<Button
+						title={t('vaccines.editVaccine')}
+						onPress={handleUpdate}
+					/>
 				</Content>
 			)}
 
@@ -242,7 +256,9 @@ const VaccinesEdit: React.FC = () => {
 						date={administeredDate}
 						onChange={change => {
 							if (change.date) {
-								setAdministeredDate(new Date(String(change.date)));
+								setAdministeredDate(
+									new Date(String(change.date))
+								);
 
 								setShowUseDate(true);
 							}

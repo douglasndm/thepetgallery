@@ -109,9 +109,7 @@ const PetList: React.FC = () => {
 			})}
 
 			{pets.length <= 0 && (
-				<EmptyListName>
-					{t('pets.emptyState')}
-				</EmptyListName>
+				<EmptyListName>{t('pets.emptyState')}</EmptyListName>
 			)}
 
 			<Padding />
