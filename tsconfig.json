@@ -12,6 +12,7 @@
 		"strict": true,
 		"resolveJsonModule": true,
 		"baseUrl": "./",
+		"types": ["expo-router/types"],
 		"paths": {
 			"@app/*": ["src/*"],
 			"@assets/*": ["assets/*"],
@@ -24,5 +25,5 @@
 		},
 		"allowSyntheticDefaultImports": true
 	},
-	"include": ["**/*.ts", "**/*.tsx", "src", "**/*.json"]
+	"include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
 }

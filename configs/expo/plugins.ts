@@ -1,6 +1,7 @@
 type plugins = (string | [] | [string] | [string, any])[];
 
 const configs: plugins = [
+	'expo-router',
 	'@react-native-firebase/app',
 	'@react-native-firebase/app-check',
 	'@react-native-firebase/auth',

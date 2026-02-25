@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Platform } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useRouter } from 'expo-router';
 import { getAuth } from '@react-native-firebase/auth';
 import {
 	appleAuth,
@@ -33,7 +32,7 @@ import {
 } from './styles';
 
 const Login: React.FC = () => {
-	const { replace } = useNavigation<NativeStackNavigationProp<AppRoutes>>();
+	const router = useRouter();
 
 	const [isSigning, setIsSigning] = useState(false);
 
@@ -75,12 +74,14 @@ const Login: React.FC = () => {
 	}, []);
 
 	useEffect(() => {
-		getAuth().onAuthStateChanged(user => {
+		const unsubscribe = getAuth().onAuthStateChanged(user => {
 			if (user) {
-				replace('Profile', {});
+				router.replace('/profile');
 			}
 		});
-	}, [replace]);
+
+		return unsubscribe;
+	}, [router]);
 
 	return (
 		<Container>

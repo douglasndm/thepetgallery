@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useRouter } from 'expo-router';
 import { BlurView } from '@react-native-community/blur';
 import { getAuth } from '@react-native-firebase/auth';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -9,33 +8,33 @@ import { SFSymbol } from 'react-native-sfsymbols';
 import { ContentIOS, Button } from './styles';
 
 interface Props {
-	currentRoute: string | undefined;
+	currentPath: string;
 }
 
-const TabMenu: React.FC<Props> = (props: Props) => {
-	const { navigate } = useNavigation<NativeStackNavigationProp<AppRoutes>>();
+const TabMenu: React.FC<Props> = ({ currentPath }: Props) => {
+	const router = useRouter();
 
 	const insets = useSafeAreaInsets();
 
 	const navigateDog = useCallback(() => {
-		navigate('DogsView', {});
-	}, [navigate]);
+		router.push('/dogs');
+	}, [router]);
 
 	const navigateCat = useCallback(() => {
-		navigate('CatsView', {});
-	}, [navigate]);
+		router.push('/cats');
+	}, [router]);
 
 	const navigatePlaces = useCallback(() => {
-		navigate('PlacesList', {});
-	}, [navigate]);
+		router.push('/places');
+	}, [router]);
 
 	const navigatePetList = useCallback(() => {
-		navigate('PetList', {});
-	}, [navigate]);
+		router.push('/pets');
+	}, [router]);
 
 	const navigateAbout = useCallback(() => {
-		navigate('About', {});
-	}, [navigate]);
+		router.push('/about');
+	}, [router]);
 
 	return (
 		<ContentIOS
@@ -58,26 +57,18 @@ const TabMenu: React.FC<Props> = (props: Props) => {
 
 			<Button onPress={navigateDog}>
 				<SFSymbol
-					name={
-						props.currentRoute === 'DogsView' ? 'dog.fill' : 'dog'
-					}
+					name={currentPath === '/dogs' ? 'dog.fill' : 'dog'}
 					scale="large"
-					color={
-						props.currentRoute === 'DogsView' ? '#FFFFFF' : 'black'
-					}
+					color={currentPath === '/dogs' ? '#FFFFFF' : 'black'}
 					size={30}
 				/>
 			</Button>
 
 			<Button onPress={navigateCat}>
 				<SFSymbol
-					name={
-						props.currentRoute === 'CatsView' ? 'cat.fill' : 'cat'
-					}
+					name={currentPath === '/cats' ? 'cat.fill' : 'cat'}
 					scale="large"
-					color={
-						props.currentRoute === 'CatsView' ? '#FFFFFF' : 'black'
-					}
+					color={currentPath === '/cats' ? '#FFFFFF' : 'black'}
 					size={30}
 				/>
 			</Button>
@@ -85,16 +76,10 @@ const TabMenu: React.FC<Props> = (props: Props) => {
 			<Button onPress={navigatePlaces}>
 				<SFSymbol
 					name={
-						props.currentRoute === 'PlacesList'
-							? 'pawprint.fill'
-							: 'pawprint'
+						currentPath === '/places' ? 'pawprint.fill' : 'pawprint'
 					}
 					scale="large"
-					color={
-						props.currentRoute === 'PlacesList'
-							? '#FFFFFF'
-							: 'black'
-					}
+					color={currentPath === '/places' ? '#FFFFFF' : 'black'}
 					size={30}
 				/>
 			</Button>
@@ -103,15 +88,13 @@ const TabMenu: React.FC<Props> = (props: Props) => {
 				<Button onPress={navigatePetList}>
 					<SFSymbol
 						name={
-							props.currentRoute === 'PetList'
+							currentPath.startsWith('/pets')
 								? 'heart.text.clipboard.fill'
 								: 'heart.text.clipboard'
 						}
 						scale="large"
 						color={
-							props.currentRoute === 'PetList'
-								? '#FFFFFF'
-								: 'black'
+							currentPath.startsWith('/pets') ? '#FFFFFF' : 'black'
 						}
 						size={30}
 					/>
@@ -121,12 +104,12 @@ const TabMenu: React.FC<Props> = (props: Props) => {
 			<Button onPress={navigateAbout}>
 				<SFSymbol
 					name={
-						props.currentRoute === 'About'
+						currentPath === '/about'
 							? 'info.circle.fill'
 							: 'info.circle'
 					}
 					scale="large"
-					color={props.currentRoute === 'About' ? '#FFFFFF' : 'black'}
+					color={currentPath === '/about' ? '#FFFFFF' : 'black'}
 					size={30}
 				/>
 			</Button>

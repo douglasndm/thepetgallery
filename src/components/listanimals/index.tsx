@@ -4,7 +4,7 @@ import {
 	NativeScrollEvent,
 	NativeSyntheticEvent,
 } from 'react-native';
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { usePathname } from 'expo-router';
 
 import Modal from '@components/modal/image';
 import Padding from '@components/padding';
@@ -28,17 +28,19 @@ const ListAnimals: React.FC<Props> = ({
 	ListHeaderComponent,
 	onScroll,
 }: Props) => {
-	const route = useRoute<RouteProp<AppRoutes>>();
+	const pathname = usePathname();
 
 	const imageType = useMemo(() => {
-		if (route.name === 'DogsView') {
+		if (pathname === '/dogs') {
 			return 'Dog';
-		} else if (route.name === 'CatsView') {
+		}
+
+		if (pathname === '/cats') {
 			return 'Cat';
 		}
 
 		return undefined;
-	}, [route.name]);
+	}, [pathname]);
 
 	return (
 		<>
@@ -52,8 +54,6 @@ const ListAnimals: React.FC<Props> = ({
 				)}
 				onScroll={onScroll}
 				ListFooterComponent={<Padding />}
-
-				//columnWrapperStyle={{ justifyContent: 'center' }}
 			/>
 		</>
 	);

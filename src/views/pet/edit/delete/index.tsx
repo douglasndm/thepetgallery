@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Dialog, Text, Button } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useRouter } from 'expo-router';
 import { showMessage } from 'react-native-flash-message';
 
 import { getUserPetsReference } from '@services/firebase/firestore';
@@ -16,7 +15,7 @@ interface Props {
 }
 
 const DeletePet: React.FC<Props> = (props: Props) => {
-	const { pop } = useNavigation<NativeStackNavigationProp<AppRoutes>>();
+	const router = useRouter();
 
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -38,7 +37,7 @@ const DeletePet: React.FC<Props> = (props: Props) => {
 					type: 'success',
 				});
 
-				pop(2);
+				router.replace('/pets');
 			}
 		} catch (error) {
 			captureException({
@@ -48,7 +47,7 @@ const DeletePet: React.FC<Props> = (props: Props) => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [props, pop]);
+	}, [props.petId, router]);
 
 	return (
 		<Dialog visible={props.visible} onDismiss={hideDialog}>

@@ -1,6 +1,9 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import React, { useState, useCallback } from 'react';
+import {
+	useFocusEffect,
+	useLocalSearchParams,
+	useRouter,
+} from 'expo-router';
 import { collection, doc, getDocs } from '@react-native-firebase/firestore';
 
 import { getUserPetsReference } from '@services/firebase/firestore';
@@ -23,21 +26,23 @@ import {
 } from './styles';
 
 const VaccinesList: React.FC = () => {
-	const { navigate, addListener } =
-		useNavigation<NativeStackNavigationProp<AppRoutes>>();
-	const { params } = useRoute<RouteProp<AppRoutes, 'VaccinesList'>>();
+	const router = useRouter();
+	const { petId } = useLocalSearchParams<{ petId: string }>();
 
 	const [isLoading, setIsLoading] = useState(true);
-
 	const [vaccines, setVaccines] = useState<IVaccine[]>([]);
 
 	const loadData = useCallback(async () => {
+		if (!petId) {
+			return;
+		}
+
 		try {
 			setIsLoading(true);
 			const petsReference = await getUserPetsReference();
 
 			if (petsReference) {
-				const petRef = doc(petsReference, params.petId);
+				const petRef = doc(petsReference, petId);
 				const vaccinesCollection = collection(petRef, 'vaccines');
 
 				getDocs(vaccinesCollection).then(snapshot => {
@@ -70,29 +75,37 @@ const VaccinesList: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [params.petId]);
+	}, [petId]);
 
-	useEffect(() => {
-		loadData();
-	}, []);
-
-	useEffect(() => {
-		const unsubscribe = addListener('focus', () => {
+	useFocusEffect(
+		useCallback(() => {
 			loadData();
-		});
-
-		return unsubscribe;
-	}, [addListener, loadData]);
+		}, [loadData])
+	);
 
 	const navigateToAddVaccine = useCallback(() => {
-		navigate('VaccinesAdd', { petId: params.petId });
-	}, [params.petId, navigate]);
+		if (!petId) {
+			return;
+		}
+
+		router.push({
+			pathname: '/pets/[petId]/vaccines/add',
+			params: { petId },
+		});
+	}, [petId, router]);
 
 	const navigateToVaccine = useCallback(
 		(id: string) => {
-			navigate('VaccinesDetails', { petId: params.petId, id });
+			if (!petId) {
+				return;
+			}
+
+			router.push({
+				pathname: '/pets/[petId]/vaccines/[id]',
+				params: { petId, id },
+			});
 		},
-		[params.petId, navigate]
+		[petId, router]
 	);
 
 	return (
@@ -111,17 +124,13 @@ const VaccinesList: React.FC = () => {
 				let formattedDate: string | null = null;
 
 				if (vaccine.date_administered) {
-					formattedDate = formatDate(
-						new Date(vaccine.date_administered)
-					);
+					formattedDate = formatDate(new Date(vaccine.date_administered));
 				}
 
 				return (
 					<VaccineContainer key={vaccine.id}>
 						<VaccineContent
-							onPress={() =>
-								navigateToVaccine(vaccine.id.toString())
-							}
+							onPress={() => navigateToVaccine(vaccine.id.toString())}
 						>
 							<TextContainer>
 								<VaccineName>{vaccine.name}</VaccineName>

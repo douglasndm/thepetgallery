@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Modal, View } from 'react-native';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { doc, collection } from '@react-native-firebase/firestore';
 import { showMessage } from 'react-native-flash-message';
 import DatePicker from 'react-native-ui-datepicker';
@@ -33,8 +32,8 @@ import {
 } from '../add/styles';
 
 const VaccinesEdit: React.FC = () => {
-	const { pop } = useNavigation<NativeStackNavigationProp<AppRoutes>>();
-	const { params } = useRoute<RouteProp<AppRoutes, 'VaccinesEdit'>>();
+	const router = useRouter();
+	const { petId, id } = useLocalSearchParams<{ petId: string; id: string }>();
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [isModalAdministeredDateVisible, setIsModalAdministeredDateVisible] =
@@ -52,6 +51,10 @@ const VaccinesEdit: React.FC = () => {
 	const [notes, setNotes] = useState('');
 
 	const handleUpdate = useCallback(async () => {
+		if (!petId || !id) {
+			return;
+		}
+
 		try {
 			if (name.trim() === '') {
 				return showMessage({
@@ -65,10 +68,10 @@ const VaccinesEdit: React.FC = () => {
 			const petsReference = await getUserPetsReference();
 
 			if (petsReference) {
-				const petDoc = doc(petsReference, params.petId);
+				const petDoc = doc(petsReference, petId);
 				const vaccinesCollection = collection(petDoc, 'vaccines');
 
-				await vaccinesCollection.doc(params.id).set({
+				await vaccinesCollection.doc(id).set({
 					name,
 					date_administered: showUseDate ? administeredDate : null,
 					next_dose_date: showUseNextDate ? nextDoseDate : null,
@@ -80,7 +83,7 @@ const VaccinesEdit: React.FC = () => {
 					type: 'success',
 				});
 
-				pop();
+				router.back();
 			}
 		} catch (error) {
 			captureException({
@@ -90,28 +93,23 @@ const VaccinesEdit: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [
-		params,
-		pop,
-		administeredDate,
-		showUseDate,
-		nextDoseDate,
-		showUseNextDate,
-		name,
-		notes,
-	]);
+	}, [petId, id, router, administeredDate, showUseDate, nextDoseDate, showUseNextDate, name, notes]);
 
 	const loadData = useCallback(async () => {
+		if (!petId || !id) {
+			return;
+		}
+
 		try {
 			setIsLoading(true);
 
 			const petsReference = await getUserPetsReference();
 
 			if (petsReference) {
-				const petDoc = doc(petsReference, params.petId);
+				const petDoc = doc(petsReference, petId);
 				const vaccinesCollection = collection(petDoc, 'vaccines');
 
-				const vac = await vaccinesCollection.doc(params.id).get();
+				const vac = await vaccinesCollection.doc(id).get();
 
 				if (vac.exists) {
 					const data = vac.data();
@@ -140,11 +138,11 @@ const VaccinesEdit: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [params]);
+	}, [petId, id]);
 
 	useEffect(() => {
 		loadData();
-	}, []);
+	}, [loadData]);
 
 	const switchAdministeredDateModal = useCallback(() => {
 		setIsModalAdministeredDateVisible(prevValue => !prevValue);
@@ -242,9 +240,7 @@ const VaccinesEdit: React.FC = () => {
 						date={administeredDate}
 						onChange={change => {
 							if (change.date) {
-								setAdministeredDate(
-									new Date(String(change.date))
-								);
+								setAdministeredDate(new Date(String(change.date)));
 
 								setShowUseDate(true);
 							}
@@ -281,8 +277,8 @@ const VaccinesEdit: React.FC = () => {
 			<DeleteVaccine
 				visible={deleteModalVisible}
 				setVisible={setDeleteModalVisible}
-				petId={params.petId}
-				vaccineId={params.id}
+				petId={petId ?? ''}
+				vaccineId={id ?? ''}
 			/>
 		</Container>
 	);

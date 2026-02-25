@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useRouter } from 'expo-router';
 import { getAuth, FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 import Header from '@components/header';
@@ -11,7 +10,7 @@ import DeleteAccount from './Delete';
 import { Container, Content, Name, Email } from './styles';
 
 const Profile: React.FC = () => {
-	const { replace } = useNavigation<NativeStackNavigationProp<AppRoutes>>();
+	const router = useRouter();
 
 	const [user, setUser] = useState<FirebaseAuthTypes.User | null>();
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -19,13 +18,15 @@ const Profile: React.FC = () => {
 	const handleLogout = useCallback(async () => {
 		await getAuth().signOut();
 
-		replace('Login', {});
-	}, [replace]);
+		router.replace('/login');
+	}, [router]);
 
 	useEffect(() => {
-		getAuth().onAuthStateChanged(currentUser => {
+		const unsubscribe = getAuth().onAuthStateChanged(currentUser => {
 			setUser(currentUser);
 		});
+
+		return unsubscribe;
 	}, []);
 
 	const switchShowDeleteModal = useCallback(() => {

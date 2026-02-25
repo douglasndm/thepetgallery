@@ -1,8 +1,7 @@
 import React, { useCallback, useRef } from 'react';
 import { Platform } from 'react-native';
+import { useNavigation, usePathname, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { getAuth } from '@react-native-firebase/auth';
 import LottieView from 'lottie-react-native';
 
@@ -22,20 +21,20 @@ const catLogo = Platform.select({
 
 const Header: React.FC = () => {
 	const insets = useSafeAreaInsets();
-	const { name } = useRoute<RouteProp<AppRoutes>>();
-	const { navigate, canGoBack, goBack } =
-		useNavigation<NativeStackNavigationProp<AppRoutes>>();
+	const pathname = usePathname();
+	const router = useRouter();
+	const navigation = useNavigation();
 
 	const animRef = useRef<LottieView>(null);
 
 	const handleLogin = useCallback(() => {
-		navigate('Login', {});
-	}, [navigate]);
+		router.push('/login');
+	}, [router]);
 
 	return (
 		<Container style={{ paddingTop: insets.top }}>
-			{canGoBack() && (
-				<ButtonIcon onPress={goBack}>
+			{navigation.canGoBack() && (
+				<ButtonIcon onPress={() => router.back()}>
 					<Icon name="arrow-back" />
 				</ButtonIcon>
 			)}
@@ -61,7 +60,7 @@ const Header: React.FC = () => {
 			{!getAuth().currentUser && (
 				<ButtonIcon onPress={handleLogin}>
 					<Icon
-						name={name === 'Login' ? 'person' : 'person-outline'}
+						name={pathname === '/login' ? 'person' : 'person-outline'}
 					/>
 				</ButtonIcon>
 			)}

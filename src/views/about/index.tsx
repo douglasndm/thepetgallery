@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 import { Platform, Linking } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useRouter } from 'expo-router';
 import { getAuth } from '@react-native-firebase/auth';
 import LottieView from 'lottie-react-native';
 
@@ -26,11 +25,11 @@ const dogDancing = Platform.select({
 });
 
 const Menu: React.FC = () => {
-	const { navigate } = useNavigation<NativeStackNavigationProp<AppRoutes>>();
+	const router = useRouter();
 
 	const navigateToAccount = useCallback(() => {
-		navigate('Profile', {});
-	}, [navigate]);
+		router.push('/profile');
+	}, [router]);
 
 	return (
 		<Container>

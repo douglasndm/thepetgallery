@@ -1,39 +1,38 @@
 import React, { useCallback } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useRouter } from 'expo-router';
 import { getAuth } from '@react-native-firebase/auth';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Container, Content, Button, Icon, MaterialIcons } from './styles';
 
 interface Props {
-	currentRoute: string | undefined;
+	currentPath: string;
 }
 
-const TabMenu: React.FC<Props> = (props: Props) => {
-	const { navigate } = useNavigation<NativeStackNavigationProp<AppRoutes>>();
+const TabMenu: React.FC<Props> = ({ currentPath }: Props) => {
+	const router = useRouter();
 
 	const insets = useSafeAreaInsets();
 
 	const navigateDog = useCallback(() => {
-		navigate('DogsView', {});
-	}, [navigate]);
+		router.push('/dogs');
+	}, [router]);
 
 	const navigateCat = useCallback(() => {
-		navigate('CatsView', {});
-	}, [navigate]);
+		router.push('/cats');
+	}, [router]);
 
 	const navigatePlaces = useCallback(() => {
-		navigate('PlacesList', {});
-	}, [navigate]);
+		router.push('/places');
+	}, [router]);
 
 	const navigatePetList = useCallback(() => {
-		navigate('PetList', {});
-	}, [navigate]);
+		router.push('/pets');
+	}, [router]);
 
 	const navigateAbout = useCallback(() => {
-		navigate('About', {});
-	}, [navigate]);
+		router.push('/about');
+	}, [router]);
 
 	return (
 		<Container>
@@ -41,20 +40,20 @@ const TabMenu: React.FC<Props> = (props: Props) => {
 				<Button onPress={navigateDog}>
 					<Icon
 						source={require('@assets/images/doghead.png')}
-						isSelected={props.currentRoute === 'DogsView'}
+						isSelected={currentPath === '/dogs'}
 					/>
 				</Button>
 				<Button onPress={navigateCat}>
 					<Icon
 						source={require('@assets/images/cathead.png')}
-						isSelected={props.currentRoute === 'CatsView'}
+						isSelected={currentPath === '/cats'}
 					/>
 				</Button>
 
 				<Button onPress={navigatePlaces}>
 					<Icon
 						source={require('@assets/images/petshospital.png')}
-						isSelected={props.currentRoute === 'PlacesList'}
+						isSelected={currentPath === '/places'}
 					/>
 				</Button>
 
@@ -62,7 +61,7 @@ const TabMenu: React.FC<Props> = (props: Props) => {
 					<Button onPress={navigatePetList}>
 						<MaterialIcons
 							name="paw"
-							isSelected={props.currentRoute === 'PetList'}
+							isSelected={currentPath.startsWith('/pets')}
 						/>
 					</Button>
 				)}
@@ -70,7 +69,7 @@ const TabMenu: React.FC<Props> = (props: Props) => {
 				<Button onPress={navigateAbout}>
 					<Icon
 						source={require('@assets/images/navigationmenu.png')}
-						isSelected={props.currentRoute === 'About'}
+						isSelected={currentPath === '/about'}
 					/>
 				</Button>
 			</Content>

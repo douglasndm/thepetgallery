@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import RadioGroup, { RadioButtonProps } from 'react-native-radio-buttons-group';
 import DateTimePicker from 'react-native-ui-datepicker';
 import { showMessage } from 'react-native-flash-message';
@@ -19,8 +18,8 @@ import DeletePet from './delete';
 import { Container, Content, Input, Label } from '../add/styles';
 
 const EditPet: React.FC = () => {
-	const { pop } = useNavigation<NativeStackNavigationProp<AppRoutes>>();
-	const { params } = useRoute<RouteProp<AppRoutes, 'PetEdit'>>();
+	const router = useRouter();
+	const { id } = useLocalSearchParams<{ id: string }>();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
@@ -37,39 +36,38 @@ const EditPet: React.FC = () => {
 	const [healthNotes, setHealthNotes] = useState<string | undefined>();
 
 	const loadData = useCallback(async () => {
+		if (!id) {
+			return;
+		}
+
 		try {
 			setIsLoading(true);
-			if (params) {
-				const petsReference = await getUserPetsReference();
 
-				if (petsReference) {
-					const petsSnapshot = await petsReference
-						.doc(params.id)
-						.get();
+			const petsReference = await getUserPetsReference();
 
-					if (petsSnapshot.exists) {
-						const pet = petsSnapshot.data() as IPet;
+			if (petsReference) {
+				const petsSnapshot = await petsReference.doc(id).get();
 
-						setName(pet.name);
-						setSpecies(pet.species || undefined);
-						setBreed(pet.breed || undefined);
-						setHealthNotes(pet.health_notes || undefined);
+				if (petsSnapshot.exists) {
+					const pet = petsSnapshot.data() as IPet;
 
-						if (pet.weight) {
-							setWeight(pet.weight.toString());
-						}
+					setName(pet.name);
+					setSpecies(pet.species || undefined);
+					setBreed(pet.breed || undefined);
+					setHealthNotes(pet.health_notes || undefined);
 
-						let birthDate: Date | null = null;
+					if (pet.weight) {
+						setWeight(pet.weight.toString());
+					}
 
-						if (petsSnapshot.data()?.birth_date) {
-							birthDate = petsSnapshot
-								.data()
-								?.birth_date.toDate();
+					let birthDate: Date | null = null;
 
-							if (birthDate) {
-								setDate(birthDate);
-								setUseBirthDate(true);
-							}
+					if (petsSnapshot.data()?.birth_date) {
+						birthDate = petsSnapshot.data()?.birth_date.toDate();
+
+						if (birthDate) {
+							setDate(birthDate);
+							setUseBirthDate(true);
 						}
 					}
 				}
@@ -79,16 +77,20 @@ const EditPet: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [params]);
+	}, [id]);
 
 	const handleUpdate = useCallback(async () => {
+		if (!id) {
+			return;
+		}
+
 		try {
 			setIsLoading(true);
 
 			const petsReference = await getUserPetsReference();
 
 			if (petsReference) {
-				await petsReference.doc(params.id).update({
+				await petsReference.doc(id).update({
 					name,
 					species,
 					breed: breed || null,
@@ -102,29 +104,19 @@ const EditPet: React.FC = () => {
 					type: 'success',
 				});
 
-				pop();
+				router.back();
 			}
 		} catch (error) {
 			captureException({ error, showAlert: true });
 		} finally {
 			setIsLoading(false);
 		}
-	}, [
-		name,
-		species,
-		breed,
-		weight,
-		healthNotes,
-		useBirthDate,
-		date,
-		pop,
-		params,
-	]);
+	}, [name, species, breed, weight, healthNotes, useBirthDate, date, router, id]);
 
 	const radioButtons: RadioButtonProps[] = useMemo(
 		() => [
 			{
-				id: 'dog', // acts as primary key, should be unique and non-empty string
+				id: 'dog',
 				label: 'Cachorro',
 				value: 'dog',
 			},
@@ -145,7 +137,7 @@ const EditPet: React.FC = () => {
 	const useBirthDateRadioButtons: RadioButtonProps[] = useMemo(
 		() => [
 			{
-				id: 'yes', // acts as primary key, should be unique and non-empty string
+				id: 'yes',
 				label: 'Sim',
 				value: 'yes',
 			},
@@ -160,10 +152,9 @@ const EditPet: React.FC = () => {
 
 	useEffect(() => {
 		loadData();
-	}, []);
+	}, [loadData]);
 
 	const handleWeightChange = useCallback((value: string) => {
-		// Validate if the input is a valid double value
 		const regex = /^-?\d*(\.\d*)?$/;
 		if (regex.test(value)) {
 			setWeight(value.trim());
@@ -262,7 +253,7 @@ const EditPet: React.FC = () => {
 			<DeletePet
 				visible={showDeleteDialog}
 				setVisible={setShowDeleteDialog}
-				petId={params.id}
+				petId={id ?? ''}
 			/>
 			<Padding />
 		</Container>

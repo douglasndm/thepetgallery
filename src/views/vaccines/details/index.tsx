@@ -1,6 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { doc, getDoc, collection } from '@react-native-firebase/firestore';
 
 import { getUserPetsReference } from '@services/firebase/firestore';
@@ -13,26 +12,27 @@ import Loading from '@components/loading';
 import { Container, Content, Name, MoreInfo } from './styles';
 
 const VaccinesDetails: React.FC = () => {
-	const { navigate, addListener } =
-		useNavigation<NativeStackNavigationProp<AppRoutes>>();
-	const { params } = useRoute<RouteProp<AppRoutes, 'VaccinesDetails'>>();
+	const router = useRouter();
+	const { petId, id } = useLocalSearchParams<{ petId: string; id: string }>();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [vaccine, setVaccine] = useState<IVaccine>();
 
 	const loadData = useCallback(async () => {
+		if (!petId || !id) {
+			return;
+		}
+
 		try {
 			setIsLoading(true);
 
 			const petsReference = await getUserPetsReference();
 
 			if (petsReference) {
-				const petDoc = doc(petsReference, params.petId);
+				const petDoc = doc(petsReference, petId);
 				const vaccinesCollection = collection(petDoc, 'vaccines');
 
-				const vaccineDoc = await getDoc(
-					vaccinesCollection.doc(params.id)
-				);
+				const vaccineDoc = await getDoc(vaccinesCollection.doc(id));
 
 				if (vaccineDoc.exists) {
 					const data = vaccineDoc.data();
@@ -42,7 +42,6 @@ const VaccinesDetails: React.FC = () => {
 					setVaccine({
 						id: vaccineDoc.id,
 						name: data.name,
-
 						date_administered: data.date_administered
 							? data.date_administered.toDate()
 							: null,
@@ -55,32 +54,28 @@ const VaccinesDetails: React.FC = () => {
 			}
 		} catch (error) {
 			captureException({
-				error: error,
+				error,
 				showAlert: true,
 			});
 		} finally {
 			setIsLoading(false);
 		}
-	}, [params]);
+	}, [petId, id]);
 
 	useEffect(() => {
 		loadData();
-	}, []);
-
-	useEffect(() => {
-		const unsubscribe = addListener('focus', () => {
-			loadData();
-		});
-
-		return unsubscribe;
-	}, [addListener]);
+	}, [loadData]);
 
 	const navigateToEditVaccine = useCallback(() => {
-		navigate('VaccinesEdit', {
-			petId: params.petId,
-			id: params.id,
+		if (!petId || !id) {
+			return;
+		}
+
+		router.push({
+			pathname: '/pets/[petId]/vaccines/[id]/edit',
+			params: { petId, id },
 		});
-	}, [navigate, params]);
+	}, [router, petId, id]);
 
 	return (
 		<Container>
@@ -101,9 +96,7 @@ const VaccinesDetails: React.FC = () => {
 					{vaccine?.date_administered && (
 						<MoreInfo>
 							Aplicada em:{' '}
-							{vaccine.date_administered.toLocaleDateString(
-								'pt-BR'
-							)}
+							{vaccine.date_administered.toLocaleDateString('pt-BR')}
 						</MoreInfo>
 					)}
 

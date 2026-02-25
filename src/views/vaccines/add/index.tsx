@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Modal, View } from 'react-native';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { showMessage } from 'react-native-flash-message';
 import DatePicker from 'react-native-ui-datepicker';
 
@@ -29,8 +28,8 @@ import {
 } from './styles';
 
 const VaccinesAdd: React.FC = () => {
-	const { pop } = useNavigation<NativeStackNavigationProp<AppRoutes>>();
-	const { params } = useRoute<RouteProp<AppRoutes, 'VaccinesAdd'>>();
+	const router = useRouter();
+	const { petId } = useLocalSearchParams<{ petId: string }>();
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [isModalAdministeredDateVisible, setIsModalAdministeredDateVisible] =
@@ -46,6 +45,10 @@ const VaccinesAdd: React.FC = () => {
 	const [notes, setNotes] = useState('');
 
 	const handleSave = useCallback(async () => {
+		if (!petId) {
+			return;
+		}
+
 		try {
 			if (name.trim() === '') {
 				return showMessage({
@@ -57,7 +60,7 @@ const VaccinesAdd: React.FC = () => {
 			setIsLoading(true);
 
 			await saveVaccine({
-				petId: params.petId,
+				petId,
 				vaccine: {
 					name: name.trim(),
 					date_administered: showUseDate ? administeredDate : null,
@@ -71,7 +74,7 @@ const VaccinesAdd: React.FC = () => {
 				type: 'success',
 			});
 
-			pop();
+			router.back();
 		} catch (error) {
 			captureException({
 				error,
@@ -80,16 +83,7 @@ const VaccinesAdd: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [
-		params.petId,
-		pop,
-		administeredDate,
-		showUseDate,
-		nextDoseDate,
-		showUseNextDate,
-		name,
-		notes,
-	]);
+	}, [petId, router, administeredDate, showUseDate, nextDoseDate, showUseNextDate, name, notes]);
 
 	const switchAdministeredDateModal = useCallback(() => {
 		setIsModalAdministeredDateVisible(prevValue => !prevValue);
@@ -182,9 +176,7 @@ const VaccinesAdd: React.FC = () => {
 						date={administeredDate}
 						onChange={change => {
 							if (change.date) {
-								setAdministeredDate(
-									new Date(String(change.date))
-								);
+								setAdministeredDate(new Date(String(change.date)));
 
 								setShowUseDate(true);
 							}

@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Dialog, Text, Button } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useRouter } from 'expo-router';
 import { getAuth, deleteUser } from '@react-native-firebase/auth';
 import {
 	getFirestore,
@@ -20,7 +19,7 @@ interface Props {
 }
 
 const DeleteAccount: React.FC<Props> = (props: Props) => {
-	const { reset } = useNavigation<NativeStackNavigationProp<AppRoutes>>();
+	const router = useRouter();
 
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -39,14 +38,11 @@ const DeleteAccount: React.FC<Props> = (props: Props) => {
 				return;
 			}
 
-			// Referência para o documento do usuário
 			const usersCollection = collection(getFirestore(), 'users');
 			const userRef = doc(usersCollection, user.uid);
 
-			// 2. Deletar documentos na subcoleção "pets" e suas subcoleções internas
 			const petsSnapshot = await userRef.collection('pets').get();
 			for (const petDoc of petsSnapshot.docs) {
-				// 2.a. Deletar documentos na subcoleção "vaccines" do pet
 				const vaccinesSnapshot = await petDoc.ref
 					.collection('vaccines')
 					.get();
@@ -54,7 +50,6 @@ const DeleteAccount: React.FC<Props> = (props: Props) => {
 					await vaccineDoc.ref.delete();
 				}
 
-				// 2.b. Deletar documentos na subcoleção "medications" do pet
 				const medicationsSnapshot = await petDoc.ref
 					.collection('medications')
 					.get();
@@ -62,11 +57,9 @@ const DeleteAccount: React.FC<Props> = (props: Props) => {
 					await medicationDoc.ref.delete();
 				}
 
-				// 2.c. Deletar o documento do pet
 				await petDoc.ref.delete();
 			}
 
-			// 3. Finalmente, deletar o documento do usuário
 			await userRef.delete();
 
 			await deleteUser(user);
@@ -76,7 +69,7 @@ const DeleteAccount: React.FC<Props> = (props: Props) => {
 				type: 'success',
 			});
 
-			reset({ index: 0, routes: [{ name: 'DogsView' }] });
+			router.replace('/dogs');
 		} catch (error) {
 			captureException({
 				error,
@@ -85,7 +78,7 @@ const DeleteAccount: React.FC<Props> = (props: Props) => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [reset]);
+	}, [router]);
 
 	return (
 		<Dialog visible={props.visible} onDismiss={hideDialog}>

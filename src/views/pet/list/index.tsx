@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import React, { useState, useCallback } from 'react';
+import { useFocusEffect, useRouter } from 'expo-router';
 
 import { getUserPetsReference } from '@services/firebase/firestore';
 import { captureException } from '@services/exceptionsHandler';
@@ -23,8 +22,7 @@ import {
 } from './styles';
 
 const PetList: React.FC = () => {
-	const { navigate, addListener } =
-		useNavigation<NativeStackNavigationProp<AppRoutes>>();
+	const router = useRouter();
 
 	const [pets, setPets] = useState<IPet[]>([]);
 
@@ -59,26 +57,20 @@ const PetList: React.FC = () => {
 
 	const navigateToPet = useCallback(
 		(id: string) => {
-			navigate('PetDetails', { id });
+			router.push({ pathname: '/pets/[id]', params: { id } });
 		},
-		[navigate]
+		[router]
 	);
 
 	const navigateToAddPet = useCallback(() => {
-		navigate('PetAdd', {});
-	}, [navigate]);
+		router.push('/pets/add');
+	}, [router]);
 
-	useEffect(() => {
-		loadData();
-	}, []);
-
-	useEffect(() => {
-		const unsubscribe = addListener('focus', () => {
+	useFocusEffect(
+		useCallback(() => {
 			loadData();
-		});
-
-		return unsubscribe;
-	}, [addListener]);
+		}, [loadData])
+	);
 
 	return (
 		<Container>

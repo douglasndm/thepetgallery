@@ -1,6 +1,9 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import React, { useState, useCallback, useMemo } from 'react';
+import {
+	useFocusEffect,
+	useLocalSearchParams,
+	useRouter,
+} from 'expo-router';
 
 import { getUserPetsReference } from '@services/firebase/firestore';
 import { captureException } from '@services/exceptionsHandler';
@@ -25,20 +28,23 @@ import {
 } from './styles';
 
 const PetDetails: React.FC = () => {
-	const { navigate, addListener } =
-		useNavigation<NativeStackNavigationProp<AppRoutes>>();
-	const { params } = useRoute<RouteProp<AppRoutes, 'PetDetails'>>();
+	const router = useRouter();
+	const { id } = useLocalSearchParams<{ id: string }>();
 
 	const [isLoading, setIsLoading] = useState(true);
 	const [petInfo, setPetInfo] = useState<IPet>();
 
 	const loadData = useCallback(async () => {
+		if (!id) {
+			return;
+		}
+
 		try {
 			setIsLoading(true);
 			const petsReference = await getUserPetsReference();
 
 			if (petsReference) {
-				const petsSnapshot = await petsReference.doc(params.id).get();
+				const petsSnapshot = await petsReference.doc(id).get();
 
 				if (petsSnapshot.exists) {
 					const pet = petsSnapshot.data() as IPet;
@@ -70,20 +76,26 @@ const PetDetails: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [params.id]);
+	}, [id]);
 
-	useEffect(() => {
-		loadData();
-	}, []);
+	useFocusEffect(
+		useCallback(() => {
+			loadData();
+		}, [loadData])
+	);
 
 	const iconName = useMemo(() => {
 		if (petInfo?.species) {
 			if (petInfo.species === 'dog') {
 				return 'dog';
-			} else if (petInfo.species === 'cat') {
+			}
+
+			if (petInfo.species === 'cat') {
 				return 'cat';
 			}
 		}
+
+		return undefined;
 	}, [petInfo]);
 
 	const birthDate = useMemo(() => {
@@ -103,16 +115,23 @@ const PetDetails: React.FC = () => {
 	}, [petInfo]);
 
 	const navigateToEditPet = useCallback(() => {
-		navigate('PetEdit', { id: params.id });
-	}, [navigate, params.id]);
+		if (!id) {
+			return;
+		}
 
-	useEffect(() => {
-		const unsubscribe = addListener('focus', () => {
-			loadData();
+		router.push({ pathname: '/pets/[id]/edit', params: { id } });
+	}, [router, id]);
+
+	const navigateToVaccines = useCallback(() => {
+		if (!id) {
+			return;
+		}
+
+		router.push({
+			pathname: '/pets/[petId]/vaccines',
+			params: { petId: id },
 		});
-
-		return unsubscribe;
-	}, [addListener]);
+	}, [router, id]);
 
 	return (
 		<Container>
@@ -142,13 +161,9 @@ const PetDetails: React.FC = () => {
 
 					{petInfo?.breed && <Breed>Raça: {petInfo?.breed}</Breed>}
 
-					{birthDate && (
-						<BirthDate>Nascimento: {birthDate}</BirthDate>
-					)}
+					{birthDate && <BirthDate>Nascimento: {birthDate}</BirthDate>}
 
-					{petInfo?.weight && (
-						<Weight>Peso: {petInfo?.weight}KG</Weight>
-					)}
+					{petInfo?.weight && <Weight>Peso: {petInfo?.weight}KG</Weight>}
 
 					{petInfo?.health_notes && (
 						<HealthNotes>
@@ -158,10 +173,7 @@ const PetDetails: React.FC = () => {
 				</Content>
 			)}
 
-			<Button
-				title="Ver vacinas"
-				onPress={() => navigate('VaccinesList', { petId: params.id })}
-			/>
+			<Button title="Ver vacinas" onPress={navigateToVaccines} />
 		</Container>
 	);
 };

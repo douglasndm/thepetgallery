@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useRouter } from 'expo-router';
 import RadioGroup, { RadioButtonProps } from 'react-native-radio-buttons-group';
 import DateTimePicker from 'react-native-ui-datepicker';
 import { showMessage } from 'react-native-flash-message';
@@ -16,7 +15,7 @@ import Button from '@components/button';
 import { Container, Content, Input, Label } from './styles';
 
 const AddPet: React.FC = () => {
-	const { pop } = useNavigation<NativeStackNavigationProp<AppRoutes>>();
+	const router = useRouter();
 
 	const [isSaving, setIsSaving] = useState<boolean>(false);
 
@@ -52,16 +51,15 @@ const AddPet: React.FC = () => {
 				type: 'success',
 			});
 
-			pop();
+			router.back();
 		} catch (error) {
 			captureException({ error, showAlert: true });
 		} finally {
 			setIsSaving(false);
 		}
-	}, [name, species, breed, weight, healthNotes, date, useBirthDate, pop]);
+	}, [name, species, breed, weight, healthNotes, date, useBirthDate, router]);
 
 	const handleWeightChange = useCallback((value: string) => {
-		// Validate if the input is a valid double value
 		const regex = /^-?\d*(\.\d*)?$/;
 		if (regex.test(value)) {
 			setWeight(value.trim());
@@ -71,7 +69,7 @@ const AddPet: React.FC = () => {
 	const radioButtons: RadioButtonProps[] = useMemo(
 		() => [
 			{
-				id: 'dog', // acts as primary key, should be unique and non-empty string
+				id: 'dog',
 				label: 'Cachorro',
 				value: 'dog',
 			},
@@ -92,7 +90,7 @@ const AddPet: React.FC = () => {
 	const useBirthDateRadioButtons: RadioButtonProps[] = useMemo(
 		() => [
 			{
-				id: 'yes', // acts as primary key, should be unique and non-empty string
+				id: 'yes',
 				label: 'Sim',
 				value: 'yes',
 			},

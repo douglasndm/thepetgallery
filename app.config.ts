@@ -41,4 +41,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 	extra: extraConfigs,
 
 	buildCacheProvider: 'eas',
+	experiments: {
+		typedRoutes: true,
+	},
 });

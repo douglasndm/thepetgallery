@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Dialog, Text, Button } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useRouter } from 'expo-router';
 import { doc, collection, deleteDoc } from '@react-native-firebase/firestore';
 import { showMessage } from 'react-native-flash-message';
 
@@ -18,7 +17,7 @@ interface Props {
 }
 
 const DeleteVaccine: React.FC<Props> = (props: Props) => {
-	const { pop } = useNavigation<NativeStackNavigationProp<AppRoutes>>();
+	const router = useRouter();
 
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -44,7 +43,10 @@ const DeleteVaccine: React.FC<Props> = (props: Props) => {
 					type: 'success',
 				});
 
-				pop(2);
+				router.replace({
+					pathname: '/pets/[petId]/vaccines',
+					params: { petId: props.petId },
+				});
 			}
 		} catch (error) {
 			captureException({
@@ -54,7 +56,7 @@ const DeleteVaccine: React.FC<Props> = (props: Props) => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [props, pop]);
+	}, [props.petId, props.vaccineId, router]);
 
 	return (
 		<Dialog visible={props.visible} onDismiss={hideDialog}>
