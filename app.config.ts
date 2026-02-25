@@ -36,6 +36,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 			'./configs/GoogleService-Info.plist',
 		usesAppleSignIn: true,
 	},
+	locales: {
+		en: './src/localization/native/en-US.json',
+		pt: './src/localization/native/pt-BR.json',
+	},
 
 	plugins: pluginsConfigs,
 	extra: extraConfigs,

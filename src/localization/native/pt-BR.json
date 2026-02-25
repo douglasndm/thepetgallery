@@ -1,0 +1,5 @@
+{
+	"ios": {
+		"NSPhotoLibraryUsageDescription": "O aplicativo requer acesso à sua biblioteca de fotos para que você possa salvar fotos diretamente na sua galeria"
+	}
+}
