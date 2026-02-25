@@ -39,6 +39,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
 
 	plugins: pluginsConfigs,
 	extra: extraConfigs,
+	updates: {
+		url: 'https://u.expo.dev/3ce8ca86-09ca-4432-9f90-0468e97b1684',
+	},
 
 	buildCacheProvider: 'eas',
 	experiments: {
