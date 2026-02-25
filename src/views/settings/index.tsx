@@ -42,7 +42,7 @@ const SettingsView: React.FC = () => {
 	}, [router, user]);
 
 	const navigateToAbout = useCallback(() => {
-		router.push('/(tabs)/settings/about');
+		router.push('/settings/about');
 	}, [router]);
 
 	return (

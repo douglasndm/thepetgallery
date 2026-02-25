@@ -41,7 +41,7 @@ const TabsLayout: React.FC = () => {
 				</NativeTabs.Trigger>
 			)}
 
-			<NativeTabs.Trigger name="settings/index">
+			<NativeTabs.Trigger name="settings">
 				<Icon sf="gearshape.fill" />
 				<Label>{t('tabs.settings')}</Label>
 			</NativeTabs.Trigger>
