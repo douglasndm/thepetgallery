@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Platform } from 'react-native';
-import { useNavigation, useRouter } from 'expo-router';
+import { useNavigation, useRootNavigationState, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import LottieView from 'lottie-react-native';
 
@@ -22,12 +22,17 @@ const Header: React.FC = () => {
 	const insets = useSafeAreaInsets();
 	const router = useRouter();
 	const navigation = useNavigation();
+	const rootNavigationState = useRootNavigationState();
 
 	const animRef = useRef<LottieView>(null);
+	const canGoBack =
+		navigation.canGoBack() ||
+		(rootNavigationState?.index ?? 0) > 0 ||
+		(rootNavigationState?.routes?.length ?? 0) > 1;
 
 	return (
 		<Container style={{ paddingTop: insets.top }}>
-			{navigation.canGoBack() && (
+			{canGoBack && (
 				<ButtonIcon onPress={() => router.back()}>
 					<Icon name="arrow-back" />
 				</ButtonIcon>

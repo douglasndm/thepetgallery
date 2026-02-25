@@ -8,6 +8,13 @@ import Padding from '@components/padding';
 
 import { Container, Content, Title, Description } from './styles';
 
+const BUTTON_STYLE = {
+	width: 240,
+	minWidth: 240,
+	maxWidth: 240,
+	alignSelf: 'center' as const,
+};
+
 const SettingsView: React.FC = () => {
 	const router = useRouter();
 	const [user, setUser] = useState<FirebaseAuthTypes.User | null>(
@@ -32,7 +39,7 @@ const SettingsView: React.FC = () => {
 	}, [router, user]);
 
 	const navigateToAbout = useCallback(() => {
-		router.push('/settings/about');
+		router.push('/(tabs)/settings/about');
 	}, [router]);
 
 	return (
@@ -47,12 +54,13 @@ const SettingsView: React.FC = () => {
 				<Button
 					title={user ? 'Ver informações da conta' : 'Fazer login'}
 					onPress={handleAuth}
+					style={BUTTON_STYLE}
 				/>
 
 				<Button
 					title="Sobre o aplicativo"
 					onPress={navigateToAbout}
-					style={{ marginTop: 10 }}
+					style={[BUTTON_STYLE, { marginTop: 10 }]}
 				/>
 			</Content>
 			<Padding />
