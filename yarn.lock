@@ -10034,9 +10034,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-permissions@npm:^5.4.2":
-  version: 5.4.2
-  resolution: "react-native-permissions@npm:5.4.2"
+"react-native-permissions@npm:^5.4.4":
+  version: 5.4.4
+  resolution: "react-native-permissions@npm:5.4.4"
   peerDependencies:
     react: ">=18.1.0"
     react-native: ">=0.70.0"
@@ -10044,7 +10044,7 @@ __metadata:
   peerDependenciesMeta:
     react-native-windows:
       optional: true
-  checksum: 10c0/9221530b0e9d24d42ab2a022da0d37ff7da96339f20fbcc833e7bdec5068d4da1f3f2ec957f89414993c2dbd8f14d216e9cd0e3a9f9ca8e9d4fbfc4a96513f19
+  checksum: 10c0/9a4fa223053db242a66c18303a525e7552e849876e927427485b0e799f46131ccbbd1ad85e6dfac146d12af942a77a95caa8649b9f4ebcfbb7f2ff6dd8fece04
   languageName: node
   linkType: hard
 
@@ -11424,7 +11424,7 @@ __metadata:
     react-native-flash-message: "npm:^0.4.2"
     react-native-get-random-values: "npm:^1.11.0"
     react-native-paper: "npm:^5.14.5"
-    react-native-permissions: "npm:^5.4.2"
+    react-native-permissions: "npm:^5.4.4"
     react-native-radio-buttons-group: "npm:^3.1.0"
     react-native-safe-area-context: "npm:~5.6.0"
     react-native-screens: "npm:~4.16.0"
