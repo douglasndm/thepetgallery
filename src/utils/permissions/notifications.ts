@@ -1,18 +1,21 @@
-import { PermissionsAndroid, Platform } from 'react-native';
+import { Platform } from 'react-native';
+import { getSystemVersion } from 'react-native-device-info';
 import {
-	getMessaging,
-	requestPermission,
-	FirebaseMessagingTypes,
-} from '@react-native-firebase/messaging';
+	checkNotifications,
+	requestNotifications,
+} from 'react-native-permissions';
 
-async function requestUserPermission() {
-	if (Platform.OS === 'android' && Platform.Version >= 33) {
-		await PermissionsAndroid.request(
-			PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
-		);
+async function requestNotificationPermission(): Promise<void> {
+	if (Platform.OS === 'android' && Number(getSystemVersion()) >= 13) {
+		await requestNotifications(['alert', 'sound', 'badge']);
+		return;
 	}
 
-	const authStatus = await requestPermission(getMessaging());
+	const status = await checkNotifications();
+
+	if (status.status === 'denied') {
+		await requestNotifications(['alert', 'sound', 'badge']);
+	}
 }
 
-requestUserPermission();
+export { requestNotificationPermission };
