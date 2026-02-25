@@ -4,6 +4,7 @@ import {
 	getFirestore,
 	collection,
 	getDocs,
+	FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
 import Icon from '@react-native-vector-icons/ionicons';
 import { useTranslation } from 'react-i18next';
@@ -47,9 +48,13 @@ const PlacesList: React.FC = () => {
 
 			const localPlaces: IAdoptionPlace[] = [];
 
-			placesResponse.forEach(doc => {
-				localPlaces.push(doc.data() as IAdoptionPlace);
-			});
+			placesResponse.forEach(
+				(
+					doc: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>
+				) => {
+					localPlaces.push(doc.data() as IAdoptionPlace);
+				}
+			);
 
 			const groupedData = organizeData(localPlaces);
 
@@ -112,7 +117,7 @@ const PlacesList: React.FC = () => {
 								{item.instagram && (
 									<PlaceButton
 										onPress={() =>
-											Linking.openURL(item.instagram)
+											Linking.openURL(item.instagram!)
 										}
 									>
 										<Icon name="logo-instagram" size={30} />
@@ -123,7 +128,7 @@ const PlacesList: React.FC = () => {
 								{item.facebook && (
 									<PlaceButton
 										onPress={() =>
-											Linking.openURL(item.facebook)
+											Linking.openURL(item.facebook!)
 										}
 									>
 										<Icon name="logo-facebook" size={30} />
@@ -134,7 +139,7 @@ const PlacesList: React.FC = () => {
 								{item.whatsapp && (
 									<PlaceButton
 										onPress={() =>
-											Linking.openURL(item.whatsapp)
+											Linking.openURL(item.whatsapp!)
 										}
 									>
 										<Icon name="logo-whatsapp" size={30} />
@@ -145,7 +150,7 @@ const PlacesList: React.FC = () => {
 								{item.url && (
 									<PlaceButton
 										onPress={() =>
-											Linking.openURL(item.url)
+											Linking.openURL(item.url!)
 										}
 									>
 										<Icon name="globe-outline" size={30} />

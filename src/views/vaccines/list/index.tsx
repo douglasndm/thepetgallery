@@ -1,6 +1,11 @@
 import React, { useState, useCallback } from 'react';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
-import { collection, doc, getDocs } from '@react-native-firebase/firestore';
+import {
+	collection,
+	doc,
+	getDocs,
+	FirebaseFirestoreTypes,
+} from '@react-native-firebase/firestore';
 import { useTranslation } from 'react-i18next';
 
 import { getUserPetsReference } from '@services/firebase/firestore';
@@ -29,6 +34,12 @@ const VaccinesList: React.FC = () => {
 
 	const [isLoading, setIsLoading] = useState(true);
 	const [vaccines, setVaccines] = useState<IVaccine[]>([]);
+	type FirestoreVaccineData = {
+		name: string;
+		date_administered?: FirebaseFirestoreTypes.Timestamp | null;
+		next_dose_date?: FirebaseFirestoreTypes.Timestamp | null;
+		notes: string | null;
+	};
 
 	const loadData = useCallback(async () => {
 		if (!petId) {
@@ -43,11 +54,14 @@ const VaccinesList: React.FC = () => {
 				const petRef = doc(petsReference, petId);
 				const vaccinesCollection = collection(petRef, 'vaccines');
 
-				getDocs(vaccinesCollection).then(snapshot => {
-					const localVaccines: IVaccine[] = [];
+				const snapshot = await getDocs(vaccinesCollection);
+				const localVaccines: IVaccine[] = [];
 
-					snapshot.docs.forEach(localDoc => {
-						const vaccine = localDoc.data();
+				snapshot.docs.forEach(
+					(
+						localDoc: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>
+					) => {
+						const vaccine = localDoc.data() as FirestoreVaccineData;
 
 						localVaccines.push({
 							id: localDoc.id,
@@ -60,10 +74,10 @@ const VaccinesList: React.FC = () => {
 								: null,
 							notes: vaccine.notes,
 						});
-					});
+					}
+				);
 
-					setVaccines(localVaccines);
-				});
+				setVaccines(localVaccines);
 			}
 		} catch (error) {
 			captureException({

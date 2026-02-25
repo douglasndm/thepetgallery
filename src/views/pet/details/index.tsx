@@ -45,7 +45,7 @@ const PetDetails: React.FC = () => {
 			if (petsReference) {
 				const petsSnapshot = await petsReference.doc(id).get();
 
-				if (petsSnapshot.exists) {
+				if (petsSnapshot.exists()) {
 					const pet = petsSnapshot.data() as IPet;
 
 					let birthDate: Date | null = null;

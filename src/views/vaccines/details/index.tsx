@@ -1,6 +1,11 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { doc, getDoc, collection } from '@react-native-firebase/firestore';
+import {
+	doc,
+	getDoc,
+	collection,
+	FirebaseFirestoreTypes,
+} from '@react-native-firebase/firestore';
 import { useTranslation } from 'react-i18next';
 
 import { getCurrentLanguage } from '@app/i18n';
@@ -20,6 +25,12 @@ const VaccinesDetails: React.FC = () => {
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [vaccine, setVaccine] = useState<IVaccine>();
+	type FirestoreVaccineData = {
+		name: string;
+		date_administered?: FirebaseFirestoreTypes.Timestamp | null;
+		next_dose_date?: FirebaseFirestoreTypes.Timestamp | null;
+		notes: string | null;
+	};
 
 	const loadData = useCallback(async () => {
 		if (!petId || !id) {
@@ -37,8 +48,10 @@ const VaccinesDetails: React.FC = () => {
 
 				const vaccineDoc = await getDoc(vaccinesCollection.doc(id));
 
-				if (vaccineDoc.exists) {
-					const data = vaccineDoc.data();
+				if (vaccineDoc.exists()) {
+					const data = vaccineDoc.data() as
+						| FirestoreVaccineData
+						| undefined;
 
 					if (!data) return;
 

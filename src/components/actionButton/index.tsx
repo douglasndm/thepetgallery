@@ -9,7 +9,7 @@ import {
 
 interface Props {
 	onPress: () => void;
-	iconName: string;
+	iconName: React.ComponentProps<typeof ActionButtonIcon>['name'];
 	title: string;
 	style?: ViewStyle;
 }
