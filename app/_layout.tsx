@@ -14,7 +14,6 @@ import '@utils/permissions/notifications';
 
 import CurrentPhotoContext from '@contexts/currentPhoto';
 
-import TabMenu from '@components/tabmenu';
 import NoInternet from '@components/NoInternet';
 import Notifications from '@components/notifications';
 
@@ -67,7 +66,6 @@ const RootLayout: React.FC = () => {
 					{!isInternetReachable && <NoInternet />}
 					<Notifications />
 					<Stack screenOptions={{ headerShown: false }} />
-					<TabMenu currentPath={pathname} />
 
 					<FlashMessage
 						position="top"

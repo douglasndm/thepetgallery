@@ -1,8 +1,7 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Platform } from 'react-native';
-import { useNavigation, usePathname, useRouter } from 'expo-router';
+import { useNavigation, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { getAuth } from '@react-native-firebase/auth';
 import LottieView from 'lottie-react-native';
 
 import {
@@ -21,15 +20,10 @@ const catLogo = Platform.select({
 
 const Header: React.FC = () => {
 	const insets = useSafeAreaInsets();
-	const pathname = usePathname();
 	const router = useRouter();
 	const navigation = useNavigation();
 
 	const animRef = useRef<LottieView>(null);
-
-	const handleLogin = useCallback(() => {
-		router.push('/login');
-	}, [router]);
 
 	return (
 		<Container style={{ paddingTop: insets.top }}>
@@ -56,14 +50,6 @@ const Header: React.FC = () => {
 					loop={false}
 				/>
 			</Content>
-
-			{!getAuth().currentUser && (
-				<ButtonIcon onPress={handleLogin}>
-					<Icon
-						name={pathname === '/login' ? 'person' : 'person-outline'}
-					/>
-				</ButtonIcon>
-			)}
 		</Container>
 	);
 };

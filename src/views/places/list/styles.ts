@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.ScrollView.attrs(() => ({
+	contentInsetAdjustmentBehavior: 'never',
 	alwaysBounceVertical: true,
 	contentContainerStyle: {
 		flexGrow: 1,
@@ -11,7 +12,7 @@ export const Container = styled.ScrollView.attrs(() => ({
 `;
 
 export const Title = styled.Text`
-	margin: 0px 25px 5px;
+	margin: 0px 22px 15px;
 	font-size: 18px;
 `;
 
