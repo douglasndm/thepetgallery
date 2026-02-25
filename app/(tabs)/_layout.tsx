@@ -37,13 +37,13 @@ const TabsLayout: React.FC = () => {
 			</NativeTabs.Trigger>
 
 			{user && (
-				<NativeTabs.Trigger name="pets">
+				<NativeTabs.Trigger name="pets/index">
 					<Icon sf="heart.text.clipboard.fill" />
 					<Label>Pets</Label>
 				</NativeTabs.Trigger>
 			)}
 
-			<NativeTabs.Trigger name="settings">
+			<NativeTabs.Trigger name="settings/index">
 				<Icon sf="gearshape.fill" />
 				<Label>Config</Label>
 			</NativeTabs.Trigger>

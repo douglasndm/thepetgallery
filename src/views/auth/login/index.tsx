@@ -35,6 +35,10 @@ const Login: React.FC = () => {
 	const router = useRouter();
 
 	const [isSigning, setIsSigning] = useState(false);
+	const isAppleSignInSupported =
+		Platform.OS === 'android'
+			? !!appleAuthAndroid?.isSupported
+			: !!appleAuth?.isSupported;
 
 	const signInGoogle = useCallback(async () => {
 		try {
@@ -107,8 +111,7 @@ const Login: React.FC = () => {
 					<Loading />
 				) : (
 					<LoginContainer>
-						{(appleAuthAndroid.isSupported ||
-							appleAuth.isSupported) && (
+						{isAppleSignInSupported && (
 							<AppleButton
 								buttonStyle={AppleButton.Style.BLACK}
 								buttonType={AppleButton.Type.CONTINUE}
