@@ -20,21 +20,21 @@ const TabsLayout: React.FC = () => {
 	return (
 		<NativeTabs>
 			<NativeTabs.Trigger name="dogs">
-				<NativeTabs.Trigger.Icon sf="dog.fill" />
+				<NativeTabs.Trigger.Icon sf="dog.fill" md="pets" />
 				<NativeTabs.Trigger.Label>
 					{t('tabs.dogs')}
 				</NativeTabs.Trigger.Label>
 			</NativeTabs.Trigger>
 
 			<NativeTabs.Trigger name="cats">
-				<NativeTabs.Trigger.Icon sf="cat.fill" />
+				<NativeTabs.Trigger.Icon sf="cat.fill" md="cruelty_free" />
 				<NativeTabs.Trigger.Label>
 					{t('tabs.cats')}
 				</NativeTabs.Trigger.Label>
 			</NativeTabs.Trigger>
 
 			<NativeTabs.Trigger name="places">
-				<NativeTabs.Trigger.Icon sf="pawprint.fill" />
+				<NativeTabs.Trigger.Icon sf="pawprint.fill" md="location_on" />
 				<NativeTabs.Trigger.Label>
 					{t('tabs.places')}
 				</NativeTabs.Trigger.Label>
@@ -42,7 +42,10 @@ const TabsLayout: React.FC = () => {
 
 			{user && (
 				<NativeTabs.Trigger name="pets/index">
-					<NativeTabs.Trigger.Icon sf="heart.text.clipboard.fill" />
+					<NativeTabs.Trigger.Icon
+						sf="heart.text.clipboard.fill"
+						md="favorite"
+					/>
 					<NativeTabs.Trigger.Label>
 						{t('tabs.pets')}
 					</NativeTabs.Trigger.Label>
@@ -50,7 +53,7 @@ const TabsLayout: React.FC = () => {
 			)}
 
 			<NativeTabs.Trigger name="settings">
-				<NativeTabs.Trigger.Icon sf="gearshape.fill" />
+				<NativeTabs.Trigger.Icon sf="gearshape.fill" md="settings" />
 				<NativeTabs.Trigger.Label>
 					{t('tabs.settings')}
 				</NativeTabs.Trigger.Label>

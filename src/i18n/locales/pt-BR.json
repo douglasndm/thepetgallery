@@ -1,10 +1,10 @@
 {
 	"tabs": {
-		"dogs": "Dogs",
-		"cats": "Cats",
+		"dogs": "Cachorros",
+		"cats": "Gatos",
 		"places": "Lugares",
-		"pets": "Pets",
-		"settings": "Config"
+		"pets": "Meus Pets",
+		"settings": "Ajustes"
 	},
 	"common": {
 		"yes": "Sim",
