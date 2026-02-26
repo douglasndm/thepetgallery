@@ -5,17 +5,22 @@
 	},
 	"build": {
 		"development": {
-			"developmentClient": false,
+			"developmentClient": true,
 			"distribution": "internal",
 			"channel": "development",
-			"credentialsSource": "local",
-			"extends": "production"
+			"env": {
+				"APP_VARIANT": "development",
+				"RELEASE_CHANNEL": "development"
+			}
 		},
 		"preview": {
-			"distribution": "internal",
+			"distribution": "store",
 			"channel": "preview",
-			"credentialsSource": "remote",
-			"extends": "production"
+			"extends": "production",
+			"env": {
+				"APP_VARIANT": "preview",
+				"RELEASE_CHANNEL": "preview"
+			}
 		},
 		"production": {
 			"autoIncrement": true,
@@ -48,7 +53,6 @@
 			}
 		},
 		"development": {
-			"extends": "production",
 			"android": {
 				"track": "internal",
 				"changesNotSentForReview": false
