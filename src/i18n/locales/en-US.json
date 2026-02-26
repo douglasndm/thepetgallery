@@ -119,7 +119,8 @@
 	"images": {
 		"saveToGallery": "Save to gallery",
 		"savePermissionError": "The app does not have permission to save files on your phone",
-		"saveSuccess": "Image saved successfully!"
+		"saveSuccess": "Image saved successfully!",
+		"saveError": "Could not save image"
 	},
 	"photos": {
 		"catsTitle": "Cat photos",

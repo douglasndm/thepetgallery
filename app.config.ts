@@ -1,5 +1,4 @@
 import 'tsx/cjs';
-import 'dotenv/config';
 import { ExpoConfig, ConfigContext } from 'expo/config';
 
 import pluginsConfigs from './configs/expo/plugins';

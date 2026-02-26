@@ -1,39 +1,63 @@
-import { CameraRoll } from '@react-native-camera-roll/camera-roll';
-import RNFetchBlob from 'rn-fetch-blob';
+import { Directory, File, Paths } from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
 import { showMessage } from 'react-native-flash-message';
 
 import i18n from '@app/i18n';
-import { requestSavePermission } from '@utils/permissions/check';
 
 async function saveImageOnGallery(path: string): Promise<void> {
-	const extension = path.split('.').pop();
+	const albumName = 'The Pet Gallery';
+	const { granted } = await MediaLibrary.requestPermissionsAsync();
 
-	const hasPermission = await requestSavePermission();
-
-	if (!hasPermission) {
+	if (!granted) {
 		showMessage({
-			message: i18n.t('images.savePermissionError'),
+			message: String(i18n.t('images.savePermissionError')),
 			type: 'danger',
 		});
 		return;
 	}
 
-	const config = RNFetchBlob.config({
-		fileCache: true,
-		appendExt: extension, // Extensão do arquivo
-	});
+	const cacheDirectory = new Directory(Paths.cache, 'images');
+	cacheDirectory.create({ idempotent: true, intermediates: true });
 
-	const result = await config.fetch('GET', path);
+	const extension = path.split('.').pop()?.split('?')[0] ?? 'jpg';
+	const targetFile = new File(
+		cacheDirectory,
+		`image-${Date.now()}.${extension}`
+	);
+	let downloadedFile: File | null = null;
 
-	await CameraRoll.saveAsset(result.path(), {
-		type: 'photo',
-		album: 'The Pet Gallery',
-	});
+	try {
+		downloadedFile = await File.downloadFileAsync(path, targetFile, {
+			idempotent: true,
+		});
 
-	showMessage({
-		message: i18n.t('images.saveSuccess'),
-		type: 'success',
-	});
+		const asset = await MediaLibrary.createAssetAsync(downloadedFile.uri);
+		const existingAlbum = await MediaLibrary.getAlbumAsync(albumName);
+
+		if (existingAlbum) {
+			await MediaLibrary.addAssetsToAlbumAsync(
+				[asset],
+				existingAlbum,
+				false
+			);
+		} else {
+			await MediaLibrary.createAlbumAsync(albumName, asset, false);
+		}
+
+		showMessage({
+			message: String(i18n.t('images.saveSuccess')),
+			type: 'success',
+		});
+	} catch {
+		showMessage({
+			message: String(i18n.t('images.saveError')),
+			type: 'danger',
+		});
+	} finally {
+		if (downloadedFile?.exists) {
+			downloadedFile.delete();
+		}
+	}
 }
 
 export { saveImageOnGallery };

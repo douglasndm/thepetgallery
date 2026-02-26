@@ -119,7 +119,8 @@
 	"images": {
 		"saveToGallery": "Salvar na galeria",
 		"savePermissionError": "O aplicativo não tem permissão para salvar arquivos no seu telefone",
-		"saveSuccess": "Imagem salva com sucesso!"
+		"saveSuccess": "Imagem salva com sucesso!",
+		"saveError": "Não foi possível salvar a imagem"
 	},
 	"photos": {
 		"catsTitle": "Fotos de gatinhos",

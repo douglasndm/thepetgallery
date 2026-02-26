@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NativeTabs, Icon, Label } from 'expo-router/unstable-native-tabs';
+import { NativeTabs } from 'expo-router/unstable-native-tabs';
 import { getAuth, FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { useTranslation } from 'react-i18next';
 
@@ -20,30 +20,40 @@ const TabsLayout: React.FC = () => {
 	return (
 		<NativeTabs>
 			<NativeTabs.Trigger name="dogs">
-				<Icon sf="dog.fill" />
-				<Label>{t('tabs.dogs')}</Label>
+				<NativeTabs.Trigger.Icon sf="dog.fill" />
+				<NativeTabs.Trigger.Label>
+					{t('tabs.dogs')}
+				</NativeTabs.Trigger.Label>
 			</NativeTabs.Trigger>
 
 			<NativeTabs.Trigger name="cats">
-				<Icon sf="cat.fill" />
-				<Label>{t('tabs.cats')}</Label>
+				<NativeTabs.Trigger.Icon sf="cat.fill" />
+				<NativeTabs.Trigger.Label>
+					{t('tabs.cats')}
+				</NativeTabs.Trigger.Label>
 			</NativeTabs.Trigger>
 
 			<NativeTabs.Trigger name="places">
-				<Icon sf="pawprint.fill" />
-				<Label>{t('tabs.places')}</Label>
+				<NativeTabs.Trigger.Icon sf="pawprint.fill" />
+				<NativeTabs.Trigger.Label>
+					{t('tabs.places')}
+				</NativeTabs.Trigger.Label>
 			</NativeTabs.Trigger>
 
 			{user && (
 				<NativeTabs.Trigger name="pets/index">
-					<Icon sf="heart.text.clipboard.fill" />
-					<Label>{t('tabs.pets')}</Label>
+					<NativeTabs.Trigger.Icon sf="heart.text.clipboard.fill" />
+					<NativeTabs.Trigger.Label>
+						{t('tabs.pets')}
+					</NativeTabs.Trigger.Label>
 				</NativeTabs.Trigger>
 			)}
 
 			<NativeTabs.Trigger name="settings">
-				<Icon sf="gearshape.fill" />
-				<Label>{t('tabs.settings')}</Label>
+				<NativeTabs.Trigger.Icon sf="gearshape.fill" />
+				<NativeTabs.Trigger.Label>
+					{t('tabs.settings')}
+				</NativeTabs.Trigger.Label>
 			</NativeTabs.Trigger>
 		</NativeTabs>
 	);
