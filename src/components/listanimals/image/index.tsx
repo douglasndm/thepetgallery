@@ -58,7 +58,10 @@ const Image: React.FC<Props> = ({ item, type = 'Dog', index }: Props) => {
 
 	const MemorizedImage = useCallback(
 		() => (
-			<PhotoContainer onPress={() => photoContext?.setCurrentPhoto(item)}>
+			<PhotoContainer
+				onPress={() => photoContext?.setCurrentPhoto(item)}
+				onLongPress={() => {}}
+			>
 				<Photo
 					source={{ uri: item.url }}
 					onLoadStart={onLoadStart}
