@@ -12,6 +12,7 @@ export default ({ config }: ConfigContext): ExpoConfig =>
 		...config,
 		name: 'The Pet Gallery',
 		slug: 'the-pet-gallery',
+		scheme: 'thepetgallery',
 		icon: './assets/images/logo/appstore.png',
 		orientation: 'portrait',
 		version: version,
