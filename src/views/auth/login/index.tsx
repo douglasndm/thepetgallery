@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Platform } from 'react-native';
 import { useRouter } from 'expo-router';
-import { getAuth } from '@react-native-firebase/auth';
+import { getAuth, onAuthStateChanged } from '@react-native-firebase/auth';
 import { useTranslation } from 'react-i18next';
 import {
 	appleAuth,
@@ -79,7 +79,7 @@ const Login: React.FC = () => {
 	}, []);
 
 	useEffect(() => {
-		const unsubscribe = getAuth().onAuthStateChanged(user => {
+		const unsubscribe = onAuthStateChanged(getAuth(), user => {
 			if (user) {
 				router.replace('/profile');
 			}

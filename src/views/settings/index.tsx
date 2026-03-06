@@ -1,6 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
-import { getAuth, FirebaseAuthTypes } from '@react-native-firebase/auth';
+import {
+	getAuth,
+	onAuthStateChanged,
+	FirebaseAuthTypes,
+} from '@react-native-firebase/auth';
 import { useTranslation } from 'react-i18next';
 
 import { setAppLanguage } from '@app/i18n';
@@ -25,7 +29,7 @@ const SettingsView: React.FC = () => {
 	);
 
 	useEffect(() => {
-		const unsubscribe = getAuth().onAuthStateChanged(currentUser => {
+		const unsubscribe = onAuthStateChanged(getAuth(), currentUser => {
 			setUser(currentUser);
 		});
 

@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { NativeTabs } from 'expo-router/unstable-native-tabs';
-import { getAuth, FirebaseAuthTypes } from '@react-native-firebase/auth';
+import {
+	getAuth,
+	onAuthStateChanged,
+	FirebaseAuthTypes,
+} from '@react-native-firebase/auth';
 import { useTranslation } from 'react-i18next';
 
 const TabsLayout: React.FC = () => {
@@ -10,7 +14,7 @@ const TabsLayout: React.FC = () => {
 	);
 
 	useEffect(() => {
-		const unsubscribe = getAuth().onAuthStateChanged(currentUser => {
+		const unsubscribe = onAuthStateChanged(getAuth(), currentUser => {
 			setUser(currentUser);
 		});
 
