@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
 import { Surface } from 'react-native-paper';
-import MaterialDesignIcons from '@react-native-vector-icons/material-design-icons';
-import Ionicons from '@react-native-vector-icons/ionicons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 export const Container = styled.ScrollView.attrs(() => ({
 	contentInsetAdjustmentBehavior: 'automatic',
@@ -41,7 +40,7 @@ export const PetBreed = styled.Text`
 	color: rgb(134, 134, 134);
 `;
 
-export const Icon = styled(MaterialDesignIcons).attrs(() => ({
+export const Icon = styled(MaterialIcons).attrs(() => ({
 	size: 25,
 }))``;
 

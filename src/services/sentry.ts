@@ -5,11 +5,25 @@ import EnvConfig from '@services/env';
 if (!__DEV__) {
 	Sentry.init({
 		dsn: EnvConfig.SENTRY_DSN,
-		// Set tracesSampleRate to 1.0 to capture 100% of transactions for tracing.
-		// We recommend adjusting this value in production.
-		tracesSampleRate: 1.0,
-		// profilesSampleRate is relative to tracesSampleRate.
-		// Here, we'll capture profiles for 100% of transactions.
-		profilesSampleRate: 1.0,
+
+		sendDefaultPii: true,
+		enableLogs: true,
+
+		sampleRate: 0.45,
+		profilesSampleRate: 0.45,
+		tracesSampleRate: 0.0,
+		replaysSessionSampleRate: 0.5,
+		replaysOnErrorSampleRate: 1.0,
+
+		integrations: [
+			Sentry.consoleLoggingIntegration({
+				levels: ['log', 'debug', 'info', 'warn', 'error'],
+			}),
+			Sentry.mobileReplayIntegration({
+				maskAllText: false,
+				maskAllImages: false,
+				maskAllVectors: false,
+			}),
+		],
 	});
 }
