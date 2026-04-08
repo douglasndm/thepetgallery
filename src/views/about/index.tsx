@@ -1,9 +1,14 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Platform, Linking } from 'react-native';
 import { useRouter } from 'expo-router';
 import { getAuth } from '@react-native-firebase/auth';
 import LottieView from 'lottie-react-native';
+import * as Clipboard from 'expo-clipboard';
+import { showMessage } from 'react-native-flash-message';
 import { useTranslation } from 'react-i18next';
+
+import { captureException } from '@services/exceptionsHandler';
+import { getInstallationId } from '@utils/device/getDeviceId';
 
 import Header from '@components/header';
 import Button from '@components/button';
@@ -15,6 +20,9 @@ import {
 	Title,
 	AppName,
 	Info,
+	InstallationIdCard,
+	InstallationIdLabel,
+	InstallationIdValue,
 	AttibuitionContainer,
 	Attibution,
 	AttibutionLink,
@@ -28,10 +36,36 @@ const dogDancing = Platform.select({
 const Menu: React.FC = () => {
 	const router = useRouter();
 	const { t } = useTranslation();
+	const [installationId, setInstallationId] = useState('');
 
 	const navigateToAccount = useCallback(() => {
 		router.push('/profile');
 	}, [router]);
+
+	const handleCopyInstallationId = useCallback(async () => {
+		if (!installationId) {
+			return;
+		}
+
+		await Clipboard.setStringAsync(installationId);
+		showMessage({
+			message: t('about.installationIdCopied'),
+			type: 'success',
+		});
+	}, [installationId, t]);
+
+	useEffect(() => {
+		async function loadInstallationId(): Promise<void> {
+			try {
+				const id = await getInstallationId();
+				setInstallationId(String(id));
+			} catch (error) {
+				captureException({ error });
+			}
+		}
+
+		loadInstallationId();
+	}, []);
 
 	return (
 		<Container>
@@ -42,6 +76,18 @@ const Menu: React.FC = () => {
 				<Info>{t('about.tagline')}</Info>
 
 				<Info>{t('about.developedBy')}</Info>
+
+				<InstallationIdCard
+					onPress={handleCopyInstallationId}
+					disabled={!installationId}
+				>
+					<InstallationIdLabel>
+						{t('about.installationIdLabel')}
+					</InstallationIdLabel>
+					<InstallationIdValue>
+						{installationId || t('about.installationIdLoading')}
+					</InstallationIdValue>
+				</InstallationIdCard>
 
 				<LottieView
 					source={dogDancing}
