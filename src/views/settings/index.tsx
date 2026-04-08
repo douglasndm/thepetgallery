@@ -7,23 +7,35 @@ import {
 } from '@react-native-firebase/auth';
 import { useTranslation } from 'react-i18next';
 
-import { setAppLanguage } from '@app/i18n';
+import { getCurrentLanguage, setAppLanguage } from '@app/i18n';
 import Header from '@components/header';
-import Button from '@components/button';
 import Padding from '@components/padding';
 
-import { Container, Content, Title, Description } from './styles';
-
-const BUTTON_STYLE = {
-	width: 240,
-	minWidth: 240,
-	maxWidth: 240,
-	alignSelf: 'center' as const,
-};
+import {
+	Container,
+	Hero,
+	HeroTag,
+	Title,
+	Description,
+	SectionCard,
+	SectionTitle,
+	ActionItem,
+	ActionLeft,
+	ActionIconWrap,
+	ActionIcon,
+	ActionTexts,
+	ActionTitle,
+	ActionSubtitle,
+	Chevron,
+	LanguageButton,
+	LanguageTitle,
+	LanguageSubtitle,
+} from './styles';
 
 const SettingsView: React.FC = () => {
 	const router = useRouter();
 	const { t } = useTranslation();
+	const currentLanguage = getCurrentLanguage();
 	const [user, setUser] = useState<FirebaseAuthTypes.User | null>(
 		getAuth().currentUser
 	);
@@ -52,39 +64,89 @@ const SettingsView: React.FC = () => {
 	return (
 		<Container>
 			<Header />
-			<Content>
+			<Hero>
+				<HeroTag>{t('settings.title')}</HeroTag>
 				<Title>{t('settings.title')}</Title>
 				<Description>{t('settings.description')}</Description>
+			</Hero>
 
-				<Button
-					title={
-						user ? t('settings.viewAccount') : t('settings.login')
-					}
-					onPress={handleAuth}
-					style={BUTTON_STYLE}
-				/>
+			<SectionCard>
+				<SectionTitle>{t('settings.title')}</SectionTitle>
 
-				<Button
-					title={t('settings.aboutApp')}
+				<ActionItem onPress={handleAuth}>
+					<ActionLeft>
+						<ActionIconWrap>
+							<ActionIcon
+								name={
+									user
+										? 'person-circle-outline'
+										: 'log-in-outline'
+								}
+							/>
+						</ActionIconWrap>
+						<ActionTexts>
+							<ActionTitle>
+								{user
+									? t('settings.viewAccount')
+									: t('settings.login')}
+							</ActionTitle>
+							<ActionSubtitle>
+								{user
+									? 'Veja os dados da sua conta e gerencie o acesso.'
+									: 'Entre para desbloquear recursos ligados a sua conta.'}
+							</ActionSubtitle>
+						</ActionTexts>
+					</ActionLeft>
+					<Chevron />
+				</ActionItem>
+
+				<ActionItem
 					onPress={navigateToAbout}
-					style={[BUTTON_STYLE, { marginTop: 10 }]}
-				/>
+					style={{ borderBottomWidth: 0 }}
+				>
+					<ActionLeft>
+						<ActionIconWrap>
+							<ActionIcon name="information-circle-outline" />
+						</ActionIconWrap>
+						<ActionTexts>
+							<ActionTitle>{t('settings.aboutApp')}</ActionTitle>
+							<ActionSubtitle>
+								Conheca mais sobre o aplicativo, creditos e
+								contato.
+							</ActionSubtitle>
+						</ActionTexts>
+					</ActionLeft>
+					<Chevron />
+				</ActionItem>
+			</SectionCard>
 
-				<Description style={{ marginTop: 30, marginBottom: 10 }}>
-					{t('settings.language')}
-				</Description>
+			<SectionCard>
+				<SectionTitle>{t('settings.language')}</SectionTitle>
 
-				<Button
-					title={t('settings.portugueseBrazil')}
+				<LanguageButton
+					active={currentLanguage === 'pt-BR'}
 					onPress={() => setAppLanguage('pt-BR')}
-					style={BUTTON_STYLE}
-				/>
-				<Button
-					title={t('settings.englishUS')}
+				>
+					<LanguageTitle active={currentLanguage === 'pt-BR'}>
+						{t('settings.portugueseBrazil')}
+					</LanguageTitle>
+					<LanguageSubtitle active={currentLanguage === 'pt-BR'}>
+						Ideal para quem usa o app em portugues do Brasil.
+					</LanguageSubtitle>
+				</LanguageButton>
+
+				<LanguageButton
+					active={currentLanguage === 'en-US'}
 					onPress={() => setAppLanguage('en-US')}
-					style={[BUTTON_STYLE, { marginTop: 10 }]}
-				/>
-			</Content>
+				>
+					<LanguageTitle active={currentLanguage === 'en-US'}>
+						{t('settings.englishUS')}
+					</LanguageTitle>
+					<LanguageSubtitle active={currentLanguage === 'en-US'}>
+						Switch the interface and texts to English.
+					</LanguageSubtitle>
+				</LanguageButton>
+			</SectionCard>
 			<Padding />
 		</Container>
 	);
