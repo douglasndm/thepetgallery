@@ -45,7 +45,7 @@ const TabsLayout: React.FC = () => {
 			</NativeTabs.Trigger>
 
 			{user && (
-				<NativeTabs.Trigger name="pets/index">
+				<NativeTabs.Trigger name="pets">
 					<NativeTabs.Trigger.Icon
 						sf="heart.text.clipboard.fill"
 						md="favorite"
