@@ -29,6 +29,7 @@ const configs: plugins = [
 			},
 		},
 	],
+	'expo-image',
 	[
 		'expo-media-library',
 		{

@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { Image } from 'expo-image';
 
 export const ImageModal = styled.Modal`
 	z-index: 1;
@@ -43,7 +44,7 @@ export const ImageContainer = styled.View`
 	align-items: center;
 `;
 
-export const Image = styled.Image.attrs(() => ({
+export const ImageView = styled(Image).attrs(() => ({
 	resizeMode: 'contain',
 }))`
 	width: 100%;

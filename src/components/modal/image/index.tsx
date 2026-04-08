@@ -14,7 +14,7 @@ import {
 	CloseButtonText,
 	Container,
 	ImageContainer,
-	Image,
+	ImageView,
 	Button,
 	Text,
 	LoadingContainer,
@@ -73,7 +73,7 @@ const image: React.FC = () => {
 
 				<ImageContainer>
 					{!!photoContext?.currentPhoto?.url && (
-						<Image
+						<ImageView
 							source={{
 								uri: photoContext?.currentPhoto?.url,
 							}}
