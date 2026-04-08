@@ -50,7 +50,42 @@
 		"title": "Faça login para ativar as notificações de lembretes!",
 		"description1": "Ao entrar na sua conta, você habilita as funções de notificações personalizadas, como lembretes de vacinas, medicamentos e cuidados importantes para o seu pet. Nunca mais perca uma data crucial e mantenha a saúde do seu animal de estimação em dia.",
 		"description2": "Se ainda não tem uma conta, cadastre-se agora e comece a usufruir de todos os benefícios!",
-		"signInGoogle": "Continuar com Google"
+		"signInGoogle": "Continuar com Google",
+		"emailLabel": "E-mail",
+		"emailPlaceholder": "Digite seu e-mail",
+		"passwordLabel": "Senha",
+		"passwordPlaceholder": "Digite sua senha",
+		"mode": {
+			"signIn": "Entrar",
+			"signUp": "Criar conta"
+		},
+		"actions": {
+			"signIn": "Entrar com e-mail",
+			"createAccount": "Criar conta",
+			"resetPassword": "Esqueci minha senha"
+		},
+		"success": {
+			"signedIn": "Login realizado com sucesso.",
+			"accountCreated": "Conta criada com sucesso.",
+			"resetPasswordSent": "Enviamos um e-mail para redefinir sua senha."
+		},
+		"errors": {
+			"missingEmail": "Informe seu e-mail.",
+			"invalidEmail": "Digite um e-mail valido.",
+			"missingPassword": "Informe sua senha.",
+			"weakPassword": "Use uma senha com pelo menos 6 caracteres.",
+			"invalidCredentials": "E-mail ou senha incorretos.",
+			"emailAlreadyInUse": "Este e-mail ja esta em uso.",
+			"userDisabled": "Esta conta foi desativada.",
+			"tooManyRequests": "Muitas tentativas. Aguarde um pouco e tente novamente.",
+			"network": "Nao foi possivel conectar. Verifique sua internet e tente novamente.",
+			"operationNotAllowed": "Este tipo de acesso nao esta disponivel no momento.",
+			"resetPasswordNeedsEmail": "Informe seu e-mail para receber a recuperacao de senha.",
+			"genericSignIn": "Nao foi possivel fazer login agora. Tente novamente.",
+			"genericSignUp": "Nao foi possivel criar sua conta agora. Tente novamente.",
+			"genericResetPassword": "Nao foi possivel enviar o e-mail de recuperacao agora. Tente novamente.",
+			"socialSignIn": "Nao foi possivel concluir o login social. Tente novamente."
+		}
 	},
 	"profile": {
 		"logout": "Sair da conta",

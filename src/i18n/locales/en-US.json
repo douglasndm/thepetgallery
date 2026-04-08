@@ -50,7 +50,42 @@
 		"title": "Sign in to enable reminder notifications!",
 		"description1": "When you sign in, you enable personalized notifications such as vaccine reminders, medications, and other important care for your pet. Never miss an important date and keep your pet healthy.",
 		"description2": "If you don't have an account yet, sign up now and start enjoying all benefits!",
-		"signInGoogle": "Continue with Google"
+		"signInGoogle": "Continue with Google",
+		"emailLabel": "Email",
+		"emailPlaceholder": "Enter your email",
+		"passwordLabel": "Password",
+		"passwordPlaceholder": "Enter your password",
+		"mode": {
+			"signIn": "Sign in",
+			"signUp": "Create account"
+		},
+		"actions": {
+			"signIn": "Sign in with email",
+			"createAccount": "Create account",
+			"resetPassword": "Forgot my password"
+		},
+		"success": {
+			"signedIn": "Signed in successfully.",
+			"accountCreated": "Account created successfully.",
+			"resetPasswordSent": "We sent you an email to reset your password."
+		},
+		"errors": {
+			"missingEmail": "Enter your email.",
+			"invalidEmail": "Enter a valid email address.",
+			"missingPassword": "Enter your password.",
+			"weakPassword": "Use a password with at least 6 characters.",
+			"invalidCredentials": "Incorrect email or password.",
+			"emailAlreadyInUse": "This email address is already in use.",
+			"userDisabled": "This account has been disabled.",
+			"tooManyRequests": "Too many attempts. Wait a moment and try again.",
+			"network": "Could not connect. Check your internet and try again.",
+			"operationNotAllowed": "This sign-in method is not available right now.",
+			"resetPasswordNeedsEmail": "Enter your email to receive password reset instructions.",
+			"genericSignIn": "Could not sign you in right now. Try again.",
+			"genericSignUp": "Could not create your account right now. Try again.",
+			"genericResetPassword": "Could not send the reset email right now. Try again.",
+			"socialSignIn": "Could not complete social sign-in. Try again."
+		}
 	},
 	"profile": {
 		"logout": "Sign out",
