@@ -29,6 +29,7 @@ const configs: plugins = [
 			},
 		},
 	],
+	'expo-font',
 	'expo-image',
 	[
 		'expo-media-library',
