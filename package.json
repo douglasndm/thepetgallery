@@ -15,7 +15,6 @@
 	"dependencies": {
 		"@expo/vector-icons": "^15.1.1",
 		"@invertase/react-native-apple-authentication": "^2.5.1",
-		"@react-native-community/blur": "^4.4.1",
 		"@react-native-community/netinfo": "^11.4.1",
 		"@react-native-firebase/analytics": "^23.8.8",
 		"@react-native-firebase/app": "^23.8.8",
