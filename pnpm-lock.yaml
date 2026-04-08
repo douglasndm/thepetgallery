@@ -96,7 +96,7 @@ importers:
         specifier: ^25.6.0
         version: 25.8.13(typescript@5.9.3)
       lottie-react-native:
-        specifier: ~7.3.1
+        specifier: ^7.3.6
         version: 7.3.6(react-native@0.83.4(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       react:
         specifier: 19.2.0
