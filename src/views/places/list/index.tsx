@@ -6,7 +6,7 @@ import {
 	getDocs,
 	FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
-import Icon from '@react-native-vector-icons/ionicons';
+import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
 import { organizeData } from '@utils/adoptionsPlaces/organizeData';
@@ -120,7 +120,10 @@ const PlacesList: React.FC = () => {
 											Linking.openURL(item.instagram!)
 										}
 									>
-										<Icon name="logo-instagram" size={30} />
+										<Ionicons
+											name="logo-instagram"
+											size={30}
+										/>
 										<PlaceName>{item.name}</PlaceName>
 									</PlaceButton>
 								)}
@@ -131,7 +134,10 @@ const PlacesList: React.FC = () => {
 											Linking.openURL(item.facebook!)
 										}
 									>
-										<Icon name="logo-facebook" size={30} />
+										<Ionicons
+											name="logo-facebook"
+											size={30}
+										/>
 										<PlaceName>{item.name}</PlaceName>
 									</PlaceButton>
 								)}
@@ -142,7 +148,10 @@ const PlacesList: React.FC = () => {
 											Linking.openURL(item.whatsapp!)
 										}
 									>
-										<Icon name="logo-whatsapp" size={30} />
+										<Ionicons
+											name="logo-whatsapp"
+											size={30}
+										/>
 										<PlaceName>{item.name}</PlaceName>
 									</PlaceButton>
 								)}
@@ -153,7 +162,10 @@ const PlacesList: React.FC = () => {
 											Linking.openURL(item.url!)
 										}
 									>
-										<Icon name="globe-outline" size={30} />
+										<Ionicons
+											name="globe-outline"
+											size={30}
+										/>
 										<PlaceName>{item.name}</PlaceName>
 									</PlaceButton>
 								)}

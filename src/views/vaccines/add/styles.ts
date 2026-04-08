@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { initialWindowMetrics } from 'react-native-safe-area-context';
-import Ionicons from '@react-native-vector-icons/ionicons';
+import { Ionicons } from '@expo/vector-icons';
 
 export const Container = styled.ScrollView.attrs(() => ({
 	contentInsetAdjustmentBehavior: 'automatic',

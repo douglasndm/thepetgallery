@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import Ionicons from '@react-native-vector-icons/ionicons';
+import { Ionicons } from '@expo/vector-icons';
 
 export const ActionButtonContainer = styled.TouchableOpacity`
 	flex-direction: row;
