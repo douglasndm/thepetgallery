@@ -6,7 +6,9 @@ import i18n from '@app/i18n';
 
 async function saveImageOnGallery(path: string): Promise<void> {
 	const albumName = 'The Pet Gallery';
-	const { granted } = await MediaLibrary.requestPermissionsAsync();
+	const { granted } = await MediaLibrary.requestPermissionsAsync(false, [
+		'photo',
+	]);
 
 	if (!granted) {
 		showMessage({
@@ -48,7 +50,8 @@ async function saveImageOnGallery(path: string): Promise<void> {
 			message: String(i18n.t('images.saveSuccess')),
 			type: 'success',
 		});
-	} catch {
+	} catch (error) {
+		console.error(error);
 		showMessage({
 			message: String(i18n.t('images.saveError')),
 			type: 'danger',

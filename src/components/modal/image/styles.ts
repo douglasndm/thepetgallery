@@ -45,7 +45,7 @@ export const ImageContainer = styled.View`
 `;
 
 export const ImageView = styled(Image).attrs(() => ({
-	resizeMode: 'contain',
+	contentFit: 'contain',
 }))`
 	width: 100%;
 	height: 75%;
