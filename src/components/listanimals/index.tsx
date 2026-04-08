@@ -46,7 +46,6 @@ const ListAnimals: React.FC<Props> = ({
 	return (
 		<>
 			<Modal />
-			{__DEV__ && <NativeAd />}
 
 			<FlatList
 				data={images}
@@ -55,7 +54,8 @@ const ListAnimals: React.FC<Props> = ({
 				renderItem={({ item, index }) => (
 					<>
 						<Image item={item} type={imageType} index={index} />
-						{/* <NativeAd /> */}
+
+						{__DEV__ && <NativeAd />}
 					</>
 				)}
 				onScroll={onScroll}
