@@ -8,6 +8,8 @@ GoogleService-Info.plist
 
 sentry.properties
 
+sentry.options.json
+
 .codex
 
 # OSX

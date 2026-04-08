@@ -7,6 +7,7 @@ const configs: plugins = [
 	[
 		'@sentry/react-native/expo',
 		{
+			useNativeInit: true,
 			url: 'https://sentry.io/',
 			project: 'thepetgallery',
 			organization: 'douglasndm',
