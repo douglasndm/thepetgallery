@@ -55,7 +55,7 @@ const ListAnimals: React.FC<Props> = ({
 					<>
 						<Image item={item} type={imageType} index={index} />
 
-						{__DEV__ && <NativeAd />}
+						{index % 5 === 0 && <NativeAd />}
 					</>
 				)}
 				onScroll={onScroll}
