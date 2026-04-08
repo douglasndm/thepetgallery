@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Modal, View } from 'react-native';
+import { Modal } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { showMessage } from 'react-native-flash-message';
 import DatePicker from 'react-native-ui-datepicker';
@@ -11,21 +11,31 @@ import { formatDate } from '@utils/data';
 import { saveVaccine } from '@utils/vaccines/save';
 
 import Header from '@components/header';
-import Button from '@components/button';
 import Loading from '@components/loading';
 
 import {
 	Container,
+	Hero,
+	HeroTag,
+	HeroTitle,
+	HeroDescription,
 	Content,
 	Input,
+	Section,
 	DateContainer,
 	DateTextContent,
 	DateText,
 	DateRemoveButton,
 	DateRemoveIcon,
 	Label,
+	Footer,
+	SubmitButton,
+	SubmitButtonText,
+	LoadingOverlay,
 	CloseButton,
 	Icon,
+	ModalContent,
+	DatePickerCard,
 } from './styles';
 
 const VaccinesAdd: React.FC = () => {
@@ -109,16 +119,27 @@ const VaccinesAdd: React.FC = () => {
 		<Container>
 			<Header />
 
-			{isLoading ? (
-				<Loading />
-			) : (
-				<Content>
+			<Hero>
+				<HeroTag>{t('vaccines.addVaccine')}</HeroTag>
+				<HeroTitle>{t('vaccines.addVaccine')}</HeroTitle>
+				<HeroDescription>
+					{t('vaccines.addDescription')}
+				</HeroDescription>
+			</Hero>
+
+			<Content>
+				<Section>
+					<Label>{t('vaccines.namePlaceholder')}</Label>
 					<Input
 						placeholder={t('vaccines.namePlaceholder')}
+						placeholderTextColor="#8b9097"
 						value={name}
 						onChangeText={setName}
 					/>
+				</Section>
 
+				<Section>
+					<Label>{t('vaccines.administeredDateLabel')}</Label>
 					<DateContainer>
 						<DateTextContent onPress={switchAdministeredDateModal}>
 							<DateText>
@@ -139,7 +160,10 @@ const VaccinesAdd: React.FC = () => {
 							</DateRemoveButton>
 						)}
 					</DateContainer>
+				</Section>
 
+				<Section>
+					<Label>{t('vaccines.nextDoseDateLabel')}</Label>
 					<DateContainer>
 						<DateTextContent onPress={switchNextDateModal}>
 							<DateText>
@@ -160,71 +184,83 @@ const VaccinesAdd: React.FC = () => {
 							</DateRemoveButton>
 						)}
 					</DateContainer>
+				</Section>
 
+				<Section>
+					<Label>{t('vaccines.notesPlaceholder')}</Label>
 					<Input
 						placeholder={t('vaccines.notesPlaceholder')}
+						placeholderTextColor="#8b9097"
 						multiline
+						numberOfLines={5}
+						textAlignVertical="top"
+						style={{ minHeight: 120 }}
 						value={notes}
 						onChangeText={setNotes}
 					/>
+				</Section>
 
-					<Button
-						title={t('vaccines.addVaccine')}
-						onPress={handleSave}
-					/>
-				</Content>
+				<Footer>
+					<SubmitButton onPress={handleSave} disabled={isLoading}>
+						<SubmitButtonText>
+							{t('vaccines.addVaccine')}
+						</SubmitButtonText>
+					</SubmitButton>
+				</Footer>
+			</Content>
+
+			{isLoading && (
+				<LoadingOverlay>
+					<Loading />
+				</LoadingOverlay>
 			)}
 
 			<Modal visible={isModalAdministeredDateVisible}>
 				<CloseButton onPress={switchAdministeredDateModal}>
 					<Icon name="close" />
 				</CloseButton>
-				<View
-					style={{
-						flex: 1,
-						justifyContent: 'center',
-					}}
-				>
+				<ModalContent>
 					<Label>{t('vaccines.administeredDateLabel')}</Label>
-					<DatePicker
-						mode="single"
-						date={administeredDate}
-						onChange={change => {
-							if (change.date) {
-								setAdministeredDate(
-									new Date(String(change.date))
-								);
+					<DatePickerCard>
+						<DatePicker
+							mode="single"
+							date={administeredDate}
+							onChange={change => {
+								if (change.date) {
+									setAdministeredDate(
+										new Date(String(change.date))
+									);
 
-								setShowUseDate(true);
-							}
-						}}
-					/>
-				</View>
+									setShowUseDate(true);
+								}
+							}}
+						/>
+					</DatePickerCard>
+				</ModalContent>
 			</Modal>
 
 			<Modal visible={isModalNextDateVisible}>
 				<CloseButton onPress={switchNextDateModal}>
 					<Icon name="close" />
 				</CloseButton>
-				<View
-					style={{
-						flex: 1,
-						justifyContent: 'center',
-					}}
-				>
+				<ModalContent>
 					<Label>{t('vaccines.nextDoseDateLabel')}</Label>
-					<DatePicker
-						mode="single"
-						date={nextDoseDate}
-						onChange={change => {
-							if (change.date) {
-								setNextDoseDate(new Date(String(change.date)));
+					<DatePickerCard>
+						<DatePicker
+							mode="single"
+							date={nextDoseDate}
+							onChange={change => {
+								if (change.date) {
+									setNextDoseDate(
+										new Date(String(change.date))
+									);
 
-								setShowUseNextDate(true);
-							}
-						}}
-					/>
-				</View>
+									setShowUseNextDate(true);
+								}
+							}}
+						/>
+					</DatePickerCard>
+				</ModalContent>
 			</Modal>
 		</Container>
 	);

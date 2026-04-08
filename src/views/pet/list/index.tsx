@@ -7,16 +7,26 @@ import { captureException } from '@services/exceptionsHandler';
 
 import Header from '@components/header';
 import Padding from '@components/padding';
+import Loading from '@components/loading';
 
 import {
 	Container,
+	Hero,
+	HeroTitle,
+	HeroDescription,
 	PetContainer,
 	PetContent,
 	TextContainer,
+	PetMetaRow,
+	PetBadge,
+	PetBadgeText,
 	PetName,
 	PetBreed,
 	Icon,
+	Chevron,
 	EmptyListName,
+	EmptyStateCard,
+	EmptyStateIcon,
 	ActionButtonContainer,
 	ActionButtonIcon,
 	ActionButtonText,
@@ -27,9 +37,11 @@ const PetList: React.FC = () => {
 	const { t } = useTranslation();
 
 	const [pets, setPets] = useState<IPet[]>([]);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const loadData = useCallback(async () => {
 		try {
+			setIsLoading(true);
 			const petsReference = await getUserPetsReference();
 
 			if (petsReference) {
@@ -54,6 +66,8 @@ const PetList: React.FC = () => {
 				}
 			}
 			captureException({ error, showAlert: true });
+		} finally {
+			setIsLoading(false);
 		}
 	}, []);
 
@@ -78,38 +92,63 @@ const PetList: React.FC = () => {
 		<Container>
 			<Header />
 
+			<Hero>
+				<HeroTitle>{t('tabs.pets')}</HeroTitle>
+				<HeroDescription>{t('pets.listDescription')}</HeroDescription>
+			</Hero>
+
 			<ActionButtonContainer onPress={navigateToAddPet}>
 				<ActionButtonIcon name="add" />
 				<ActionButtonText>{t('pets.addPet')}</ActionButtonText>
 			</ActionButtonContainer>
 
-			{pets.map(pet => {
-				let specieIcon: 'dog' | 'cat' | null = null;
+			{isLoading && <Loading />}
 
-				if (pet.species === 'dog') {
-					specieIcon = 'dog';
-				} else if (pet.species === 'cat') {
-					specieIcon = 'cat';
-				}
+			{!isLoading &&
+				pets.map(pet => {
+					let specieIcon: 'dog' | 'cat' | null = null;
 
-				return (
-					<PetContainer key={pet.id}>
-						<PetContent
-							onPress={() => navigateToPet(pet.id.toString())}
-						>
-							<TextContainer>
-								<PetName>{pet.name}</PetName>
-								<PetBreed>{pet.breed}</PetBreed>
-							</TextContainer>
+					if (pet.species === 'dog') {
+						specieIcon = 'dog';
+					} else if (pet.species === 'cat') {
+						specieIcon = 'cat';
+					}
 
-							{specieIcon && <Icon name={specieIcon} />}
-						</PetContent>
-					</PetContainer>
-				);
-			})}
+					return (
+						<PetContainer key={pet.id}>
+							<PetContent
+								onPress={() => navigateToPet(pet.id.toString())}
+							>
+								<TextContainer>
+									<PetMetaRow>
+										<PetBadge>
+											<PetBadgeText>
+												{pet.species === 'dog'
+													? t('pets.dog')
+													: pet.species === 'cat'
+														? t('pets.cat')
+														: t('pets.other')}
+											</PetBadgeText>
+										</PetBadge>
+									</PetMetaRow>
+									<PetName>{pet.name}</PetName>
+									<PetBreed>
+										{pet.breed || t('pets.noBreed')}
+									</PetBreed>
+								</TextContainer>
 
-			{pets.length <= 0 && (
-				<EmptyListName>{t('pets.emptyState')}</EmptyListName>
+								{specieIcon && <Icon name={specieIcon} />}
+								<Chevron />
+							</PetContent>
+						</PetContainer>
+					);
+				})}
+
+			{!isLoading && pets.length <= 0 && (
+				<EmptyStateCard>
+					<EmptyStateIcon />
+					<EmptyListName>{t('pets.emptyState')}</EmptyListName>
+				</EmptyStateCard>
 			)}
 
 			<Padding />

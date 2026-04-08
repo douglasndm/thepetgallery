@@ -13,10 +13,22 @@ import { getUserPetsReference } from '@services/firebase/firestore';
 import { captureException } from '@services/exceptionsHandler';
 
 import Header from '@components/header';
-import ActionButton from '@components/actionButton';
 import Loading from '@components/loading';
 
-import { Container, Content, Name, MoreInfo } from './styles';
+import {
+	Container,
+	HeroCard,
+	Name,
+	Subtitle,
+	Content,
+	InfoCard,
+	InfoRow,
+	InfoLabel,
+	InfoValue,
+	ActionButtonContainer,
+	ActionButtonIcon,
+	ActionButtonText,
+} from './styles';
 
 const VaccinesDetails: React.FC = () => {
 	const router = useRouter();
@@ -97,42 +109,63 @@ const VaccinesDetails: React.FC = () => {
 		<Container>
 			<Header />
 
-			<ActionButton
-				iconName="create-outline"
-				title={t('vaccines.editVaccine')}
-				onPress={navigateToEditVaccine}
-			/>
+			{!isLoading && (
+				<ActionButtonContainer onPress={navigateToEditVaccine}>
+					<ActionButtonIcon name="create-outline" />
+					<ActionButtonText>
+						{t('vaccines.editVaccine')}
+					</ActionButtonText>
+				</ActionButtonContainer>
+			)}
 
 			{isLoading ? (
 				<Loading />
 			) : (
-				<Content>
-					{vaccine?.name && <Name>{vaccine.name}</Name>}
+				<>
+					<HeroCard>
+						<Name>{vaccine?.name}</Name>
+						<Subtitle>{t('vaccines.detailsDescription')}</Subtitle>
+					</HeroCard>
 
-					{vaccine?.date_administered && (
-						<MoreInfo>
-							{t('vaccines.appliedOnPrefix')}:{' '}
-							{vaccine.date_administered.toLocaleDateString(
-								getCurrentLanguage()
+					<Content>
+						<InfoCard>
+							{!!vaccine?.date_administered && (
+								<InfoRow>
+									<InfoLabel>
+										{t('vaccines.appliedOnPrefix')}
+									</InfoLabel>
+									<InfoValue>
+										{vaccine.date_administered.toLocaleDateString(
+											getCurrentLanguage()
+										)}
+									</InfoValue>
+								</InfoRow>
 							)}
-						</MoreInfo>
-					)}
 
-					{vaccine?.next_dose_date && (
-						<MoreInfo>
-							{t('vaccines.nextDosePrefix')}:{' '}
-							{vaccine.next_dose_date.toLocaleDateString(
-								getCurrentLanguage()
+							{!!vaccine?.next_dose_date && (
+								<InfoRow>
+									<InfoLabel>
+										{t('vaccines.nextDosePrefix')}
+									</InfoLabel>
+									<InfoValue>
+										{vaccine.next_dose_date.toLocaleDateString(
+											getCurrentLanguage()
+										)}
+									</InfoValue>
+								</InfoRow>
 							)}
-						</MoreInfo>
-					)}
 
-					{vaccine?.notes && (
-						<MoreInfo>
-							{t('vaccines.notesPrefix')}: {vaccine.notes}
-						</MoreInfo>
-					)}
-				</Content>
+							{!!vaccine?.notes && (
+								<InfoRow style={{ borderBottomWidth: 0 }}>
+									<InfoLabel>
+										{t('vaccines.notesPrefix')}
+									</InfoLabel>
+									<InfoValue>{vaccine.notes}</InfoValue>
+								</InfoRow>
+							)}
+						</InfoCard>
+					</Content>
+				</>
 			)}
 		</Container>
 	);

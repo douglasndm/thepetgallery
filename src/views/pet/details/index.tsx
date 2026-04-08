@@ -12,17 +12,19 @@ import Button from '@components/button';
 
 import {
 	Container,
+	HeroCard,
 	Content,
 	Icon,
 	Name,
-	Species,
-	Breed,
-	BirthDate,
-	Weight,
-	HealthNotes,
+	Subtitle,
+	InfoCard,
+	InfoRow,
+	InfoLabel,
+	InfoValue,
 	ActionButtonContainer,
 	ActionButtonIcon,
 	ActionButtonText,
+	Footer,
 } from './styles';
 
 const PetDetails: React.FC = () => {
@@ -147,50 +149,80 @@ const PetDetails: React.FC = () => {
 			{isLoading ? (
 				<Loading />
 			) : (
-				<Content>
-					{!!iconName && <Icon name={iconName} />}
-
-					<Name>{petInfo?.name}</Name>
-
-					{petInfo?.species && (
-						<Species>
-							{t('pets.speciesPrefix')}:{' '}
+				<>
+					<HeroCard>
+						{!!iconName && <Icon name={iconName} />}
+						<Name>{petInfo?.name}</Name>
+						<Subtitle>
 							{petInfo?.species === 'dog'
 								? t('pets.dog')
-								: t('pets.cat')}
-						</Species>
-					)}
+								: petInfo?.species === 'cat'
+									? t('pets.cat')
+									: t('pets.other')}
+						</Subtitle>
+					</HeroCard>
 
-					{petInfo?.breed && (
-						<Breed>
-							{t('pets.breedPrefix')}: {petInfo?.breed}
-						</Breed>
-					)}
+					<Content>
+						<InfoCard>
+							<InfoRow>
+								<InfoLabel>{t('pets.speciesPrefix')}</InfoLabel>
+								<InfoValue>
+									{petInfo?.species === 'dog'
+										? t('pets.dog')
+										: petInfo?.species === 'cat'
+											? t('pets.cat')
+											: t('pets.other')}
+								</InfoValue>
+							</InfoRow>
 
-					{birthDate && (
-						<BirthDate>
-							{t('pets.birthPrefix')}: {birthDate}
-						</BirthDate>
-					)}
+							{!!petInfo?.breed && (
+								<InfoRow>
+									<InfoLabel>
+										{t('pets.breedPrefix')}
+									</InfoLabel>
+									<InfoValue>{petInfo?.breed}</InfoValue>
+								</InfoRow>
+							)}
 
-					{petInfo?.weight && (
-						<Weight>
-							{t('pets.weightPrefix')}: {petInfo?.weight}KG
-						</Weight>
-					)}
+							{!!birthDate && (
+								<InfoRow>
+									<InfoLabel>
+										{t('pets.birthPrefix')}
+									</InfoLabel>
+									<InfoValue>{birthDate}</InfoValue>
+								</InfoRow>
+							)}
 
-					{petInfo?.health_notes && (
-						<HealthNotes>
-							{t('pets.extraDataPrefix')}: {petInfo?.health_notes}
-						</HealthNotes>
-					)}
-				</Content>
+							{!!petInfo?.weight && (
+								<InfoRow>
+									<InfoLabel>
+										{t('pets.weightPrefix')}
+									</InfoLabel>
+									<InfoValue>{petInfo?.weight} KG</InfoValue>
+								</InfoRow>
+							)}
+
+							{!!petInfo?.health_notes && (
+								<InfoRow style={{ borderBottomWidth: 0 }}>
+									<InfoLabel>
+										{t('pets.extraDataPrefix')}
+									</InfoLabel>
+									<InfoValue>
+										{petInfo?.health_notes}
+									</InfoValue>
+								</InfoRow>
+							)}
+						</InfoCard>
+					</Content>
+				</>
 			)}
 
-			<Button
-				title={t('pets.viewVaccines')}
-				onPress={navigateToVaccines}
-			/>
+			<Footer>
+				<Button
+					title={t('pets.viewVaccines')}
+					onPress={navigateToVaccines}
+				/>
+			</Footer>
 		</Container>
 	);
 };

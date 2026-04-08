@@ -20,11 +20,20 @@ import { formatDate } from '@utils/data';
 
 import {
 	Container,
+	Hero,
+	HeroTitle,
+	HeroDescription,
 	VaccineContainer,
 	VaccineContent,
 	TextContainer,
+	VaccineTag,
+	VaccineTagText,
 	VaccineName,
 	VaccineDate,
+	Chevron,
+	EmptyStateCard,
+	EmptyStateIcon,
+	EmptyStateText,
 } from './styles';
 
 const VaccinesList: React.FC = () => {
@@ -124,42 +133,68 @@ const VaccinesList: React.FC = () => {
 		<Container>
 			<Header />
 
+			<Hero>
+				<HeroTitle>{t('vaccines.addVaccine')}</HeroTitle>
+				<HeroDescription>
+					{t('vaccines.listDescription')}
+				</HeroDescription>
+			</Hero>
+
 			<ActionButton
 				title={t('vaccines.addVaccine')}
 				iconName="create-outline"
 				onPress={navigateToAddVaccine}
+				style={{ marginRight: 20, marginBottom: 18 }}
 			/>
 
 			{isLoading && <Loading />}
 
-			{vaccines.map(vaccine => {
-				let formattedDate: string | null = null;
+			{!isLoading &&
+				vaccines.map(vaccine => {
+					let formattedDate: string | null = null;
 
-				if (vaccine.date_administered) {
-					formattedDate = formatDate(
-						new Date(vaccine.date_administered)
+					if (vaccine.date_administered) {
+						formattedDate = formatDate(
+							new Date(vaccine.date_administered)
+						);
+					}
+
+					return (
+						<VaccineContainer key={vaccine.id}>
+							<VaccineContent
+								onPress={() =>
+									navigateToVaccine(vaccine.id.toString())
+								}
+							>
+								<TextContainer>
+									<VaccineTag>
+										<VaccineTagText>
+											{t('vaccines.cardTag')}
+										</VaccineTagText>
+									</VaccineTag>
+									<VaccineName>{vaccine.name}</VaccineName>
+									{formattedDate ? (
+										<VaccineDate>
+											{`${t('vaccines.dateAdministeredPrefix')}: ${formattedDate}`}
+										</VaccineDate>
+									) : (
+										<VaccineDate>
+											{t('vaccines.noAdministeredDate')}
+										</VaccineDate>
+									)}
+								</TextContainer>
+								<Chevron />
+							</VaccineContent>
+						</VaccineContainer>
 					);
-				}
+				})}
 
-				return (
-					<VaccineContainer key={vaccine.id}>
-						<VaccineContent
-							onPress={() =>
-								navigateToVaccine(vaccine.id.toString())
-							}
-						>
-							<TextContainer>
-								<VaccineName>{vaccine.name}</VaccineName>
-								{!!formattedDate && (
-									<VaccineDate>
-										{`${t('vaccines.dateAdministeredPrefix')}: ${formattedDate}`}
-									</VaccineDate>
-								)}
-							</TextContainer>
-						</VaccineContent>
-					</VaccineContainer>
-				);
-			})}
+			{!isLoading && vaccines.length <= 0 && (
+				<EmptyStateCard>
+					<EmptyStateIcon />
+					<EmptyStateText>{t('vaccines.emptyState')}</EmptyStateText>
+				</EmptyStateCard>
+			)}
 			<Padding />
 		</Container>
 	);

@@ -10,13 +10,27 @@ import { captureException } from '@services/exceptionsHandler';
 
 import Header from '@components/header';
 import ActionButton from '@components/actionButton';
-import Button from '@components/button';
 import Loading from '@components/loading';
 import Padding from '@components/padding';
 
 import DeletePet from './delete';
 
-import { Container, Content, Input, Label } from '../add/styles';
+import {
+	Container,
+	Hero,
+	HeroTag,
+	HeroTitle,
+	HeroDescription,
+	Content,
+	Input,
+	Label,
+	Section,
+	DatePickerCard,
+	Footer,
+	SubmitButton,
+	SubmitButtonText,
+	LoadingOverlay,
+} from '../add/styles';
 
 const EditPet: React.FC = () => {
 	const router = useRouter();
@@ -24,6 +38,7 @@ const EditPet: React.FC = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isSaving, setIsSaving] = useState<boolean>(false);
 	const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
 
 	const [name, setName] = useState<string>('');
@@ -87,7 +102,7 @@ const EditPet: React.FC = () => {
 		}
 
 		try {
-			setIsLoading(true);
+			setIsSaving(true);
 
 			const petsReference = await getUserPetsReference();
 
@@ -111,7 +126,7 @@ const EditPet: React.FC = () => {
 		} catch (error) {
 			captureException({ error, showAlert: true });
 		} finally {
-			setIsLoading(false);
+			setIsSaving(false);
 		}
 	}, [
 		name,
@@ -178,89 +193,132 @@ const EditPet: React.FC = () => {
 		<Container>
 			<Header />
 
+			<Hero>
+				<HeroTag>{t('pets.editPet')}</HeroTag>
+				<HeroTitle>{t('pets.editPet')}</HeroTitle>
+				<HeroDescription>{t('pets.editDescription')}</HeroDescription>
+			</Hero>
+
 			<ActionButton
 				iconName="trash-outline"
 				title={t('pets.deletePet')}
 				onPress={() => setShowDeleteDialog(true)}
+				style={{ marginRight: 20, marginBottom: 16 }}
 			/>
 
 			{isLoading ? (
 				<Loading />
 			) : (
 				<Content>
-					<Input
-						placeholder={t('pets.namePlaceholder')}
-						value={name}
-						onChangeText={setName}
-					/>
+					<Section>
+						<Label>{t('pets.namePlaceholder')}</Label>
+						<Input
+							placeholder={t('pets.namePlaceholder')}
+							placeholderTextColor="#8b9097"
+							value={name}
+							onChangeText={setName}
+						/>
 
-					<Label>{t('pets.speciesLabel')}</Label>
+						<Label>{t('pets.speciesLabel')}</Label>
+						<RadioGroup
+							radioButtons={radioButtons}
+							onPress={setSpecies}
+							selectedId={species}
+							containerStyle={{
+								flexDirection: 'row',
+								justifyContent: 'space-between',
+							}}
+						/>
+					</Section>
 
-					<RadioGroup
-						radioButtons={radioButtons}
-						onPress={setSpecies}
-						selectedId={species}
-						containerStyle={{
-							flexDirection: 'row',
-							justifyContent: 'space-between',
-						}}
-					/>
+					<Section>
+						<Label>{t('pets.breedPlaceholder')}</Label>
+						<Input
+							placeholder={t('pets.breedPlaceholder')}
+							placeholderTextColor="#8b9097"
+							value={breed}
+							onChangeText={setBreed}
+						/>
 
-					<Input
-						placeholder={t('pets.breedPlaceholder')}
-						value={breed}
-						onChangeText={setBreed}
-					/>
-					<Input
-						placeholder={t('pets.weightPlaceholder')}
-						keyboardType="numeric"
-						value={weight}
-						onChangeText={handleWeightChange}
-					/>
+						<Label>{t('pets.weightPlaceholder')}</Label>
+						<Input
+							placeholder={t('pets.weightPlaceholder')}
+							placeholderTextColor="#8b9097"
+							keyboardType="numeric"
+							value={weight}
+							onChangeText={handleWeightChange}
+						/>
 
-					<Input
-						placeholder={t('pets.notesPlaceholder')}
-						multiline
-						numberOfLines={5}
-						value={healthNotes}
-						onChangeText={setHealthNotes}
-					/>
+						<Label>{t('pets.notesPlaceholder')}</Label>
+						<Input
+							placeholder={t('pets.notesPlaceholder')}
+							placeholderTextColor="#8b9097"
+							multiline
+							numberOfLines={5}
+							textAlignVertical="top"
+							style={{ minHeight: 120 }}
+							value={healthNotes}
+							onChangeText={setHealthNotes}
+						/>
+					</Section>
 
-					<Label>{t('pets.editBirthDateLabel')}</Label>
-					<RadioGroup
-						radioButtons={useBirthDateRadioButtons}
-						onPress={selected => {
-							if (selected === 'yes') {
-								setUseBirthDate(true);
-							} else {
-								setUseBirthDate(false);
-							}
-						}}
-						selectedId={useBirthDate ? 'yes' : 'no'}
-						containerStyle={{
-							flexDirection: 'row',
-							justifyContent: 'center',
-						}}
-					/>
+					<Section>
+						<Label>{t('pets.editBirthDateLabel')}</Label>
+						<RadioGroup
+							radioButtons={useBirthDateRadioButtons}
+							onPress={selected => {
+								if (selected === 'yes') {
+									setUseBirthDate(true);
+								} else {
+									setUseBirthDate(false);
+								}
+							}}
+							selectedId={useBirthDate ? 'yes' : 'no'}
+							containerStyle={{
+								flexDirection: 'row',
+								justifyContent: 'center',
+							}}
+						/>
 
-					{useBirthDate && (
-						<>
-							<Label>{t('pets.birthDateLabel')}</Label>
+						{useBirthDate && (
+							<>
+								<Label>{t('pets.birthDateLabel')}</Label>
+								<DatePickerCard>
+									<DateTimePicker
+										mode="single"
+										date={date}
+										onChange={change => {
+											if (change.date) {
+												setDate(
+													new Date(
+														String(change.date)
+													)
+												);
+											}
+										}}
+									/>
+								</DatePickerCard>
+							</>
+						)}
+					</Section>
 
-							<DateTimePicker
-								mode="single"
-								date={date}
-								onChange={change => {
-									if (change.date) {
-										setDate(new Date(String(change.date)));
-									}
-								}}
-							/>
-						</>
-					)}
-
-					<Button title={t('common.save')} onPress={handleUpdate} />
+					<Footer>
+						<SubmitButton
+							onPress={handleUpdate}
+							disabled={isSaving}
+						>
+							<SubmitButtonText>
+								{t('common.save')}
+							</SubmitButtonText>
+						</SubmitButton>
+					</Footer>
 				</Content>
+			)}
+
+			{isSaving && (
+				<LoadingOverlay>
+					<Loading />
+				</LoadingOverlay>
 			)}
 
 			<DeletePet
