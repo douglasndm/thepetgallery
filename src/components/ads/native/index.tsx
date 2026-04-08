@@ -63,23 +63,25 @@ const AppNativeAd: React.FC = () => {
 	return (
 		<View style={styles.container}>
 			<NativeAdView nativeAd={nativeAd}>
-				{nativeAd.icon && (
-					<NativeAsset assetType={NativeAssetType.ICON}>
-						<Image
-							source={{ uri: nativeAd.icon.url }}
-							width={24}
-							height={24}
-						/>
+				<View style={styles.titleContainer}>
+					{nativeAd.icon && (
+						<NativeAsset assetType={NativeAssetType.ICON}>
+							<Image
+								source={{ uri: nativeAd.icon.url }}
+								width={24}
+								height={24}
+							/>
+						</NativeAsset>
+					)}
+
+					<NativeAsset assetType={NativeAssetType.HEADLINE}>
+						<Text style={styles.title}>{nativeAd.headline}</Text>
 					</NativeAsset>
-				)}
-				<NativeAsset assetType={NativeAssetType.HEADLINE}>
-					<Text style={{ fontSize: 18, fontWeight: 'bold' }}>
-						{nativeAd.headline}
-					</Text>
-				</NativeAsset>
-				<Text>Sponsored</Text>
+				</View>
 
 				<NativeMediaView />
+
+				<Text style={styles.sponsored}>Sponsored</Text>
 			</NativeAdView>
 		</View>
 	);
