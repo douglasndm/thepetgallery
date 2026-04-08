@@ -38,6 +38,7 @@
 		"expo-media-library": "~55.0.13",
 		"expo-notifications": "~55.0.17",
 		"expo-router": "~55.0.11",
+		"expo-secure-store": "~55.0.12",
 		"expo-status-bar": "~55.0.5",
 		"expo-updates": "~55.0.19",
 		"i18next": "^25.6.0",
@@ -59,6 +60,7 @@
 		"react-native-share": "^12.2.0",
 		"react-native-svg": "~15.15.3",
 		"react-native-ui-datepicker": "^3.1.2",
+		"react-native-uuid": "^2.0.4",
 		"styled-components": "^6.1.19",
 		"uuid": "^13.0.0"
 	},

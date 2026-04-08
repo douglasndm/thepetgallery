@@ -47,5 +47,6 @@ const configs: plugins = [
 			enableBackgroundRemoteNotifications: true,
 		},
 	],
+	'expo-secure-store',
 ];
 export default configs;

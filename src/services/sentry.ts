@@ -1,6 +1,9 @@
 import * as Sentry from '@sentry/react-native';
+import { getAuth } from '@react-native-firebase/auth';
 
 import EnvConfig from '@services/env';
+
+import { getInstallationId } from '@utils/device/getDeviceId';
 
 if (!__DEV__) {
 	Sentry.init({
@@ -27,3 +30,23 @@ if (!__DEV__) {
 		],
 	});
 }
+
+async function setupInstallationId() {
+	const id = await getInstallationId();
+	const currentUser = getAuth().currentUser;
+
+	if (currentUser) {
+		Sentry.setUser({
+			id: id,
+			email: currentUser.email || undefined,
+			username: currentUser.displayName || undefined,
+		});
+		return;
+	}
+
+	Sentry.setUser({
+		id: id,
+	});
+}
+
+export { setupInstallationId };
