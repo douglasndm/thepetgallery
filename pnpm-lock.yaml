@@ -120,8 +120,8 @@ importers:
         specifier: ^0.4.2
         version: 0.4.2(prop-types@15.8.1)(react-native@0.83.4(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))(react@19.2.0)
       react-native-get-random-values:
-        specifier: ^2.0.0
-        version: 2.0.0(react-native@0.83.4(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))
+        specifier: ^1.11.0
+        version: 1.11.0(react-native@0.83.4(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))
       react-native-google-mobile-ads:
         specifier: ^16.3.1
         version: 16.3.1(expo@55.0.12)(react@19.2.0)
@@ -4041,10 +4041,10 @@ packages:
       react: '*'
       react-native: '*'
 
-  react-native-get-random-values@2.0.0:
-    resolution: {integrity: sha512-wx7/aPqsUIiWsG35D+MsUJd8ij96e3JKddklSdrdZUrheTx89gPtz3Q2yl9knBArj5u26Cl23T88ai+Q0vypdQ==}
+  react-native-get-random-values@1.11.0:
+    resolution: {integrity: sha512-4BTbDbRmS7iPdhYLRcz3PGFIpFJBwNZg9g42iwa2P6FOv9vZj/xJc678RZXnLNZzd0qd7Q3CCF6Yd+CU2eoXKQ==}
     peerDependencies:
-      react-native: '>=0.81'
+      react-native: '>=0.56'
 
   react-native-google-mobile-ads@16.3.1:
     resolution: {integrity: sha512-hFjxGYyVjCtaQHmwRMag3ZCSFgewzCDKsh7S/ppQlIUXvRlXQ7P9IAg7V4tx9L32mMSrO1SlDmL1Eken1gC/QA==}
@@ -9267,7 +9267,7 @@ snapshots:
       react-native: 0.83.4(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0)
       react-native-iphone-screen-helper: 2.2.1(react-native@0.83.4(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0))
 
-  react-native-get-random-values@2.0.0(react-native@0.83.4(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0)):
+  react-native-get-random-values@1.11.0(react-native@0.83.4(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0)):
     dependencies:
       fast-base64-decode: 1.0.0
       react-native: 0.83.4(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.0)
