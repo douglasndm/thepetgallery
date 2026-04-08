@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import { usePathname } from 'expo-router';
 
+import NativeAd from '@components/ads/native';
 import Modal from '@components/modal/image';
 import Padding from '@components/padding';
 
@@ -45,12 +46,17 @@ const ListAnimals: React.FC<Props> = ({
 	return (
 		<>
 			<Modal />
+			{__DEV__ && <NativeAd />}
+
 			<FlatList
 				data={images}
 				ListHeaderComponent={ListHeaderComponent}
 				numColumns={1}
 				renderItem={({ item, index }) => (
-					<Image item={item} type={imageType} index={index} />
+					<>
+						<Image item={item} type={imageType} index={index} />
+						{/* <NativeAd /> */}
+					</>
 				)}
 				onScroll={onScroll}
 				ListFooterComponent={<Padding />}

@@ -1,7 +1,6 @@
 type plugins = (string | [] | [string] | [string, any])[];
 
 const configs: plugins = [
-	'expo-router',
 	'@react-native-firebase/app',
 	'@react-native-firebase/auth',
 	'@react-native-google-signin/google-signin',
@@ -47,6 +46,16 @@ const configs: plugins = [
 			enableBackgroundRemoteNotifications: true,
 		},
 	],
+	'expo-router',
 	'expo-secure-store',
+	[
+		'react-native-google-mobile-ads',
+		{
+			androidAppId: process.env.ANDROID_ADMOB_APPID,
+			iosAppId: process.env.IOS_ADMOB_APPID,
+			userTrackingUsageDescription:
+				'This identifier will be used to deliver personalized ads to you.',
+		},
+	],
 ];
 export default configs;
