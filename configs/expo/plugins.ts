@@ -31,6 +31,15 @@ const configs: plugins = [
 		},
 	],
 	[
+		'expo-media-library',
+		{
+			savePhotosPermission: 'Allow $(PRODUCT_NAME) to save photos.',
+			preventAutomaticLimitedAccessAlert: true,
+			isAccessMediaLocationEnabled: false,
+			granularPermissions: [],
+		},
+	],
+	[
 		'expo-notifications',
 		{
 			color: '#ffffff',
