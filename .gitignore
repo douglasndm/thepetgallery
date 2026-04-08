@@ -8,6 +8,8 @@ GoogleService-Info.plist
 
 sentry.properties
 
+.codex
+
 # OSX
 #
 .DS_Store
