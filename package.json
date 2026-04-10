@@ -58,7 +58,6 @@
 		"react-native-safe-area-context": "~5.6.0",
 		"react-native-screens": "~4.23.0",
 		"react-native-share": "^12.2.0",
-		"react-native-svg": "~15.15.3",
 		"react-native-ui-datepicker": "^3.1.2",
 		"react-native-uuid": "^2.0.4",
 		"styled-components": "^6.1.19",
@@ -75,7 +74,6 @@
 		"eslint": "^9.39.4",
 		"eslint-plugin-prettier": "^5.5.5",
 		"prettier": "~3.8.1",
-		"react-native-svg-transformer": "^1.5.1",
 		"tsx": "^4.20.5",
 		"typescript": "~5.9.3"
 	},
