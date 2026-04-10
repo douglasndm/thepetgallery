@@ -24,6 +24,7 @@ const configs: plugins = [
 		'expo-build-properties',
 		{
 			ios: {
+				buildReactNativeFromSource: true,
 				useFrameworks: 'static',
 				deploymentTarget: '15.5',
 				forceStaticLinking: ['RNFBApp'],
