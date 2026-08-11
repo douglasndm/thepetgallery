@@ -1,12 +1,12 @@
 import { Directory, File, Paths } from 'expo-file-system';
-import * as MediaLibrary from 'expo-media-library';
+import { Album, Asset, requestPermissionsAsync } from 'expo-media-library';
 import { showMessage } from 'react-native-flash-message';
 
 import i18n from '@app/i18n';
 
 async function saveImageOnGallery(path: string): Promise<void> {
 	const albumName = 'The Pet Gallery';
-	const { granted } = await MediaLibrary.requestPermissionsAsync(false, [
+	const { granted, accessPrivileges } = await requestPermissionsAsync(false, [
 		'photo',
 	]);
 
@@ -17,6 +17,9 @@ async function saveImageOnGallery(path: string): Promise<void> {
 		});
 		return;
 	}
+
+	const hasFullAccess =
+		accessPrivileges === undefined || accessPrivileges === 'all';
 
 	const cacheDirectory = new Directory(Paths.cache, 'images');
 	cacheDirectory.create({ idempotent: true, intermediates: true });
@@ -33,17 +36,16 @@ async function saveImageOnGallery(path: string): Promise<void> {
 			idempotent: true,
 		});
 
-		const asset = await MediaLibrary.createAssetAsync(downloadedFile.uri);
-		const existingAlbum = await MediaLibrary.getAlbumAsync(albumName);
+		const asset = await Asset.create(downloadedFile.uri);
 
-		if (existingAlbum) {
-			await MediaLibrary.addAssetsToAlbumAsync(
-				[asset],
-				existingAlbum,
-				false
-			);
-		} else {
-			await MediaLibrary.createAlbumAsync(albumName, asset, false);
+		if (hasFullAccess) {
+			const album = await Album.get(albumName);
+
+			if (album) {
+				await album.add([asset]);
+			} else {
+				await Album.create(albumName, [asset], true);
+			}
 		}
 
 		showMessage({
