@@ -23,7 +23,7 @@
 		"@react-native-firebase/messaging": "^24.0.0",
 		"@react-native-google-signin/google-signin": "^16.1.2",
 		"@sentry/react-native": "~7.11.0",
-		"axios": "^1.15.0",
+		"axios": "^1.19.0",
 		"expo": "^57.0.12",
 		"expo-apple-authentication": "~57.0.1",
 		"expo-asset": "~57.0.10",
@@ -61,7 +61,7 @@
 		"react-native-ui-datepicker": "^3.1.2",
 		"react-native-uuid": "^2.0.4",
 		"styled-components": "^6.1.19",
-		"uuid": "^13.0.0"
+		"uuid": "^14.0.1"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^2.0.4",
