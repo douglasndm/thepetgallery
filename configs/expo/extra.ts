@@ -5,6 +5,10 @@ interface extra {
 const configs: extra = {
 	eas: {
 		projectId: '3ce8ca86-09ca-4432-9f90-0468e97b1684',
+		observe: {
+			endpointUrl:
+				'https://updates.douglasndm.dev/observe/bc10c763-45b8-4802-90ed-c3602dcb2e4e',
+		},
 	},
 
 	APP_VARIANT: process.env.APP_VARIANT ?? 'production',

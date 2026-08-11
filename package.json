@@ -21,6 +21,8 @@
 		"@react-native-firebase/firestore": "^24.0.0",
 		"@react-native-firebase/messaging": "^24.0.0",
 		"@react-native-google-signin/google-signin": "^16.1.2",
+		"@react-native-vector-icons/ionicons": "^13.1.2",
+		"@react-native-vector-icons/material-design-icons": "latest",
 		"@sentry/react-native": "~7.11.0",
 		"axios": "^1.19.0",
 		"expo": "^57.0.12",
@@ -36,6 +38,7 @@
 		"expo-linking": "~57.0.5",
 		"expo-media-library": "~57.0.3",
 		"expo-notifications": "~57.0.10",
+		"expo-observe": "~57.0.12",
 		"expo-router": "~57.0.12",
 		"expo-secure-store": "~57.0.1",
 		"expo-status-bar": "~57.0.1",
@@ -60,9 +63,7 @@
 		"react-native-ui-datepicker": "^3.1.2",
 		"react-native-uuid": "^2.0.4",
 		"styled-components": "^6.1.19",
-		"uuid": "^14.0.1",
-		"@react-native-vector-icons/ionicons": "^13.1.2",
-		"@react-native-vector-icons/material-design-icons": "latest"
+		"uuid": "^14.0.1"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^2.0.4",

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Stack, useNavigationContainerRef, usePathname } from 'expo-router';
+import { Observe } from 'expo-observe';
 import * as Sentry from '@sentry/react-native';
 import { getAnalytics } from '@react-native-firebase/analytics';
 import { useNetInfo } from '@react-native-community/netinfo';
@@ -7,6 +8,17 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { PaperProvider } from 'react-native-paper';
 import FlashMessage from 'react-native-flash-message';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+
+const previousHandler = ErrorUtils.getGlobalHandler();
+ErrorUtils.setGlobalHandler((error, isFatal) => {
+	if (isFatal) {
+		Observe.logEvent('xprem_js_crash', {
+			severity: 'fatal',
+			attributes: { message: String(error?.message ?? error) },
+		});
+	}
+	previousHandler?.(error, isFatal);
+});
 
 import '@services/sentry';
 import { setupInstallationId } from '@services/sentry';
@@ -36,6 +48,10 @@ const RootLayout: React.FC = () => {
 	);
 
 	const { isInternetReachable } = useNetInfo();
+
+	useEffect(() => {
+		Observe.logEvent('app_started');
+	}, []);
 
 	useEffect(() => {
 		setupInstallationId();
