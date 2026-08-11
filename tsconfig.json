@@ -11,17 +11,15 @@
 		"isolatedModules": false,
 		"strict": true,
 		"resolveJsonModule": true,
-		"baseUrl": "./",
-		"types": ["expo-router/types"],
 		"paths": {
-			"@app/*": ["src/*"],
-			"@assets/*": ["assets/*"],
-			"@animations/*": ["assets/animations/*"],
-			"@components/*": ["src/components/*"],
-			"@contexts/*": ["src/contexts/*"],
-			"@services/*": ["src/services/*"],
-			"@views/*": ["src/views/*"],
-			"@utils/*": ["src/utils/*"]
+			"@app/*": ["./src/*"],
+			"@assets/*": ["./assets/*"],
+			"@animations/*": ["./assets/animations/*"],
+			"@components/*": ["./src/components/*"],
+			"@contexts/*": ["./src/contexts/*"],
+			"@services/*": ["./src/services/*"],
+			"@views/*": ["./src/views/*"],
+			"@utils/*": ["./src/utils/*"]
 		},
 
 		"allowSyntheticDefaultImports": true,
@@ -29,13 +27,7 @@
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true
 	},
-	"include": [
-		"**/*.ts",
-		"**/*.tsx",
-		".expo/types/**/*.ts",
-		"expo-env.d.ts",
-		"**/*.json"
-	],
+	"include": ["**/*.ts", "**/*.tsx", "**/*.json"],
 	"exclude": [
 		"**/node_modules",
 		"**/Pods",
