@@ -25,6 +25,7 @@
 		"@react-native-vector-icons/material-design-icons": "latest",
 		"@sentry/react-native": "~7.11.0",
 		"axios": "^1.19.0",
+		"css-to-react-native": "^3.2.0",
 		"expo": "^57.0.12",
 		"expo-apple-authentication": "~57.0.1",
 		"expo-asset": "~57.0.10",
