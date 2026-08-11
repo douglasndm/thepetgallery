@@ -26,7 +26,7 @@ const configs: plugins = [
 			ios: {
 				buildReactNativeFromSource: true,
 				useFrameworks: 'static',
-				deploymentTarget: '15.5',
+				deploymentTarget: '16.4',
 				forceStaticLinking: ['RNFBApp'],
 			},
 		},
