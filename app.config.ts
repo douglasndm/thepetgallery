@@ -5,7 +5,7 @@ import pluginsConfigs from './configs/expo/plugins';
 import extraConfigs from './configs/expo/extra';
 import withReplaceMetaDataResource from './configs/expo/androidManifestReplaceResource';
 
-import { version } from './package.json';
+import { version } from './version.json';
 
 export default ({ config }: ConfigContext): ExpoConfig =>
 	withReplaceMetaDataResource({
