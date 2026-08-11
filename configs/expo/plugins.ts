@@ -10,9 +10,9 @@ const configs: plugins = [
 		'@sentry/react-native/expo',
 		{
 			useNativeInit: true,
-			url: 'https://sentry.io/',
+			url: 'https://exceptions.douglasndm.dev/',
 			project: 'thepetgallery',
-			organization: 'douglasndm',
+			organization: 'varlabs',
 		},
 	],
 	'expo-apple-authentication',

@@ -5,31 +5,30 @@ import EnvConfig from '@services/env';
 
 import { getInstallationId } from '@utils/device/getDeviceId';
 
-if (!__DEV__) {
-	Sentry.init({
-		dsn: EnvConfig.SENTRY_DSN,
+Sentry.init({
+	enabled: !__DEV__,
+	dsn: EnvConfig.SENTRY_DSN,
 
-		sendDefaultPii: true,
-		enableLogs: true,
+	sendDefaultPii: true,
+	enableLogs: true,
 
-		sampleRate: 0.45,
-		profilesSampleRate: 0.45,
-		tracesSampleRate: 0.0,
-		replaysSessionSampleRate: 0.5,
-		replaysOnErrorSampleRate: 1.0,
+	sampleRate: 0.45,
+	profilesSampleRate: 0.45,
+	tracesSampleRate: 0.45,
+	replaysSessionSampleRate: 0.5,
+	replaysOnErrorSampleRate: 1.0,
 
-		integrations: [
-			Sentry.consoleLoggingIntegration({
-				levels: ['log', 'debug', 'info', 'warn', 'error'],
-			}),
-			Sentry.mobileReplayIntegration({
-				maskAllText: false,
-				maskAllImages: false,
-				maskAllVectors: false,
-			}),
-		],
-	});
-}
+	integrations: [
+		Sentry.consoleLoggingIntegration({
+			levels: ['log', 'debug', 'info', 'warn', 'error'],
+		}),
+		Sentry.mobileReplayIntegration({
+			maskAllText: false,
+			maskAllImages: false,
+			maskAllVectors: false,
+		}),
+	],
+});
 
 async function setupInstallationId() {
 	const id = await getInstallationId();
