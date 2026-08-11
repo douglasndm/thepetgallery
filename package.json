@@ -63,7 +63,7 @@
 		"react-native-share": "^12.2.6",
 		"react-native-ui-datepicker": "^3.1.2",
 		"react-native-uuid": "^2.0.4",
-		"styled-components": "^6.1.19",
+		"styled-components": "^6.5.2",
 		"uuid": "^14.0.1"
 	},
 	"devDependencies": {
