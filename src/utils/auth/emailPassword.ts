@@ -1,4 +1,4 @@
-import { getAuth } from '@react-native-firebase/auth';
+import { getAuth, setLanguageCode } from '@react-native-firebase/auth';
 
 import { getCurrentLanguage } from '@app/i18n';
 
@@ -19,10 +19,9 @@ function isEmailValid(email: string): boolean {
 }
 
 async function setAuthLanguage(): Promise<void> {
-	const auth = getAuth();
 	const language = getCurrentLanguage();
 
-	await auth.setLanguageCode(language);
+	await setLanguageCode(getAuth(), language);
 }
 
 function getAuthErrorMessageKey(error: unknown, action: AuthAction): string {

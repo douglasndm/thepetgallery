@@ -3,6 +3,7 @@ import {
 	getFirestore,
 	collection,
 	doc,
+	setDoc,
 } from '@react-native-firebase/firestore';
 import { getMessaging } from '@react-native-firebase/messaging';
 import DeviceInfo from 'react-native-device-info';
@@ -27,7 +28,8 @@ async function registerLogin(): Promise<void> {
 		const app_version = await DeviceInfo.getVersion();
 		const app_build = await DeviceInfo.getBuildNumber();
 
-		await userDoc.set(
+		await setDoc(
+			userDoc,
 			{
 				device: {
 					device_brand,

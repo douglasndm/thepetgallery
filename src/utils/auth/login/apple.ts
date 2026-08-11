@@ -1,7 +1,7 @@
 import {
 	getAuth,
 	signInWithCredential,
-	FirebaseAuthTypes,
+	UserCredential,
 	AppleAuthProvider,
 } from '@react-native-firebase/auth';
 import {
@@ -11,7 +11,7 @@ import {
 import 'react-native-get-random-values';
 import { v4 as uuid } from 'uuid';
 
-async function signInWithApple(): Promise<FirebaseAuthTypes.UserCredential> {
+async function signInWithApple(): Promise<UserCredential> {
 	// Start the sign-in request
 	const appleAuthRequestResponse = await appleAuth.performRequest({
 		requestedOperation: appleAuth.Operation.LOGIN,
@@ -33,7 +33,7 @@ async function signInWithApple(): Promise<FirebaseAuthTypes.UserCredential> {
 	return signInWithCredential(getAuth(), appleCredential);
 }
 
-async function signInWithAppleAndroid(): Promise<FirebaseAuthTypes.UserCredential> {
+async function signInWithAppleAndroid(): Promise<UserCredential> {
 	// Generate secure, random values for state and nonce
 	const rawNonce = uuid();
 	const state = uuid();

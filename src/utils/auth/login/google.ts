@@ -1,7 +1,8 @@
 import {
 	getAuth,
-	FirebaseAuthTypes,
+	UserCredential,
 	GoogleAuthProvider,
+	signInWithCredential,
 } from '@react-native-firebase/auth';
 import {
 	GoogleSignin,
@@ -10,7 +11,7 @@ import {
 	statusCodes,
 } from '@react-native-google-signin/google-signin';
 
-async function signInWithGoogle(): Promise<FirebaseAuthTypes.UserCredential> {
+async function signInWithGoogle(): Promise<UserCredential> {
 	try {
 		// Check if your device supports Google Play
 		await GoogleSignin.hasPlayServices({
@@ -38,7 +39,7 @@ async function signInWithGoogle(): Promise<FirebaseAuthTypes.UserCredential> {
 			);
 
 			// Sign-in the user with the credential
-			return getAuth().signInWithCredential(googleCredential);
+			return signInWithCredential(getAuth(), googleCredential);
 		}
 
 		throw new Error('No ID token found');

@@ -1,7 +1,12 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Modal } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { doc, collection } from '@react-native-firebase/firestore';
+import {
+	doc,
+	getDoc,
+	setDoc,
+	collection,
+} from '@react-native-firebase/firestore';
 import { showMessage } from 'react-native-flash-message';
 import DatePicker from 'react-native-ui-datepicker';
 import { useTranslation } from 'react-i18next';
@@ -84,7 +89,7 @@ const VaccinesEdit: React.FC = () => {
 				const petDoc = doc(petsReference, petId);
 				const vaccinesCollection = collection(petDoc, 'vaccines');
 
-				await vaccinesCollection.doc(id).set({
+				await setDoc(doc(vaccinesCollection, id), {
 					name,
 					date_administered: showUseDate ? administeredDate : null,
 					next_dose_date: showUseNextDate ? nextDoseDate : null,
@@ -133,9 +138,10 @@ const VaccinesEdit: React.FC = () => {
 				const petDoc = doc(petsReference, petId);
 				const vaccinesCollection = collection(petDoc, 'vaccines');
 
-				const vac = await vaccinesCollection.doc(id).get();
+				const vaccineDocRef = doc(vaccinesCollection, id);
+				const vac = await getDoc(vaccineDocRef);
 
-				if (vac.exists) {
+				if (vac.exists()) {
 					const data = vac.data();
 
 					if (!data) return;

@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'expo-router';
-import {
-	getAuth,
-	onAuthStateChanged,
-	FirebaseAuthTypes,
-} from '@react-native-firebase/auth';
+import { getAuth, onAuthStateChanged, User } from '@react-native-firebase/auth';
 import { useTranslation } from 'react-i18next';
 
 import { captureException } from '@services/exceptionsHandler';
@@ -42,7 +38,7 @@ const Profile: React.FC = () => {
 	const router = useRouter();
 	const { t } = useTranslation();
 
-	const [user, setUser] = useState<FirebaseAuthTypes.User | null>();
+	const [user, setUser] = useState<User | null>();
 	const [isLoggingOut, setIsLoggingOut] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 

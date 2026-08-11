@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Dialog, Text, Button } from 'react-native-paper';
 import { useRouter } from 'expo-router';
+import { doc, deleteDoc } from '@react-native-firebase/firestore';
 import { showMessage } from 'react-native-flash-message';
 import { useTranslation } from 'react-i18next';
 
@@ -32,7 +33,8 @@ const DeletePet: React.FC<Props> = (props: Props) => {
 			const petsReference = await getUserPetsReference();
 
 			if (petsReference) {
-				await petsReference.doc(props.petId).delete();
+				const petDocRef = doc(petsReference, props.petId);
+				await deleteDoc(petDocRef);
 
 				showMessage({
 					message: t('pets.deletedSuccess'),

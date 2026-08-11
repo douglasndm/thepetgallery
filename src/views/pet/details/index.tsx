@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
+import { doc, getDoc } from '@react-native-firebase/firestore';
 import { useTranslation } from 'react-i18next';
 
 import { getCurrentLanguage } from '@app/i18n';
@@ -45,7 +46,8 @@ const PetDetails: React.FC = () => {
 			const petsReference = await getUserPetsReference();
 
 			if (petsReference) {
-				const petsSnapshot = await petsReference.doc(id).get();
+				const petDocRef = doc(petsReference, id);
+				const petsSnapshot = await getDoc(petDocRef);
 
 				if (petsSnapshot.exists()) {
 					const pet = petsSnapshot.data() as IPet;

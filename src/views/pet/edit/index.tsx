@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { doc, getDoc, updateDoc } from '@react-native-firebase/firestore';
 import RadioGroup, { RadioButtonProps } from 'react-native-radio-buttons-group';
 import DateTimePicker from 'react-native-ui-datepicker';
 import { showMessage } from 'react-native-flash-message';
@@ -63,7 +64,8 @@ const EditPet: React.FC = () => {
 			const petsReference = await getUserPetsReference();
 
 			if (petsReference) {
-				const petsSnapshot = await petsReference.doc(id).get();
+				const petDocRef = doc(petsReference, id);
+				const petsSnapshot = await getDoc(petDocRef);
 
 				if (petsSnapshot.exists()) {
 					const pet = petsSnapshot.data() as IPet;
@@ -107,7 +109,9 @@ const EditPet: React.FC = () => {
 			const petsReference = await getUserPetsReference();
 
 			if (petsReference) {
-				await petsReference.doc(id).update({
+				const petDocRef = doc(petsReference, id);
+
+				await updateDoc(petDocRef, {
 					name,
 					species,
 					breed: breed || null,

@@ -4,7 +4,9 @@ import {
 	collection,
 	doc,
 	getDocs,
-	FirebaseFirestoreTypes,
+	Timestamp,
+	QueryDocumentSnapshot,
+	DocumentData,
 } from '@react-native-firebase/firestore';
 import { useTranslation } from 'react-i18next';
 
@@ -45,8 +47,8 @@ const VaccinesList: React.FC = () => {
 	const [vaccines, setVaccines] = useState<IVaccine[]>([]);
 	type FirestoreVaccineData = {
 		name: string;
-		date_administered?: FirebaseFirestoreTypes.Timestamp | null;
-		next_dose_date?: FirebaseFirestoreTypes.Timestamp | null;
+		date_administered?: Timestamp | null;
+		next_dose_date?: Timestamp | null;
 		notes: string | null;
 	};
 
@@ -67,9 +69,7 @@ const VaccinesList: React.FC = () => {
 				const localVaccines: IVaccine[] = [];
 
 				snapshot.docs.forEach(
-					(
-						localDoc: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>
-					) => {
+					(localDoc: QueryDocumentSnapshot<DocumentData>) => {
 						const vaccine = localDoc.data() as FirestoreVaccineData;
 
 						localVaccines.push({

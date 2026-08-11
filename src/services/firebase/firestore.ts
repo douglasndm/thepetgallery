@@ -3,11 +3,12 @@ import {
 	getFirestore,
 	collection,
 	doc,
-	FirebaseFirestoreTypes,
+	CollectionReference,
+	DocumentData,
 } from '@react-native-firebase/firestore';
 import netInfo from '@react-native-community/netinfo';
 
-async function getUserPetsReference(): Promise<FirebaseFirestoreTypes.CollectionReference<FirebaseFirestoreTypes.DocumentData> | null> {
+async function getUserPetsReference(): Promise<CollectionReference<DocumentData> | null> {
 	const { isConnected, isInternetReachable } = await netInfo.fetch();
 	const user = getAuth().currentUser;
 

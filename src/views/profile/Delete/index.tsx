@@ -7,6 +7,8 @@ import {
 	getFirestore,
 	collection,
 	doc,
+	getDocs,
+	deleteDoc,
 } from '@react-native-firebase/firestore';
 import { showMessage } from 'react-native-flash-message';
 
@@ -42,27 +44,34 @@ const DeleteAccount: React.FC<Props> = (props: Props) => {
 
 			const usersCollection = collection(getFirestore(), 'users');
 			const userRef = doc(usersCollection, user.uid);
+			const petsCollection = collection(userRef, 'pets');
 
-			const petsSnapshot = await userRef.collection('pets').get();
+			const petsSnapshot = await getDocs(petsCollection);
+
 			for (const petDoc of petsSnapshot.docs) {
-				const vaccinesSnapshot = await petDoc.ref
-					.collection('vaccines')
-					.get();
+				const vaccinesCollection = collection(petDoc.ref, 'vaccines');
+				const vaccinesSnapshot = await getDocs(vaccinesCollection);
+
 				for (const vaccineDoc of vaccinesSnapshot.docs) {
-					await vaccineDoc.ref.delete();
+					await deleteDoc(vaccineDoc.ref);
 				}
 
-				const medicationsSnapshot = await petDoc.ref
-					.collection('medications')
-					.get();
+				const medicationsCollection = collection(
+					petDoc.ref,
+					'medications'
+				);
+				const medicationsSnapshot = await getDocs(
+					medicationsCollection
+				);
+
 				for (const medicationDoc of medicationsSnapshot.docs) {
-					await medicationDoc.ref.delete();
+					await deleteDoc(medicationDoc.ref);
 				}
 
-				await petDoc.ref.delete();
+				await deleteDoc(petDoc.ref);
 			}
 
-			await userRef.delete();
+			await deleteDoc(userRef);
 
 			await deleteUser(user);
 

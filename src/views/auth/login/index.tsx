@@ -1,7 +1,13 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { Platform } from 'react-native';
 import { useRouter } from 'expo-router';
-import { getAuth, onAuthStateChanged } from '@react-native-firebase/auth';
+import {
+	getAuth,
+	onAuthStateChanged,
+	signInWithEmailAndPassword,
+	createUserWithEmailAndPassword,
+	sendPasswordResetEmail,
+} from '@react-native-firebase/auth';
 import { useTranslation } from 'react-i18next';
 import { showMessage } from 'react-native-flash-message';
 import {
@@ -146,14 +152,16 @@ const Login: React.FC = () => {
 			const auth = getAuth();
 
 			if (mode === 'signUp') {
-				await auth.createUserWithEmailAndPassword(
+				await createUserWithEmailAndPassword(
+					auth,
 					normalizedEmail,
 					password.trim()
 				);
 
 				showAuthMessage(t('login.success.accountCreated'), 'success');
 			} else {
-				await auth.signInWithEmailAndPassword(
+				await signInWithEmailAndPassword(
+					getAuth(),
 					normalizedEmail,
 					password.trim()
 				);
@@ -192,7 +200,7 @@ const Login: React.FC = () => {
 			setIsSigning(true);
 
 			await setAuthLanguage();
-			await getAuth().sendPasswordResetEmail(normalizedEmail);
+			await sendPasswordResetEmail(getAuth(), normalizedEmail);
 
 			showAuthMessage(t('login.success.resetPasswordSent'), 'success');
 		} catch (error) {

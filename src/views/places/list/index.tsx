@@ -4,7 +4,8 @@ import {
 	getFirestore,
 	collection,
 	getDocs,
-	FirebaseFirestoreTypes,
+	QueryDocumentSnapshot,
+	DocumentData,
 } from '@react-native-firebase/firestore';
 import Ionicons from '@react-native-vector-icons/ionicons/static';
 import { useTranslation } from 'react-i18next';
@@ -49,9 +50,7 @@ const PlacesList: React.FC = () => {
 			const localPlaces: IAdoptionPlace[] = [];
 
 			placesResponse.forEach(
-				(
-					doc: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>
-				) => {
+				(doc: QueryDocumentSnapshot<DocumentData>) => {
 					localPlaces.push(doc.data() as IAdoptionPlace);
 				}
 			);

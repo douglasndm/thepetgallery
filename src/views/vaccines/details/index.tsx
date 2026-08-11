@@ -4,7 +4,7 @@ import {
 	doc,
 	getDoc,
 	collection,
-	FirebaseFirestoreTypes,
+	Timestamp,
 } from '@react-native-firebase/firestore';
 import { useTranslation } from 'react-i18next';
 
@@ -39,8 +39,8 @@ const VaccinesDetails: React.FC = () => {
 	const [vaccine, setVaccine] = useState<IVaccine>();
 	type FirestoreVaccineData = {
 		name: string;
-		date_administered?: FirebaseFirestoreTypes.Timestamp | null;
-		next_dose_date?: FirebaseFirestoreTypes.Timestamp | null;
+		date_administered?: Timestamp | null;
+		next_dose_date?: Timestamp | null;
 		notes: string | null;
 	};
 
@@ -58,7 +58,8 @@ const VaccinesDetails: React.FC = () => {
 				const petDoc = doc(petsReference, petId);
 				const vaccinesCollection = collection(petDoc, 'vaccines');
 
-				const vaccineDoc = await getDoc(vaccinesCollection.doc(id));
+				const vaccineDocRef = doc(vaccinesCollection, id);
+				const vaccineDoc = await getDoc(vaccineDocRef);
 
 				if (vaccineDoc.exists()) {
 					const data = vaccineDoc.data() as

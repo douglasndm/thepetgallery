@@ -1,7 +1,14 @@
 type plugins = (string | [] | [string] | [string, any])[];
 
 const configs: plugins = [
-	'@react-native-firebase/app',
+	[
+		'@react-native-firebase/app',
+		{
+			ios: {
+				disableSPM: true,
+			},
+		},
+	],
 	'@react-native-firebase/auth',
 	'@react-native-google-signin/google-signin',
 	'@react-native-vector-icons/ionicons',
