@@ -20,6 +20,11 @@ const configs: plugins = [
 			url: 'https://exceptions.douglasndm.dev/',
 			project: 'thepetgallery',
 			organization: 'varlabs',
+			options: {
+				dsn: process.env.SENTRY_DSN,
+				environment: process.env.APP_VARIANT,
+				tracesSampleRate: 1.0,
+			},
 		},
 	],
 	'expo-apple-authentication',
