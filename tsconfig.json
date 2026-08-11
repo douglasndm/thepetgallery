@@ -21,13 +21,18 @@
 			"@views/*": ["./src/views/*"],
 			"@utils/*": ["./src/utils/*"]
 		},
-
 		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true
 	},
-	"include": ["**/*.ts", "**/*.tsx", "**/*.json"],
+	"include": [
+		"**/*.ts",
+		"**/*.tsx",
+		"**/*.json",
+		".expo/types/**/*.ts",
+		"expo-env.d.ts"
+	],
 	"exclude": [
 		"**/node_modules",
 		"**/Pods",
