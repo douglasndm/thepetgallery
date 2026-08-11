@@ -4,6 +4,8 @@ import { showMessage } from 'react-native-flash-message';
 
 import i18n from '@app/i18n';
 
+import { captureException } from '@services/exceptionsHandler';
+
 async function saveImageOnGallery(path: string): Promise<void> {
 	const albumName = 'The Pet Gallery';
 	const { granted, accessPrivileges } = await requestPermissionsAsync(false, [
@@ -53,7 +55,11 @@ async function saveImageOnGallery(path: string): Promise<void> {
 			type: 'success',
 		});
 	} catch (error) {
-		console.error(error);
+		captureException({
+			error,
+			showAlert: false,
+		});
+
 		showMessage({
 			message: String(i18n.t('images.saveError')),
 			type: 'danger',
