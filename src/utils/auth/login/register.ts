@@ -5,7 +5,7 @@ import {
 	doc,
 	setDoc,
 } from '@react-native-firebase/firestore';
-import { getMessaging } from '@react-native-firebase/messaging';
+import { getMessaging, getToken } from '@react-native-firebase/messaging';
 import DeviceInfo from 'react-native-device-info';
 
 async function registerLogin(): Promise<void> {
@@ -23,7 +23,7 @@ async function registerLogin(): Promise<void> {
 		const device_mac = await DeviceInfo.getMacAddress();
 
 		const user_ip = await DeviceInfo.getIpAddress();
-		const messagingToken = await getMessaging().getToken();
+		const messagingToken = await getToken(getMessaging());
 
 		const app_version = await DeviceInfo.getVersion();
 		const app_build = await DeviceInfo.getBuildNumber();
