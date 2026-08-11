@@ -46,7 +46,18 @@ export default ({ config }: ConfigContext): ExpoConfig =>
 		plugins: pluginsConfigs,
 		extra: extraConfigs,
 		updates: {
-			url: 'https://u.expo.dev/3ce8ca86-09ca-4432-9f90-0468e97b1684',
+			url: 'https://updates.douglasndm.dev/manifest',
+			codeSigningMetadata: process.env.DISABLE_CODE_SIGNING
+				? undefined
+				: { keyid: 'main', alg: 'rsa-v1_5-sha256' },
+			codeSigningCertificate: process.env.DISABLE_CODE_SIGNING
+				? undefined
+				: './certs/certificate.pem',
+			enabled: true,
+			requestHeaders: {
+				'expo-channel-name': process.env.APP_VARIANT ?? 'production',
+				'expo-app-id': 'bc10c763-45b8-4802-90ed-c3602dcb2e4e',
+			},
 		},
 
 		buildCacheProvider: 'eas',
