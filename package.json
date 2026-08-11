@@ -13,7 +13,6 @@
 		"test": "jest"
 	},
 	"dependencies": {
-		"@expo/vector-icons": "^15.1.1",
 		"@invertase/react-native-apple-authentication": "^2.5.1",
 		"@react-native-community/netinfo": "^12.0.1",
 		"@react-native-firebase/analytics": "^24.0.0",
@@ -61,7 +60,9 @@
 		"react-native-ui-datepicker": "^3.1.2",
 		"react-native-uuid": "^2.0.4",
 		"styled-components": "^6.1.19",
-		"uuid": "^14.0.1"
+		"uuid": "^14.0.1",
+		"@react-native-vector-icons/ionicons": "^13.1.2",
+		"@react-native-vector-icons/material-design-icons": "latest"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^2.0.4",

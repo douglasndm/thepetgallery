@@ -4,6 +4,8 @@ const configs: plugins = [
 	'@react-native-firebase/app',
 	'@react-native-firebase/auth',
 	'@react-native-google-signin/google-signin',
+	'@react-native-vector-icons/ionicons',
+	'@react-native-vector-icons/material-design-icons',
 	[
 		'@sentry/react-native/expo',
 		{

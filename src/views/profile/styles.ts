@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { Surface } from 'react-native-paper';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@react-native-vector-icons/ionicons/static';
 
 export const Container = styled.ScrollView.attrs(() => ({
 	contentInsetAdjustmentBehavior: 'automatic',

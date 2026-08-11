@@ -6,7 +6,7 @@ import {
 	getDocs,
 	FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@react-native-vector-icons/ionicons/static';
 import { useTranslation } from 'react-i18next';
 
 import { organizeData } from '@utils/adoptionsPlaces/organizeData';
