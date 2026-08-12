@@ -174,9 +174,6 @@ importers:
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@9.39.5(supports-color@8.1.1))
-      '@sentry/cli':
-        specifier: 2.58.4
-        version: 2.58.4(supports-color@8.1.1)
       '@types/react':
         specifier: ~19.2.14
         version: 19.2.18
