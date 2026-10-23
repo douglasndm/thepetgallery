@@ -16,7 +16,6 @@ const configs: plugins = [
 	[
 		'@sentry/react-native/expo',
 		{
-			useNativeInit: true,
 			url: 'https://exceptions.douglasndm.dev/',
 			project: 'thepetgallery',
 			organization: 'varlabs',
@@ -67,6 +66,7 @@ const configs: plugins = [
 	],
 	'expo-router',
 	'expo-secure-store',
+	'expo-status-bar',
 	[
 		'react-native-google-mobile-ads',
 		{
