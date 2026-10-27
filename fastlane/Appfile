@@ -1,0 +1,7 @@
+# iOS
+app_identifier("dev.douglasndm.thepetgallery")
+team_id("F3ZQ4BPF29")
+
+# Android
+package_name("dev.douglasndm.thepetgallery")
+json_key_file(File.expand_path(ENV["PLAY_JSON_KEY_PATH"], File.expand_path("..", __dir__))) unless ENV["PLAY_JSON_KEY_PATH"].to_s.empty?

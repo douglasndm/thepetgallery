@@ -1,0 +1,288 @@
+# Fastfile padrao dos apps Expo (fonte: deploy-helper/templates/expo-app).
+# O comportamento e o mesmo em todo app; so o bloco "Configuracao do app" muda.
+#
+# Envio (nunca builda: o build e sempre pelos scripts build:ios / build:android):
+#   bundle exec fastlane ios release                     # ultimo build local -> TestFlight
+#   bundle exec fastlane ios release store:true          # -> App Store, enviado para revisao
+#   bundle exec fastlane android release                 # ultimo build local -> Play (track internal)
+#   bundle exec fastlane android release track:production # producao fica como rascunho no Play Console
+#   bundle exec fastlane release_all                     # android e depois ios, com as mesmas opcoes
+#   ... ipa:<caminho> / aab:<caminho>                    # envia outro artefato em vez do ultimo build
+#
+# Notas de versao (ficam em fastlane/metadata e vao no proximo release):
+#   bundle exec fastlane update_patch_notes message:"..." # mesmo texto em todos os idiomas
+#   bundle exec fastlane update_patch_notes notes_pt:"..." notes_en:"..." notes_es:"..."
+#   bundle exec fastlane update_patch_notes              # sem texto: volta ao `notes` de listing_texts.js
+#   O release aceita as mesmas opcoes de texto; sem elas, envia o que ja esta em metadata.
+#
+# Ficha da loja (nome, descricoes, keywords; fonte: store_listing/listing_texts.js):
+#   bundle exec fastlane <ios|android> upload_listing [validate_only:true]
+#   bundle exec fastlane <ios|android> download_listing  # o publicado -> store_listing_current/
+
+require "json"
+require "open3"
+require "tmpdir"
+
+default_platform(:android)
+
+# ---------------------------------------------------------------- Configuracao do app
+
+IOS_BUNDLE_ID = "dev.douglasndm.thepetgallery".freeze
+ANDROID_PACKAGE = "dev.douglasndm.thepetgallery".freeze
+# Respostas do envio para revisao (App Store)
+SUBMISSION_INFORMATION = { export_compliance_uses_encryption: false }.freeze
+
+# ---------------------------------------------------------------- Caminhos
+
+# `__dir__` vale "." dentro do Fastfile e o fastlane troca de diretorio ao rodar as acoes,
+# entao todo caminho precisa ser absoluto.
+FASTLANE_DIR = File.expand_path(__dir__)
+ROOT = File.expand_path("..", FASTLANE_DIR)
+METADATA_DIR = File.join(FASTLANE_DIR, "metadata")
+LISTING_DIR = File.join(FASTLANE_DIR, "store_listing")
+APP_NAME = JSON.parse(File.read(File.join(ROOT, "package.json")))["name"]
+
+# Caminhos relativos do .env valem a partir da raiz do projeto, nao da pasta fastlane/
+%w[ASC_KEY_PATH PLAY_JSON_KEY_PATH].each do |name|
+  ENV[name] = File.expand_path(ENV[name], ROOT) unless ENV[name].to_s.empty?
+end
+
+# Locales e notas padrao: fonte unica em store_listing/locales.js e listing_texts.js
+LISTING = begin
+  script = <<~JS
+    const dir = process.argv[1];
+    const texts = require(dir + "/listing_texts");
+    const notes = Object.fromEntries(Object.entries(texts).map(([k, v]) => [k, v.notes]));
+    console.log(JSON.stringify({ locales: require(dir + "/locales"), notes }));
+  JS
+  out, status = Open3.capture2("node", "-e", script, LISTING_DIR)
+  raise "Nao foi possivel ler store_listing/listing_texts.js e locales.js" unless status.success?
+
+  JSON.parse(out).freeze
+end
+
+# ---------------------------------------------------------------- helpers
+
+# Mesma regra dos scripts build-*-local.js: a pasta builds/ fica na raiz do workspace
+# (primeira pasta acima do app com um lockfile).
+def workspace_root
+  lockfiles = %w[pnpm-lock.yaml yarn.lock package-lock.json bun.lock bun.lockb]
+  dir = ROOT
+  loop do
+    return dir if lockfiles.any? { |f| File.exist?(File.join(dir, f)) }
+    parent = File.dirname(dir)
+    return ROOT if parent == dir
+
+    dir = parent
+  end
+end
+
+# Artefato passado (ipa:/aab:) ou o ultimo gerado por build:<plataforma>.
+def artifact!(platform, explicit)
+  path = explicit
+  unless path
+    record = File.join(workspace_root, "builds", ".#{APP_NAME}-#{platform}-last-build.json")
+    unless File.exist?(record)
+      UI.user_error!("Nenhum build de #{platform} encontrado. Rode o script build:#{platform} antes " \
+                     "ou passe #{platform == 'ios' ? 'ipa' : 'aab'}:<caminho>.")
+    end
+    path = JSON.parse(File.read(record))["artifact"]
+  end
+  path = File.expand_path(path, ROOT)
+  UI.user_error!("Artefato nao encontrado: #{path}") unless File.exist?(path)
+  path
+end
+
+def asc_api_key
+  missing = %w[ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_PATH].select { |name| ENV[name].to_s.empty? }
+  UI.user_error!("Configure #{missing.join(', ')} no .env do projeto") unless missing.empty?
+
+  app_store_connect_api_key(
+    key_id: ENV["ASC_KEY_ID"],
+    issuer_id: ENV["ASC_ISSUER_ID"],
+    key_filepath: ENV["ASC_KEY_PATH"],
+    in_house: false,
+  )
+end
+
+# `deliver download_metadata` roda via CLI e precisa da chave em arquivo JSON
+def asc_api_key_json_path
+  asc_api_key
+  path = File.join(Dir.mktmpdir("asc"), "api_key.json")
+  File.write(path, JSON.generate(
+    key_id: ENV["ASC_KEY_ID"],
+    issuer_id: ENV["ASC_ISSUER_ID"],
+    key: File.read(ENV["ASC_KEY_PATH"]),
+  ))
+  path
+end
+
+def generate_listing!
+  sh("node", File.join(LISTING_DIR, "generate.js"))
+end
+
+# Texto pedido para um locale: message: vale para todos; senao notes_<idioma>.
+def custom_note(locale, options)
+  per_language = {
+    "pt" => options[:notes_pt],
+    "en" => options[:notes_en],
+    "es" => options[:notes_es],
+  }
+  text = options[:message] || per_language[locale.split("-").first]
+  text.to_s.strip.empty? ? nil : text.to_s.strip
+end
+
+# Grava as notas em metadata/ (iOS <locale>/release_notes.txt, Android <locale>/changelogs/default.txt).
+# Texto pedido sempre grava; sem texto, grava o padrao so com restore: true ou se o arquivo nao existe.
+def write_patch_notes!(options, restore:)
+  LISTING["notes"].each do |locale, default_text|
+    text = custom_note(locale, options)
+    ios = LISTING["locales"]["ios"].fetch(locale, []).map do |dir|
+      [File.join(METADATA_DIR, dir, "release_notes.txt"), 4000]
+    end
+    android = LISTING["locales"]["android"].fetch(locale, []).map do |dir|
+      [File.join(METADATA_DIR, "android", dir, "changelogs", "default.txt"), 500]
+    end
+    (ios + android).each do |file, limit|
+      next if text.nil? && !restore && File.exist?(file)
+
+      FileUtils.mkdir_p(File.dirname(file))
+      File.write(file, (text || default_text)[0, limit])
+    end
+  end
+end
+
+def ios_release_notes
+  LISTING["locales"]["ios"].values.flatten.uniq.filter_map do |locale|
+    file = File.join(METADATA_DIR, locale, "release_notes.txt")
+    [locale, File.read(file).strip] if File.exist?(file)
+  end.to_h
+end
+
+# ---------------------------------------------------------------- Notas de versao
+
+desc "Reescreve as notas de versao em metadata/ (sem texto, volta ao padrao de listing_texts.js)"
+lane :update_patch_notes do |options|
+  write_patch_notes!(options, restore: true)
+  UI.success("Notas de versao atualizadas")
+end
+
+# ---------------------------------------------------------------- Android
+
+platform :android do
+  desc "Envia o AAB (ultimo build ou aab:) para o Google Play com as notas de metadata/"
+  lane :release do |options|
+    aab = artifact!("android", options[:aab])
+    track = options[:track] || "internal"
+    write_patch_notes!(options, restore: false)
+
+    upload_to_play_store(
+      package_name: ANDROID_PACKAGE,
+      track: track,
+      aab: aab,
+      metadata_path: File.join(METADATA_DIR, "android"),
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      release_status: track == "production" ? "draft" : "completed",
+      changes_not_sent_for_review: track == "production",
+    )
+    UI.success("#{File.basename(aab)} enviado para '#{track}'")
+  end
+
+  desc "Baixa a ficha publicada no Google Play para store_listing_current/android"
+  lane :download_listing do
+    download_from_play_store(
+      package_name: ANDROID_PACKAGE,
+      metadata_path: File.join(FASTLANE_DIR, "store_listing_current/android"),
+    )
+  end
+
+  desc "Envia titulo, descricao curta e completa de store_listing/android (sem binario, imagens ou changelogs)"
+  lane :upload_listing do |options|
+    generate_listing!
+
+    upload_to_play_store(
+      validate_only: options[:validate_only] ? true : false,
+      package_name: ANDROID_PACKAGE,
+      metadata_path: File.join(LISTING_DIR, "android"),
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+    )
+  end
+end
+
+# ---------------------------------------------------------------- iOS
+
+platform :ios do
+  desc "Envia o IPA (ultimo build ou ipa:) para o TestFlight, ou para revisao da App Store com store:true"
+  lane :release do |options|
+    ipa = artifact!("ios", options[:ipa])
+    api_key = asc_api_key
+    write_patch_notes!(options, restore: false)
+
+    if options[:store]
+      upload_to_app_store(
+        api_key: api_key,
+        app_identifier: IOS_BUNDLE_ID,
+        ipa: ipa,
+        metadata_path: METADATA_DIR,
+        skip_screenshots: true,
+        ignore_language_directory_validation: true,
+        submit_for_review: true,
+        automatic_release: false,
+        force: true,
+        precheck_include_in_app_purchases: false,
+        submission_information: SUBMISSION_INFORMATION,
+      )
+    else
+      notes = ios_release_notes
+      upload_to_testflight(
+        api_key: api_key,
+        ipa: ipa,
+        skip_waiting_for_build_processing: true,
+        changelog: notes["en-US"] || notes.values.first,
+        localized_build_info: notes.transform_values { |text| { whats_new: text } },
+      )
+    end
+    UI.success("#{File.basename(ipa)} enviado para #{options[:store] ? 'revisao da App Store' : 'TestFlight'}")
+  end
+
+  desc "Baixa a ficha publicada na App Store para store_listing_current/ios"
+  lane :download_listing do
+    sh("fastlane", "deliver", "download_metadata", "--force",
+       "--app_identifier", IOS_BUNDLE_ID,
+       "--api_key_path", asc_api_key_json_path,
+       "--metadata_path", File.join(FASTLANE_DIR, "store_listing_current/ios"))
+  end
+
+  desc "Envia nome, subtitulo, keywords, descricao e texto promocional de store_listing/ios (sem binario)"
+  lane :upload_listing do |options|
+    generate_listing!
+
+    upload_to_app_store(
+      verify_only: options[:validate_only] ? true : false,
+      api_key: asc_api_key,
+      app_identifier: IOS_BUNDLE_ID,
+      metadata_path: File.join(LISTING_DIR, "ios"),
+      skip_binary_upload: true,
+      skip_screenshots: true,
+      skip_app_version_update: false,
+      submit_for_review: false,
+      run_precheck_before_submit: false,
+      ignore_language_directory_validation: true,
+      force: true,
+    )
+  end
+end
+
+# ---------------------------------------------------------------- Ambas
+
+desc "Envio para Android e iOS (em sequencia, com as mesmas opcoes)"
+lane :release_all do |options|
+  Fastlane::LaneManager.cruise_lane("android", "release", options)
+  Fastlane::LaneManager.cruise_lane("ios", "release", options)
+end

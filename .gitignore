@@ -4,6 +4,11 @@
 google-services.json
 GoogleService-Info.plist
 
+configs/fastlane-autoupload-playstore.json
+configs/fastlane-autoupload-playstore.json
+# Chaves de API do App Store Connect
+configs/*.p8
+
 /android/
 /ios/
 
@@ -100,3 +105,8 @@ expo-env.d.ts
 
 # Code signing private key (server-side secret, never commit it)
 private-key.pem
+fastlane/report.xml
+fastlane/store_listing/ios/
+fastlane/store_listing/android/
+fastlane/store_listing_current/
+builds/
