@@ -752,7 +752,8 @@ async function main() {
 
 	console.log(`\nPara enviar ao App Store Connect/TestFlight: bundle exec fastlane ios release ipa:${dest}`);
 	console.log(`sha256 ${sha256(fs.readFileSync(dest))}`);
-	// Lido pelo Deploy Helper para encadear o upload.
+	// Lidos pelo Deploy Helper: o artefato encadeia o upload; o fingerprint fica no histórico de builds.
+	if (hash) console.log(`DEPLOY_FINGERPRINT=${hash}`);
 	console.log(`DEPLOY_ARTIFACT=${dest}`);
 }
 

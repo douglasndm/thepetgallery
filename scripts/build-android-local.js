@@ -542,7 +542,8 @@ async function main() {
 		console.log(`\nPara enviar: bundle exec fastlane android release aab:${dest}`);
 	}
 	console.log(`sha256 ${crypto.createHash('sha256').update(fs.readFileSync(dest)).digest('hex')}`);
-	// Lido pelo Deploy Helper para encadear o upload.
+	// Lidos pelo Deploy Helper: o artefato encadeia o upload; o fingerprint fica no histórico de builds.
+	if (hash) console.log(`DEPLOY_FINGERPRINT=${hash}`);
 	console.log(`DEPLOY_ARTIFACT=${dest}`);
 }
 
