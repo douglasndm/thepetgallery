@@ -40,7 +40,9 @@ FASTLANE_DIR = File.expand_path(__dir__)
 ROOT = File.expand_path("..", FASTLANE_DIR)
 METADATA_DIR = File.join(FASTLANE_DIR, "metadata")
 LISTING_DIR = File.join(FASTLANE_DIR, "store_listing")
-APP_NAME = JSON.parse(File.read(File.join(ROOT, "package.json")))["name"]
+# Nome do package.json sem escopo de pacote ("@playtrax/mobile" vira "playtrax-mobile"), igual aos
+# scripts build-*-local.js.
+APP_NAME = JSON.parse(File.read(File.join(ROOT, "package.json")))["name"].delete_prefix("@").tr("/", "-")
 
 # Caminhos relativos do .env valem a partir da raiz do projeto, nao da pasta fastlane/
 %w[ASC_KEY_PATH PLAY_JSON_KEY_PATH].each do |name|

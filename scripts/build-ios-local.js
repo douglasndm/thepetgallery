@@ -29,7 +29,11 @@ const crypto = require('crypto');
 const { spawnSync } = require('child_process');
 
 const APP_DIR = path.resolve(__dirname, '..');
-const APP_NAME = JSON.parse(fs.readFileSync(path.join(APP_DIR, 'package.json'), 'utf8')).name;
+// Nome do package.json sem escopo de pacote: "@playtrax/mobile" vira "playtrax-mobile", porque a barra
+// criaria uma subpasta inexistente em builds/. Mesma regra do Fastfile.
+const APP_NAME = JSON.parse(fs.readFileSync(path.join(APP_DIR, 'package.json'), 'utf8'))
+	.name.replace(/^@/, '')
+	.replace(/\//g, '-');
 const IOS_DIR = path.join(APP_DIR, 'ios');
 const FINGERPRINT_MARKER = path.join(IOS_DIR, '.local-build-fingerprint');
 const PODS_MARKER = path.join(IOS_DIR, '.local-build-pods-hash');
