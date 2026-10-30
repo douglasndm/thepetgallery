@@ -18,6 +18,8 @@
 		"release:all": "bundle exec fastlane release_all",
 		"publish:ota": "node scripts/publish-ota.js",
 		"store:patch-notes": "bundle exec fastlane update_patch_notes",
+		"store:patch-notes:upload:ios": "bundle exec fastlane ios upload_patch_notes",
+		"store:patch-notes:upload:android": "bundle exec fastlane android upload_patch_notes",
 		"store:listing": "node fastlane/store_listing/generate.js",
 		"store:listing:upload:ios": "bundle exec fastlane ios upload_listing",
 		"store:listing:upload:android": "bundle exec fastlane android upload_listing",

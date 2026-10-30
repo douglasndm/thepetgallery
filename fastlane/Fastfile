@@ -14,6 +14,8 @@
 #   bundle exec fastlane update_patch_notes notes_pt:"..." notes_en:"..." notes_es:"..."
 #   bundle exec fastlane update_patch_notes              # sem texto: volta ao `notes` de listing_texts.js
 #   O release aceita as mesmas opcoes de texto; sem elas, envia o que ja esta em metadata.
+#   bundle exec fastlane <ios|android> upload_patch_notes [message:"..."] # so as notas, para a loja, sem binario
+#   (iOS: versao editavel do App Store Connect; Android: release do ultimo build, ou version_code:/track:)
 #
 # Ficha da loja (nome, descricoes, keywords; fonte: store_listing/listing_texts.js):
 #   bundle exec fastlane <ios|android> upload_listing [validate_only:true]
@@ -154,6 +156,12 @@ def write_patch_notes!(options, restore:)
   end
 end
 
+# Registro do ultimo build local da plataforma (builds/.<app>-<plataforma>-last-build.json), ou nil.
+def last_build(platform)
+  record = File.join(workspace_root, "builds", ".#{APP_NAME}-#{platform}-last-build.json")
+  File.exist?(record) ? JSON.parse(File.read(record)) : nil
+end
+
 def ios_release_notes
   LISTING["locales"]["ios"].values.flatten.uniq.filter_map do |locale|
     file = File.join(METADATA_DIR, locale, "release_notes.txt")
@@ -190,6 +198,29 @@ platform :android do
       changes_not_sent_for_review: track == "production",
     )
     UI.success("#{File.basename(aab)} enviado para '#{track}'")
+  end
+
+  desc "Envia so as notas de metadata/ para o release do Google Play (sem binario), no version_code do ultimo build"
+  lane :upload_patch_notes do |options|
+    track = options[:track] || "internal"
+    version_code = options[:version_code] || last_build("android")&.fetch("build", nil)
+    UI.user_error!("Informe version_code:<numero> ou rode build:android antes") if version_code.to_s.empty?
+    write_patch_notes!(options, restore: false)
+
+    upload_to_play_store(
+      package_name: ANDROID_PACKAGE,
+      track: track,
+      version_code: version_code.to_i,
+      metadata_path: File.join(METADATA_DIR, "android"),
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      release_status: track == "production" ? "draft" : "completed",
+      changes_not_sent_for_review: track == "production",
+    )
+    UI.success("Notas enviadas para '#{track}' (versionCode #{version_code})")
   end
 
   desc "Baixa a ficha publicada no Google Play para store_listing_current/android"
@@ -251,6 +282,26 @@ platform :ios do
       )
     end
     UI.success("#{File.basename(ipa)} enviado para #{options[:store] ? 'revisao da App Store' : 'TestFlight'}")
+  end
+
+  desc "Envia so as notas de metadata/ para a versao editavel da App Store (sem binario nem revisao)"
+  lane :upload_patch_notes do |options|
+    api_key = asc_api_key
+    write_patch_notes!(options, restore: false)
+
+    upload_to_app_store(
+      api_key: api_key,
+      app_identifier: IOS_BUNDLE_ID,
+      metadata_path: METADATA_DIR,
+      skip_binary_upload: true,
+      skip_screenshots: true,
+      skip_app_version_update: false,
+      submit_for_review: false,
+      run_precheck_before_submit: false,
+      ignore_language_directory_validation: true,
+      force: true,
+    )
+    UI.success("Notas de versao enviadas para a App Store")
   end
 
   desc "Baixa a ficha publicada na App Store para store_listing_current/ios"
