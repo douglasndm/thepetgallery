@@ -23,6 +23,7 @@ ErrorUtils.setGlobalHandler((error, isFatal) => {
 import '@services/sentry';
 import { setupInstallationId } from '@services/sentry';
 import '@utils/permissions/notifications';
+import { useAutoApplyUpdates } from '@utils/updates/useAutoApplyUpdates';
 import '@app/i18n';
 
 import CurrentPhotoContext from '@contexts/currentPhoto';
@@ -39,6 +40,8 @@ const navigationIntegration = Sentry.reactNavigationIntegration({
 });
 
 const RootLayout: React.FC = () => {
+	useAutoApplyUpdates();
+
 	const navigationRef = useNavigationContainerRef();
 	const pathname = usePathname();
 	const previousPathRef = useRef<string | undefined>(undefined);
