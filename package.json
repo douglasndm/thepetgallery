@@ -25,7 +25,7 @@
 		"store:listing:upload:android": "bundle exec fastlane android upload_listing",
 		"store:listing:download:ios": "bundle exec fastlane ios download_listing",
 		"store:listing:download:android": "bundle exec fastlane android download_listing",
-		"prebuild:dev": "DISABLE_CODE_SIGNING=1 npx expo prebuild --clean",
+		"prebuild:dev": "APP_VARIANT=development DISABLE_CODE_SIGNING=1 npx expo prebuild --clean",
 		"ios:dev": "DISABLE_CODE_SIGNING=1 expo run:ios",
 		"android:dev": "DISABLE_CODE_SIGNING=1 node scripts/build-android-dev.js",
 		"start:dev": "DISABLE_CODE_SIGNING=1 expo start --dev-client"
