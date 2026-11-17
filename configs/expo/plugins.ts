@@ -1,14 +1,7 @@
 type plugins = (string | [] | [string] | [string, any])[];
 
 const configs: plugins = [
-	[
-		'@react-native-firebase/app',
-		{
-			ios: {
-				disableSPM: true,
-			},
-		},
-	],
+	'@react-native-firebase/app',
 	'@react-native-firebase/auth',
 	'@react-native-google-signin/google-signin',
 	'@react-native-vector-icons/ionicons',
@@ -38,12 +31,12 @@ const configs: plugins = [
 		{
 			ios: {
 				buildReactNativeFromSource: true,
-				useFrameworks: 'static',
+				useFrameworks: 'dynamic',
 				deploymentTarget: '16.4',
-				forceStaticLinking: ['RNFBApp'],
 			},
 		},
 	],
+	'./configs/expo/withFirebaseLinkerFix',
 	'expo-font',
 	'expo-image',
 	[
