@@ -21,9 +21,13 @@ const catLogo = Platform.select({
 
 interface Props {
 	title?: string;
+	showBack?: boolean;
 }
 
-const Header: React.FC<Props> = ({ title = 'The Pet Gallery' }: Props) => {
+const Header: React.FC<Props> = ({
+	title = 'The Pet Gallery',
+	showBack = false,
+}: Props) => {
 	const insets = useSafeAreaInsets();
 	const router = useRouter();
 	const navigation = useNavigation();
@@ -31,6 +35,7 @@ const Header: React.FC<Props> = ({ title = 'The Pet Gallery' }: Props) => {
 
 	const animRef = useRef<LottieView>(null);
 	const canGoBack =
+		showBack ||
 		navigation.canGoBack() ||
 		(rootNavigationState?.index ?? 0) > 0 ||
 		(rootNavigationState?.routes?.length ?? 0) > 1;
@@ -41,7 +46,11 @@ const Header: React.FC<Props> = ({ title = 'The Pet Gallery' }: Props) => {
 				<Side>
 					{canGoBack && (
 						<BackButton
-							onPress={() => router.back()}
+							onPress={() =>
+								router.canGoBack()
+									? router.back()
+									: router.replace('/')
+							}
 							hitSlop={10}
 							accessibilityRole="button"
 						>

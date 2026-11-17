@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'expo-router';
 import { NativeTabs } from 'expo-router/unstable-native-tabs';
 import {
 	getAuth,
@@ -9,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 
 const TabsLayout: React.FC = () => {
 	const { t } = useTranslation();
+	const router = useRouter();
 	const [user, setUser] = useState<FirebaseAuthTypes.User | null>(
 		getAuth().currentUser
 	);
@@ -22,7 +24,19 @@ const TabsLayout: React.FC = () => {
 	}, []);
 
 	return (
-		<NativeTabs>
+		<NativeTabs
+			screenListeners={{
+				tabPress: e => {
+					// Only the pets tab is ever disabled (when signed out)
+					if (e.data?.isPrevented) {
+						router.push({
+							pathname: '/login',
+							params: { redirectTo: 'pets' },
+						});
+					}
+				},
+			}}
+		>
 			<NativeTabs.Trigger name="dogs">
 				<NativeTabs.Trigger.Icon sf="dog.fill" md="pets" />
 				<NativeTabs.Trigger.Label>
@@ -44,17 +58,15 @@ const TabsLayout: React.FC = () => {
 				</NativeTabs.Trigger.Label>
 			</NativeTabs.Trigger>
 
-			{user && (
-				<NativeTabs.Trigger name="pets">
-					<NativeTabs.Trigger.Icon
-						sf="heart.text.clipboard.fill"
-						md="favorite"
-					/>
-					<NativeTabs.Trigger.Label>
-						{t('tabs.pets')}
-					</NativeTabs.Trigger.Label>
-				</NativeTabs.Trigger>
-			)}
+			<NativeTabs.Trigger name="pets" disabled={!user}>
+				<NativeTabs.Trigger.Icon
+					sf={user ? 'heart.text.clipboard.fill' : 'lock.fill'}
+					md={user ? 'favorite' : 'lock'}
+				/>
+				<NativeTabs.Trigger.Label>
+					{t('tabs.pets')}
+				</NativeTabs.Trigger.Label>
+			</NativeTabs.Trigger>
 
 			<NativeTabs.Trigger name="settings">
 				<NativeTabs.Trigger.Icon sf="gearshape.fill" md="settings" />

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { Platform } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import {
 	getAuth,
 	onAuthStateChanged,
@@ -58,6 +58,7 @@ type AuthMode = 'signIn' | 'signUp';
 
 const Login: React.FC = () => {
 	const router = useRouter();
+	const { redirectTo } = useLocalSearchParams<{ redirectTo?: string }>();
 	const { t } = useTranslation();
 
 	const [isSigning, setIsSigning] = useState(false);
@@ -217,15 +218,20 @@ const Login: React.FC = () => {
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(getAuth(), user => {
 			if (user) {
+				if (redirectTo === 'pets') {
+					router.dismissTo('/pets');
+					return;
+				}
+
 				router.replace('/profile');
 			}
 		});
 
 		return unsubscribe;
-	}, [router]);
+	}, [router, redirectTo]);
 
 	return (
-		<Screen>
+		<Screen showBack>
 			<Container>
 				<PageContent>
 					<TextTitle>{t('login.title')}</TextTitle>
@@ -311,9 +317,10 @@ const Login: React.FC = () => {
 								<AppleButton
 									buttonStyle={AppleButton.Style.BLACK}
 									buttonType={AppleButton.Type.CONTINUE}
+									cornerRadius={8}
 									style={{
-										width: 160,
-										height: 45,
+										width: '100%',
+										height: 50,
 									}}
 									onPress={signInApple}
 								/>

@@ -100,13 +100,13 @@ export const SecondaryActionText = styled.Text`
 `;
 
 export const LoginContainer = styled.View`
-	align-items: center;
+	align-items: stretch;
 	padding-bottom: 24px;
 `;
 
 export const LoginButton = styled.TouchableOpacity`
-	width: 220px;
-	height: 45px;
+	width: 100%;
+	height: 50px;
 	background-color: #ffffff;
 	border-radius: 8px;
 	border-width: 1px;
