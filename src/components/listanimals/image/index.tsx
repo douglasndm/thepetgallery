@@ -28,10 +28,10 @@ const catLoading = Platform.select({
 interface Props {
 	item: APIItem;
 	type?: 'Cat' | 'Dog';
-	index: number;
+	index?: number;
 }
 
-const Image: React.FC<Props> = ({ item, type = 'Dog', index }: Props) => {
+const Image: React.FC<Props> = ({ item, type = 'Dog' }: Props) => {
 	const { t } = useTranslation();
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -89,7 +89,7 @@ const Image: React.FC<Props> = ({ item, type = 'Dog', index }: Props) => {
 	);
 
 	return (
-		<Container style={{ marginRight: index % 2 === 0 ? 10 : 0 }}>
+		<Container>
 			<ContextMenu
 				actions={[{ title: t('images.saveToGallery') }]}
 				onPress={handleContextPress}

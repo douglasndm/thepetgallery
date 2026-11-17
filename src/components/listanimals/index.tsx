@@ -49,7 +49,7 @@ const ListAnimals: React.FC<Props> = ({
 
 			<FlatList
 				data={images}
-				ListHeaderComponent={ListHeaderComponent}
+				ListHeaderComponent={ListHeaderComponent ?? undefined}
 				numColumns={1}
 				renderItem={({ item, index }) => (
 					<>
@@ -59,7 +59,8 @@ const ListAnimals: React.FC<Props> = ({
 					</>
 				)}
 				onScroll={onScroll}
-				ListFooterComponent={<Padding />}
+				ListFooterComponent={<Padding size={100} />}
+				showsVerticalScrollIndicator={false}
 			/>
 		</>
 	);

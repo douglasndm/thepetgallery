@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { Surface } from 'react-native-paper';
 
 export const Container = styled.ScrollView.attrs(() => ({
-	contentInsetAdjustmentBehavior: 'automatic',
+	contentInsetAdjustmentBehavior: 'never',
 	alwaysBounceVertical: true,
 	contentContainerStyle: {
 		flexGrow: 1,

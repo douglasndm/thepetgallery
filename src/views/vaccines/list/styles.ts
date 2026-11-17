@@ -4,7 +4,7 @@ import Ionicons from '@react-native-vector-icons/ionicons/static';
 import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons/static';
 
 export const Container = styled.ScrollView.attrs(() => ({
-	contentInsetAdjustmentBehavior: 'automatic',
+	contentInsetAdjustmentBehavior: 'never',
 	alwaysBounceVertical: true,
 	contentContainerStyle: {
 		flexGrow: 1,

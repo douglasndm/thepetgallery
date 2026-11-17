@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { captureException } from '@services/exceptionsHandler';
 import { getInstallationId } from '@utils/device/getDeviceId';
 
-import Header from '@components/header';
+import Screen from '@components/screen';
 import Button from '@components/button';
 import Padding from '@components/padding';
 
@@ -68,181 +68,182 @@ const Menu: React.FC = () => {
 	}, []);
 
 	return (
-		<Container>
-			<Header />
-			<Title>{t('about.title')}</Title>
-			<Content>
-				<AppName>The Pet Gallery</AppName>
-				<Info>{t('about.tagline')}</Info>
+		<Screen>
+			<Container>
+				<Title>{t('about.title')}</Title>
+				<Content>
+					<AppName>The Pet Gallery</AppName>
+					<Info>{t('about.tagline')}</Info>
 
-				<Info>{t('about.developedBy')}</Info>
+					<Info>{t('about.developedBy')}</Info>
 
-				<InstallationIdCard
-					onPress={handleCopyInstallationId}
-					disabled={!installationId}
-				>
-					<InstallationIdLabel>
-						{t('about.installationIdLabel')}
-					</InstallationIdLabel>
-					<InstallationIdValue>
-						{installationId || t('about.installationIdLoading')}
-					</InstallationIdValue>
-				</InstallationIdCard>
+					<InstallationIdCard
+						onPress={handleCopyInstallationId}
+						disabled={!installationId}
+					>
+						<InstallationIdLabel>
+							{t('about.installationIdLabel')}
+						</InstallationIdLabel>
+						<InstallationIdValue>
+							{installationId || t('about.installationIdLoading')}
+						</InstallationIdValue>
+					</InstallationIdCard>
 
-				<LottieView
-					source={dogDancing}
-					style={{
-						width: 250,
-						height: 250,
-						marginTop: 30,
-						alignSelf: 'center',
-					}}
-					onAnimationFailure={error => {
-						console.log(error);
-					}}
-					autoPlay
-					loop
-				/>
+					<LottieView
+						source={dogDancing}
+						style={{
+							width: 250,
+							height: 250,
+							marginTop: 30,
+							alignSelf: 'center',
+						}}
+						onAnimationFailure={error => {
+							console.log(error);
+						}}
+						autoPlay
+						loop
+					/>
 
-				<AttibuitionContainer>
-					<Attibution>
-						{t('about.moreAppsPrefix')}
-						<AttibutionLink
-							onPress={() =>
-								Linking.openURL('https://douglasndm.dev')
-							}
-						>
-							{t('about.moreAppsLink')}
-						</AttibutionLink>
-					</Attibution>
-				</AttibuitionContainer>
+					<AttibuitionContainer>
+						<Attibution>
+							{t('about.moreAppsPrefix')}
+							<AttibutionLink
+								onPress={() =>
+									Linking.openURL('https://douglasndm.dev')
+								}
+							>
+								{t('about.moreAppsLink')}
+							</AttibutionLink>
+						</Attibution>
+					</AttibuitionContainer>
 
-				<AttibuitionContainer>
-					<Attibution>
-						{t('about.sendPlaceText')}
-						<AttibutionLink
-							onPress={() =>
-								Linking.openURL(
-									'https://www.linkedin.com/in/douglasndm/'
-								)
-							}
-						>
-							{t('about.attribution.linkedin')}
-						</AttibutionLink>{' '}
-						{t('about.sendPlaceOr')}
-						<AttibutionLink
-							onPress={() =>
-								Linking.openURL(
-									'https://bsky.app/profile/douglasndm.dev'
-								)
-							}
-						>
-							{t('about.attribution.bluesky')}
-						</AttibutionLink>
-					</Attibution>
-				</AttibuitionContainer>
+					<AttibuitionContainer>
+						<Attibution>
+							{t('about.sendPlaceText')}
+							<AttibutionLink
+								onPress={() =>
+									Linking.openURL(
+										'https://www.linkedin.com/in/douglasndm/'
+									)
+								}
+							>
+								{t('about.attribution.linkedin')}
+							</AttibutionLink>{' '}
+							{t('about.sendPlaceOr')}
+							<AttibutionLink
+								onPress={() =>
+									Linking.openURL(
+										'https://bsky.app/profile/douglasndm.dev'
+									)
+								}
+							>
+								{t('about.attribution.bluesky')}
+							</AttibutionLink>
+						</Attibution>
+					</AttibuitionContainer>
 
-				<AttibuitionContainer>
-					<Attibution>
-						{t('about.attribution.logoPrefix')}
-						<AttibutionLink
-							onPress={() =>
-								Linking.openURL(
-									'https://br.freepik.com/vetores-gratis/pessoas-de-ilustracao-plana-com-animais-de-estimacao_15292679.htm'
-								)
-							}
-						>
-							{t('about.attribution.freepik')}
-						</AttibutionLink>
-					</Attibution>
-				</AttibuitionContainer>
+					<AttibuitionContainer>
+						<Attibution>
+							{t('about.attribution.logoPrefix')}
+							<AttibutionLink
+								onPress={() =>
+									Linking.openURL(
+										'https://br.freepik.com/vetores-gratis/pessoas-de-ilustracao-plana-com-animais-de-estimacao_15292679.htm'
+									)
+								}
+							>
+								{t('about.attribution.freepik')}
+							</AttibutionLink>
+						</Attibution>
+					</AttibuitionContainer>
 
-				<AttibuitionContainer>
-					<Attibution>
-						{t('about.attribution.dogLoadingPrefix')}
-						<AttibutionLink
-							onPress={() =>
-								Linking.openURL(
-									'https://lottiefiles.com/free-animation/dog-walking-7K4JCxjvHm'
-								)
-							}
-						>
-							{t('about.attribution.lottieFiles')}
-						</AttibutionLink>
-					</Attibution>
-				</AttibuitionContainer>
+					<AttibuitionContainer>
+						<Attibution>
+							{t('about.attribution.dogLoadingPrefix')}
+							<AttibutionLink
+								onPress={() =>
+									Linking.openURL(
+										'https://lottiefiles.com/free-animation/dog-walking-7K4JCxjvHm'
+									)
+								}
+							>
+								{t('about.attribution.lottieFiles')}
+							</AttibutionLink>
+						</Attibution>
+					</AttibuitionContainer>
 
-				<AttibuitionContainer>
-					<Attibution>
-						{t('about.attribution.catLoadingPrefix')}
-						<AttibutionLink
-							onPress={() =>
-								Linking.openURL(
-									'https://lottiefiles.com/free-animation/cat-loader-F4ZybShCAh'
-								)
-							}
-						>
-							{t('about.attribution.lottieFiles')}
-						</AttibutionLink>
-					</Attibution>
-				</AttibuitionContainer>
+					<AttibuitionContainer>
+						<Attibution>
+							{t('about.attribution.catLoadingPrefix')}
+							<AttibutionLink
+								onPress={() =>
+									Linking.openURL(
+										'https://lottiefiles.com/free-animation/cat-loader-F4ZybShCAh'
+									)
+								}
+							>
+								{t('about.attribution.lottieFiles')}
+							</AttibutionLink>
+						</Attibution>
+					</AttibuitionContainer>
 
-				<AttibuitionContainer>
-					<Attibution>
-						{t('about.attribution.headerPrefix')}
-						<AttibutionLink
-							onPress={() =>
-								Linking.openURL(
-									'https://lottiefiles.com/free-animation/loader-cat-dWUie0iIVk'
-								)
-							}
-						>
-							{t('about.attribution.lottieFiles')}
-						</AttibutionLink>
-					</Attibution>
-				</AttibuitionContainer>
+					<AttibuitionContainer>
+						<Attibution>
+							{t('about.attribution.headerPrefix')}
+							<AttibutionLink
+								onPress={() =>
+									Linking.openURL(
+										'https://lottiefiles.com/free-animation/loader-cat-dWUie0iIVk'
+									)
+								}
+							>
+								{t('about.attribution.lottieFiles')}
+							</AttibutionLink>
+						</Attibution>
+					</AttibuitionContainer>
 
-				<AttibuitionContainer>
-					<Attibution>
-						{t('about.attribution.aboutPrefix')}
-						<AttibutionLink
-							onPress={() =>
-								Linking.openURL(
-									'https://lottiefiles.com/free-animation/dancing-dog-2x20-cSm026rhBF'
-								)
-							}
-						>
-							{t('about.attribution.lottieFiles')}
-						</AttibutionLink>
-					</Attibution>
-				</AttibuitionContainer>
+					<AttibuitionContainer>
+						<Attibution>
+							{t('about.attribution.aboutPrefix')}
+							<AttibutionLink
+								onPress={() =>
+									Linking.openURL(
+										'https://lottiefiles.com/free-animation/dancing-dog-2x20-cSm026rhBF'
+									)
+								}
+							>
+								{t('about.attribution.lottieFiles')}
+							</AttibutionLink>
+						</Attibution>
+					</AttibuitionContainer>
 
-				<AttibuitionContainer>
-					<Attibution>
-						{t('about.attribution.offlinePrefix')}{' '}
-						<AttibutionLink
-							onPress={() =>
-								Linking.openURL(
-									'https://lottiefiles.com/free-animation/no-connection-zD7pwxybpR'
-								)
-							}
-						>
-							{t('about.attribution.lottieFiles')}
-						</AttibutionLink>
-					</Attibution>
-				</AttibuitionContainer>
-			</Content>
+					<AttibuitionContainer>
+						<Attibution>
+							{t('about.attribution.offlinePrefix')}{' '}
+							<AttibutionLink
+								onPress={() =>
+									Linking.openURL(
+										'https://lottiefiles.com/free-animation/no-connection-zD7pwxybpR'
+									)
+								}
+							>
+								{t('about.attribution.lottieFiles')}
+							</AttibutionLink>
+						</Attibution>
+					</AttibuitionContainer>
+				</Content>
 
-			{getAuth().currentUser && (
-				<Button
-					title={t('about.viewAccount')}
-					style={{ marginTop: 20 }}
-					onPress={navigateToAccount}
-				/>
-			)}
+				{getAuth().currentUser && (
+					<Button
+						title={t('about.viewAccount')}
+						style={{ marginTop: 20 }}
+						onPress={navigateToAccount}
+					/>
+				)}
 
-			<Padding />
-		</Container>
+				<Padding />
+			</Container>
+		</Screen>
 	);
 };
 

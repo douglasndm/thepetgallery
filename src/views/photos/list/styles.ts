@@ -1,23 +1,14 @@
 import styled from 'styled-components/native';
 
-export const Container = styled.View`
-	flex: 1;
-	background-color: #e8e8ea;
-`;
-
-export const PageContent = styled.View``;
-
-export const PhotosContainer = styled.View``;
+import { colors } from '@app/theme';
 
 export const PhotosTitleContainer = styled.View`
-	width: 95%;
-	margin-bottom: 15px;
-	margin-left: 2px;
+	padding: 0 20px 16px;
 `;
 
 export const PhotosTitle = styled.Text`
-	color: #000;
-	font-size: 19px;
-	font-weight: bold;
-	margin: 0 20px;
+	font-size: 28px;
+	line-height: 34px;
+	font-weight: 800;
+	color: ${colors.text};
 `;

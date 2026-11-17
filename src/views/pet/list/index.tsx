@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { getUserPetsReference } from '@services/firebase/firestore';
 import { captureException } from '@services/exceptionsHandler';
 
-import Header from '@components/header';
+import Screen from '@components/screen';
 import Padding from '@components/padding';
 import Loading from '@components/loading';
 
@@ -89,70 +89,74 @@ const PetList: React.FC = () => {
 	);
 
 	return (
-		<Container>
-			<Header />
+		<Screen>
+			<Container>
+				<Hero>
+					<HeroTitle>{t('tabs.pets')}</HeroTitle>
+					<HeroDescription>
+						{t('pets.listDescription')}
+					</HeroDescription>
+				</Hero>
 
-			<Hero>
-				<HeroTitle>{t('tabs.pets')}</HeroTitle>
-				<HeroDescription>{t('pets.listDescription')}</HeroDescription>
-			</Hero>
+				<ActionButtonContainer onPress={navigateToAddPet}>
+					<ActionButtonIcon name="add" />
+					<ActionButtonText>{t('pets.addPet')}</ActionButtonText>
+				</ActionButtonContainer>
 
-			<ActionButtonContainer onPress={navigateToAddPet}>
-				<ActionButtonIcon name="add" />
-				<ActionButtonText>{t('pets.addPet')}</ActionButtonText>
-			</ActionButtonContainer>
+				{isLoading && <Loading />}
 
-			{isLoading && <Loading />}
+				{!isLoading &&
+					pets.map(pet => {
+						let specieIcon: 'dog' | 'cat' | null = null;
 
-			{!isLoading &&
-				pets.map(pet => {
-					let specieIcon: 'dog' | 'cat' | null = null;
+						if (pet.species === 'dog') {
+							specieIcon = 'dog';
+						} else if (pet.species === 'cat') {
+							specieIcon = 'cat';
+						}
 
-					if (pet.species === 'dog') {
-						specieIcon = 'dog';
-					} else if (pet.species === 'cat') {
-						specieIcon = 'cat';
-					}
+						return (
+							<PetContainer key={pet.id}>
+								<PetContent
+									onPress={() =>
+										navigateToPet(pet.id.toString())
+									}
+								>
+									<TextContainer>
+										<PetMetaRow>
+											<PetBadge>
+												<PetBadgeText>
+													{pet.species === 'dog'
+														? t('pets.dog')
+														: pet.species === 'cat'
+															? t('pets.cat')
+															: t('pets.other')}
+												</PetBadgeText>
+											</PetBadge>
+										</PetMetaRow>
+										<PetName>{pet.name}</PetName>
+										<PetBreed>
+											{pet.breed || t('pets.noBreed')}
+										</PetBreed>
+									</TextContainer>
 
-					return (
-						<PetContainer key={pet.id}>
-							<PetContent
-								onPress={() => navigateToPet(pet.id.toString())}
-							>
-								<TextContainer>
-									<PetMetaRow>
-										<PetBadge>
-											<PetBadgeText>
-												{pet.species === 'dog'
-													? t('pets.dog')
-													: pet.species === 'cat'
-														? t('pets.cat')
-														: t('pets.other')}
-											</PetBadgeText>
-										</PetBadge>
-									</PetMetaRow>
-									<PetName>{pet.name}</PetName>
-									<PetBreed>
-										{pet.breed || t('pets.noBreed')}
-									</PetBreed>
-								</TextContainer>
+									{specieIcon && <Icon name={specieIcon} />}
+									<Chevron />
+								</PetContent>
+							</PetContainer>
+						);
+					})}
 
-								{specieIcon && <Icon name={specieIcon} />}
-								<Chevron />
-							</PetContent>
-						</PetContainer>
-					);
-				})}
+				{!isLoading && pets.length <= 0 && (
+					<EmptyStateCard>
+						<EmptyStateIcon />
+						<EmptyListName>{t('pets.emptyState')}</EmptyListName>
+					</EmptyStateCard>
+				)}
 
-			{!isLoading && pets.length <= 0 && (
-				<EmptyStateCard>
-					<EmptyStateIcon />
-					<EmptyListName>{t('pets.emptyState')}</EmptyListName>
-				</EmptyStateCard>
-			)}
-
-			<Padding />
-		</Container>
+				<Padding />
+			</Container>
+		</Screen>
 	);
 };
 

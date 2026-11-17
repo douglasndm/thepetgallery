@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { organizeData } from '@utils/adoptionsPlaces/organizeData';
 import { convertUFToStateName } from '@utils/UF';
 
-import Header from '@components/header';
+import Screen from '@components/screen';
 import Padding from '@components/padding';
 import Loading from '@components/loading';
 
@@ -94,88 +94,90 @@ const PlacesList: React.FC = () => {
 	}, [sections]);
 
 	return (
-		<Container>
-			<Header />
+		<Screen>
+			<Container>
+				<Title>{t('places.title')}</Title>
+				<Content>
+					{isLoading && <Loading />}
 
-			<Title>{t('places.title')}</Title>
-			<Content>
-				{isLoading && <Loading />}
+					{sortedSections.map(place => (
+						<PlaceStateContainer key={place.title}>
+							<PlaceStateText>
+								{convertUFToStateName(place.title)}
+							</PlaceStateText>
 
-				{sortedSections.map(place => (
-					<PlaceStateContainer key={place.title}>
-						<PlaceStateText>
-							{convertUFToStateName(place.title)}
-						</PlaceStateText>
+							{place.data.map(item => (
+								<PlaceCityContainer key={item.name}>
+									{item.city && (
+										<PlaceCityText>
+											{item.city}
+										</PlaceCityText>
+									)}
 
-						{place.data.map(item => (
-							<PlaceCityContainer key={item.name}>
-								{item.city && (
-									<PlaceCityText>{item.city}</PlaceCityText>
-								)}
+									{item.instagram && (
+										<PlaceButton
+											onPress={() =>
+												Linking.openURL(item.instagram!)
+											}
+										>
+											<Ionicons
+												name="logo-instagram"
+												size={30}
+											/>
+											<PlaceName>{item.name}</PlaceName>
+										</PlaceButton>
+									)}
 
-								{item.instagram && (
-									<PlaceButton
-										onPress={() =>
-											Linking.openURL(item.instagram!)
-										}
-									>
-										<Ionicons
-											name="logo-instagram"
-											size={30}
-										/>
-										<PlaceName>{item.name}</PlaceName>
-									</PlaceButton>
-								)}
+									{item.facebook && (
+										<PlaceButton
+											onPress={() =>
+												Linking.openURL(item.facebook!)
+											}
+										>
+											<Ionicons
+												name="logo-facebook"
+												size={30}
+											/>
+											<PlaceName>{item.name}</PlaceName>
+										</PlaceButton>
+									)}
 
-								{item.facebook && (
-									<PlaceButton
-										onPress={() =>
-											Linking.openURL(item.facebook!)
-										}
-									>
-										<Ionicons
-											name="logo-facebook"
-											size={30}
-										/>
-										<PlaceName>{item.name}</PlaceName>
-									</PlaceButton>
-								)}
+									{item.whatsapp && (
+										<PlaceButton
+											onPress={() =>
+												Linking.openURL(item.whatsapp!)
+											}
+										>
+											<Ionicons
+												name="logo-whatsapp"
+												size={30}
+											/>
+											<PlaceName>{item.name}</PlaceName>
+										</PlaceButton>
+									)}
 
-								{item.whatsapp && (
-									<PlaceButton
-										onPress={() =>
-											Linking.openURL(item.whatsapp!)
-										}
-									>
-										<Ionicons
-											name="logo-whatsapp"
-											size={30}
-										/>
-										<PlaceName>{item.name}</PlaceName>
-									</PlaceButton>
-								)}
+									{item.url && (
+										<PlaceButton
+											onPress={() =>
+												Linking.openURL(item.url!)
+											}
+										>
+											<Ionicons
+												name="globe-outline"
+												size={30}
+											/>
+											<PlaceName>{item.name}</PlaceName>
+										</PlaceButton>
+									)}
+								</PlaceCityContainer>
+							))}
+						</PlaceStateContainer>
+					))}
+				</Content>
 
-								{item.url && (
-									<PlaceButton
-										onPress={() =>
-											Linking.openURL(item.url!)
-										}
-									>
-										<Ionicons
-											name="globe-outline"
-											size={30}
-										/>
-										<PlaceName>{item.name}</PlaceName>
-									</PlaceButton>
-								)}
-							</PlaceCityContainer>
-						))}
-					</PlaceStateContainer>
-				))}
-			</Content>
-
-			<Padding size={100} />
-		</Container>
+				<Padding size={100} />
+			</Container>
+		</Screen>
 	);
 };
 

@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { getUserPetsReference } from '@services/firebase/firestore';
 import { captureException } from '@services/exceptionsHandler';
 
-import Header from '@components/header';
+import Screen from '@components/screen';
 import ActionButton from '@components/actionButton';
 import Loading from '@components/loading';
 import Padding from '@components/padding';
@@ -130,73 +130,79 @@ const VaccinesList: React.FC = () => {
 	);
 
 	return (
-		<Container>
-			<Header />
+		<Screen>
+			<Container>
+				<Hero>
+					<HeroTitle>{t('vaccines.addVaccine')}</HeroTitle>
+					<HeroDescription>
+						{t('vaccines.listDescription')}
+					</HeroDescription>
+				</Hero>
 
-			<Hero>
-				<HeroTitle>{t('vaccines.addVaccine')}</HeroTitle>
-				<HeroDescription>
-					{t('vaccines.listDescription')}
-				</HeroDescription>
-			</Hero>
+				<ActionButton
+					title={t('vaccines.addVaccine')}
+					iconName="create-outline"
+					onPress={navigateToAddVaccine}
+					style={{ marginRight: 20, marginBottom: 18 }}
+				/>
 
-			<ActionButton
-				title={t('vaccines.addVaccine')}
-				iconName="create-outline"
-				onPress={navigateToAddVaccine}
-				style={{ marginRight: 20, marginBottom: 18 }}
-			/>
+				{isLoading && <Loading />}
 
-			{isLoading && <Loading />}
+				{!isLoading &&
+					vaccines.map(vaccine => {
+						let formattedDate: string | null = null;
 
-			{!isLoading &&
-				vaccines.map(vaccine => {
-					let formattedDate: string | null = null;
+						if (vaccine.date_administered) {
+							formattedDate = formatDate(
+								new Date(vaccine.date_administered)
+							);
+						}
 
-					if (vaccine.date_administered) {
-						formattedDate = formatDate(
-							new Date(vaccine.date_administered)
+						return (
+							<VaccineContainer key={vaccine.id}>
+								<VaccineContent
+									onPress={() =>
+										navigateToVaccine(vaccine.id.toString())
+									}
+								>
+									<TextContainer>
+										<VaccineTag>
+											<VaccineTagText>
+												{t('vaccines.cardTag')}
+											</VaccineTagText>
+										</VaccineTag>
+										<VaccineName>
+											{vaccine.name}
+										</VaccineName>
+										{formattedDate ? (
+											<VaccineDate>
+												{`${t('vaccines.dateAdministeredPrefix')}: ${formattedDate}`}
+											</VaccineDate>
+										) : (
+											<VaccineDate>
+												{t(
+													'vaccines.noAdministeredDate'
+												)}
+											</VaccineDate>
+										)}
+									</TextContainer>
+									<Chevron />
+								</VaccineContent>
+							</VaccineContainer>
 						);
-					}
+					})}
 
-					return (
-						<VaccineContainer key={vaccine.id}>
-							<VaccineContent
-								onPress={() =>
-									navigateToVaccine(vaccine.id.toString())
-								}
-							>
-								<TextContainer>
-									<VaccineTag>
-										<VaccineTagText>
-											{t('vaccines.cardTag')}
-										</VaccineTagText>
-									</VaccineTag>
-									<VaccineName>{vaccine.name}</VaccineName>
-									{formattedDate ? (
-										<VaccineDate>
-											{`${t('vaccines.dateAdministeredPrefix')}: ${formattedDate}`}
-										</VaccineDate>
-									) : (
-										<VaccineDate>
-											{t('vaccines.noAdministeredDate')}
-										</VaccineDate>
-									)}
-								</TextContainer>
-								<Chevron />
-							</VaccineContent>
-						</VaccineContainer>
-					);
-				})}
-
-			{!isLoading && vaccines.length <= 0 && (
-				<EmptyStateCard>
-					<EmptyStateIcon />
-					<EmptyStateText>{t('vaccines.emptyState')}</EmptyStateText>
-				</EmptyStateCard>
-			)}
-			<Padding />
-		</Container>
+				{!isLoading && vaccines.length <= 0 && (
+					<EmptyStateCard>
+						<EmptyStateIcon />
+						<EmptyStateText>
+							{t('vaccines.emptyState')}
+						</EmptyStateText>
+					</EmptyStateCard>
+				)}
+				<Padding />
+			</Container>
+		</Screen>
 	);
 };
 

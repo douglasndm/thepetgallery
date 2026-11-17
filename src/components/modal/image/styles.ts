@@ -1,14 +1,6 @@
 import styled from 'styled-components/native';
 import { Image } from 'expo-image';
-
-export const ImageModal = styled.Modal`
-	z-index: 1;
-`;
-
-export const Container = styled.View`
-	flex: 1;
-	background-color: #000;
-`;
+import Ionicons from '@react-native-vector-icons/ionicons/static';
 
 export const LoadingContainer = styled.View`
 	align-items: center;
@@ -24,18 +16,23 @@ export const LoadingContainer = styled.View`
 export const Loading = styled.ActivityIndicator``;
 
 export const CloseButton = styled.TouchableOpacity`
-	top: 40px;
-	right: 15px;
-	padding: 15px;
+	top: 56px;
+	right: 20px;
+	width: 40px;
+	height: 40px;
+	border-radius: 20px;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(255, 255, 255, 0.18);
 
 	position: absolute;
 	z-index: 10;
 `;
 
-export const CloseButtonText = styled.Text`
-	color: #fff;
-	font-size: 24px;
-`;
+export const CloseIcon = styled(Ionicons).attrs(() => ({
+	size: 24,
+	color: '#fff',
+}))``;
 
 export const ImageContainer = styled.View`
 	flex: 1;
@@ -52,13 +49,22 @@ export const ImageView = styled(Image).attrs(() => ({
 `;
 
 export const Button = styled.TouchableOpacity`
-	//background-color: #f8cdb9;
-	padding: 15px;
-	border-radius: 12px;
+	margin-top: 12px;
+	padding: 14px 28px;
+	border-radius: 18px;
+	background-color: #c98767;
 `;
 
 export const Text = styled.Text`
 	color: #fff;
-	font-weight: bold;
-	font-size: 18px;
+	font-weight: 800;
+	font-size: 16px;
+`;
+
+export const Hint = styled.View`
+	width: 40px;
+	height: 4px;
+	border-radius: 2px;
+	margin-top: 16px;
+	background-color: rgba(255, 255, 255, 0.35);
 `;

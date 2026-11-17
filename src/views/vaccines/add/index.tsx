@@ -10,7 +10,7 @@ import { captureException } from '@services/exceptionsHandler';
 import { formatDate } from '@utils/data';
 import { saveVaccine } from '@utils/vaccines/save';
 
-import Header from '@components/header';
+import Screen from '@components/screen';
 import Loading from '@components/loading';
 
 import {
@@ -116,153 +116,155 @@ const VaccinesAdd: React.FC = () => {
 	}, []);
 
 	return (
-		<Container>
-			<Header />
+		<Screen>
+			<Container>
+				<Hero>
+					<HeroTag>{t('vaccines.addVaccine')}</HeroTag>
+					<HeroTitle>{t('vaccines.addVaccine')}</HeroTitle>
+					<HeroDescription>
+						{t('vaccines.addDescription')}
+					</HeroDescription>
+				</Hero>
 
-			<Hero>
-				<HeroTag>{t('vaccines.addVaccine')}</HeroTag>
-				<HeroTitle>{t('vaccines.addVaccine')}</HeroTitle>
-				<HeroDescription>
-					{t('vaccines.addDescription')}
-				</HeroDescription>
-			</Hero>
-
-			<Content>
-				<Section>
-					<Label>{t('vaccines.namePlaceholder')}</Label>
-					<Input
-						placeholder={t('vaccines.namePlaceholder')}
-						placeholderTextColor="#8b9097"
-						value={name}
-						onChangeText={setName}
-					/>
-				</Section>
-
-				<Section>
-					<Label>{t('vaccines.administeredDateLabel')}</Label>
-					<DateContainer>
-						<DateTextContent onPress={switchAdministeredDateModal}>
-							<DateText>
-								{showUseDate
-									? formatDate(administeredDate)
-									: t('vaccines.addAdministeredDate')}
-							</DateText>
-						</DateTextContent>
-
-						{showUseDate && (
-							<DateRemoveButton
-								onPress={() => {
-									setAdministeredDate(new Date());
-									setShowUseDate(false);
-								}}
-							>
-								<DateRemoveIcon name="close-outline" />
-							</DateRemoveButton>
-						)}
-					</DateContainer>
-				</Section>
-
-				<Section>
-					<Label>{t('vaccines.nextDoseDateLabel')}</Label>
-					<DateContainer>
-						<DateTextContent onPress={switchNextDateModal}>
-							<DateText>
-								{showUseNextDate
-									? formatDate(nextDoseDate)
-									: t('vaccines.addNextDoseDate')}
-							</DateText>
-						</DateTextContent>
-
-						{showUseNextDate && (
-							<DateRemoveButton
-								onPress={() => {
-									setNextDoseDate(new Date());
-									setShowUseNextDate(false);
-								}}
-							>
-								<DateRemoveIcon name="close-outline" />
-							</DateRemoveButton>
-						)}
-					</DateContainer>
-				</Section>
-
-				<Section>
-					<Label>{t('vaccines.notesPlaceholder')}</Label>
-					<Input
-						placeholder={t('vaccines.notesPlaceholder')}
-						placeholderTextColor="#8b9097"
-						multiline
-						numberOfLines={5}
-						textAlignVertical="top"
-						style={{ minHeight: 120 }}
-						value={notes}
-						onChangeText={setNotes}
-					/>
-				</Section>
-
-				<Footer>
-					<SubmitButton onPress={handleSave} disabled={isLoading}>
-						<SubmitButtonText>
-							{t('vaccines.addVaccine')}
-						</SubmitButtonText>
-					</SubmitButton>
-				</Footer>
-			</Content>
-
-			{isLoading && (
-				<LoadingOverlay>
-					<Loading />
-				</LoadingOverlay>
-			)}
-
-			<Modal visible={isModalAdministeredDateVisible}>
-				<CloseButton onPress={switchAdministeredDateModal}>
-					<Icon name="close" />
-				</CloseButton>
-				<ModalContent>
-					<Label>{t('vaccines.administeredDateLabel')}</Label>
-					<DatePickerCard>
-						<DatePicker
-							mode="single"
-							date={administeredDate}
-							onChange={change => {
-								if (change.date) {
-									setAdministeredDate(
-										new Date(String(change.date))
-									);
-
-									setShowUseDate(true);
-								}
-							}}
+				<Content>
+					<Section>
+						<Label>{t('vaccines.namePlaceholder')}</Label>
+						<Input
+							placeholder={t('vaccines.namePlaceholder')}
+							placeholderTextColor="#8b9097"
+							value={name}
+							onChangeText={setName}
 						/>
-					</DatePickerCard>
-				</ModalContent>
-			</Modal>
+					</Section>
 
-			<Modal visible={isModalNextDateVisible}>
-				<CloseButton onPress={switchNextDateModal}>
-					<Icon name="close" />
-				</CloseButton>
-				<ModalContent>
-					<Label>{t('vaccines.nextDoseDateLabel')}</Label>
-					<DatePickerCard>
-						<DatePicker
-							mode="single"
-							date={nextDoseDate}
-							onChange={change => {
-								if (change.date) {
-									setNextDoseDate(
-										new Date(String(change.date))
-									);
+					<Section>
+						<Label>{t('vaccines.administeredDateLabel')}</Label>
+						<DateContainer>
+							<DateTextContent
+								onPress={switchAdministeredDateModal}
+							>
+								<DateText>
+									{showUseDate
+										? formatDate(administeredDate)
+										: t('vaccines.addAdministeredDate')}
+								</DateText>
+							</DateTextContent>
 
-									setShowUseNextDate(true);
-								}
-							}}
+							{showUseDate && (
+								<DateRemoveButton
+									onPress={() => {
+										setAdministeredDate(new Date());
+										setShowUseDate(false);
+									}}
+								>
+									<DateRemoveIcon name="close-outline" />
+								</DateRemoveButton>
+							)}
+						</DateContainer>
+					</Section>
+
+					<Section>
+						<Label>{t('vaccines.nextDoseDateLabel')}</Label>
+						<DateContainer>
+							<DateTextContent onPress={switchNextDateModal}>
+								<DateText>
+									{showUseNextDate
+										? formatDate(nextDoseDate)
+										: t('vaccines.addNextDoseDate')}
+								</DateText>
+							</DateTextContent>
+
+							{showUseNextDate && (
+								<DateRemoveButton
+									onPress={() => {
+										setNextDoseDate(new Date());
+										setShowUseNextDate(false);
+									}}
+								>
+									<DateRemoveIcon name="close-outline" />
+								</DateRemoveButton>
+							)}
+						</DateContainer>
+					</Section>
+
+					<Section>
+						<Label>{t('vaccines.notesPlaceholder')}</Label>
+						<Input
+							placeholder={t('vaccines.notesPlaceholder')}
+							placeholderTextColor="#8b9097"
+							multiline
+							numberOfLines={5}
+							textAlignVertical="top"
+							style={{ minHeight: 120 }}
+							value={notes}
+							onChangeText={setNotes}
 						/>
-					</DatePickerCard>
-				</ModalContent>
-			</Modal>
-		</Container>
+					</Section>
+
+					<Footer>
+						<SubmitButton onPress={handleSave} disabled={isLoading}>
+							<SubmitButtonText>
+								{t('vaccines.addVaccine')}
+							</SubmitButtonText>
+						</SubmitButton>
+					</Footer>
+				</Content>
+
+				{isLoading && (
+					<LoadingOverlay>
+						<Loading />
+					</LoadingOverlay>
+				)}
+
+				<Modal visible={isModalAdministeredDateVisible}>
+					<CloseButton onPress={switchAdministeredDateModal}>
+						<Icon name="close" />
+					</CloseButton>
+					<ModalContent>
+						<Label>{t('vaccines.administeredDateLabel')}</Label>
+						<DatePickerCard>
+							<DatePicker
+								mode="single"
+								date={administeredDate}
+								onChange={change => {
+									if (change.date) {
+										setAdministeredDate(
+											new Date(String(change.date))
+										);
+
+										setShowUseDate(true);
+									}
+								}}
+							/>
+						</DatePickerCard>
+					</ModalContent>
+				</Modal>
+
+				<Modal visible={isModalNextDateVisible}>
+					<CloseButton onPress={switchNextDateModal}>
+						<Icon name="close" />
+					</CloseButton>
+					<ModalContent>
+						<Label>{t('vaccines.nextDoseDateLabel')}</Label>
+						<DatePickerCard>
+							<DatePicker
+								mode="single"
+								date={nextDoseDate}
+								onChange={change => {
+									if (change.date) {
+										setNextDoseDate(
+											new Date(String(change.date))
+										);
+
+										setShowUseNextDate(true);
+									}
+								}}
+							/>
+						</DatePickerCard>
+					</ModalContent>
+				</Modal>
+			</Container>
+		</Screen>
 	);
 };
 

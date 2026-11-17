@@ -6,11 +6,12 @@ import LottieView from 'lottie-react-native';
 
 import {
 	Container,
+	Bar,
+	Side,
+	BackButton,
+	BackIcon,
 	Content,
-	TextContainer,
 	AppTitle,
-	ButtonIcon,
-	Icon,
 } from './styles';
 
 const catLogo = Platform.select({
@@ -18,7 +19,11 @@ const catLogo = Platform.select({
 	android: require('@animations/android/cat_logo.zip'),
 });
 
-const Header: React.FC = () => {
+interface Props {
+	title?: string;
+}
+
+const Header: React.FC<Props> = ({ title = 'The Pet Gallery' }: Props) => {
 	const insets = useSafeAreaInsets();
 	const router = useRouter();
 	const navigation = useNavigation();
@@ -32,29 +37,33 @@ const Header: React.FC = () => {
 
 	return (
 		<Container style={{ paddingTop: insets.top }}>
-			{canGoBack && (
-				<ButtonIcon onPress={() => router.back()}>
-					<Icon name="arrow-back" />
-				</ButtonIcon>
-			)}
+			<Bar>
+				<Side>
+					{canGoBack && (
+						<BackButton
+							onPress={() => router.back()}
+							hitSlop={10}
+							accessibilityRole="button"
+						>
+							<BackIcon name="chevron-back" />
+						</BackButton>
+					)}
+				</Side>
 
-			<Content onPress={() => animRef.current?.play()}>
-				<TextContainer>
-					<AppTitle>The Pet Gallery</AppTitle>
-				</TextContainer>
+				<Content onPress={() => animRef.current?.play()}>
+					<AppTitle numberOfLines={1}>{title}</AppTitle>
 
-				<LottieView
-					ref={animRef}
-					source={catLogo}
-					style={{
-						width: 100,
-						height: 100,
-						marginLeft: -25,
-					}}
-					autoPlay
-					loop={false}
-				/>
-			</Content>
+					<LottieView
+						ref={animRef}
+						source={catLogo}
+						style={{ width: 56, height: 56, marginLeft: -6 }}
+						autoPlay
+						loop={false}
+					/>
+				</Content>
+
+				<Side />
+			</Bar>
 		</Container>
 	);
 };

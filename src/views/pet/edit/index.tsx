@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { getUserPetsReference } from '@services/firebase/firestore';
 import { captureException } from '@services/exceptionsHandler';
 
-import Header from '@components/header';
+import Screen from '@components/screen';
 import ActionButton from '@components/actionButton';
 import Loading from '@components/loading';
 import Padding from '@components/padding';
@@ -194,144 +194,146 @@ const EditPet: React.FC = () => {
 	}, []);
 
 	return (
-		<Container>
-			<Header />
+		<Screen>
+			<Container>
+				<Hero>
+					<HeroTag>{t('pets.editPet')}</HeroTag>
+					<HeroTitle>{t('pets.editPet')}</HeroTitle>
+					<HeroDescription>
+						{t('pets.editDescription')}
+					</HeroDescription>
+				</Hero>
 
-			<Hero>
-				<HeroTag>{t('pets.editPet')}</HeroTag>
-				<HeroTitle>{t('pets.editPet')}</HeroTitle>
-				<HeroDescription>{t('pets.editDescription')}</HeroDescription>
-			</Hero>
+				<ActionButton
+					iconName="trash-outline"
+					title={t('pets.deletePet')}
+					onPress={() => setShowDeleteDialog(true)}
+					style={{ marginRight: 20, marginBottom: 16 }}
+				/>
 
-			<ActionButton
-				iconName="trash-outline"
-				title={t('pets.deletePet')}
-				onPress={() => setShowDeleteDialog(true)}
-				style={{ marginRight: 20, marginBottom: 16 }}
-			/>
-
-			{isLoading ? (
-				<Loading />
-			) : (
-				<Content>
-					<Section>
-						<Label>{t('pets.namePlaceholder')}</Label>
-						<Input
-							placeholder={t('pets.namePlaceholder')}
-							placeholderTextColor="#8b9097"
-							value={name}
-							onChangeText={setName}
-						/>
-
-						<Label>{t('pets.speciesLabel')}</Label>
-						<RadioGroup
-							radioButtons={radioButtons}
-							onPress={setSpecies}
-							selectedId={species}
-							containerStyle={{
-								flexDirection: 'row',
-								justifyContent: 'space-between',
-							}}
-						/>
-					</Section>
-
-					<Section>
-						<Label>{t('pets.breedPlaceholder')}</Label>
-						<Input
-							placeholder={t('pets.breedPlaceholder')}
-							placeholderTextColor="#8b9097"
-							value={breed}
-							onChangeText={setBreed}
-						/>
-
-						<Label>{t('pets.weightPlaceholder')}</Label>
-						<Input
-							placeholder={t('pets.weightPlaceholder')}
-							placeholderTextColor="#8b9097"
-							keyboardType="numeric"
-							value={weight}
-							onChangeText={handleWeightChange}
-						/>
-
-						<Label>{t('pets.notesPlaceholder')}</Label>
-						<Input
-							placeholder={t('pets.notesPlaceholder')}
-							placeholderTextColor="#8b9097"
-							multiline
-							numberOfLines={5}
-							textAlignVertical="top"
-							style={{ minHeight: 120 }}
-							value={healthNotes}
-							onChangeText={setHealthNotes}
-						/>
-					</Section>
-
-					<Section>
-						<Label>{t('pets.editBirthDateLabel')}</Label>
-						<RadioGroup
-							radioButtons={useBirthDateRadioButtons}
-							onPress={selected => {
-								if (selected === 'yes') {
-									setUseBirthDate(true);
-								} else {
-									setUseBirthDate(false);
-								}
-							}}
-							selectedId={useBirthDate ? 'yes' : 'no'}
-							containerStyle={{
-								flexDirection: 'row',
-								justifyContent: 'center',
-							}}
-						/>
-
-						{useBirthDate && (
-							<>
-								<Label>{t('pets.birthDateLabel')}</Label>
-								<DatePickerCard>
-									<DateTimePicker
-										mode="single"
-										date={date}
-										onChange={change => {
-											if (change.date) {
-												setDate(
-													new Date(
-														String(change.date)
-													)
-												);
-											}
-										}}
-									/>
-								</DatePickerCard>
-							</>
-						)}
-					</Section>
-
-					<Footer>
-						<SubmitButton
-							onPress={handleUpdate}
-							disabled={isSaving}
-						>
-							<SubmitButtonText>
-								{t('common.save')}
-							</SubmitButtonText>
-						</SubmitButton>
-					</Footer>
-				</Content>
-			)}
-
-			{isSaving && (
-				<LoadingOverlay>
+				{isLoading ? (
 					<Loading />
-				</LoadingOverlay>
-			)}
+				) : (
+					<Content>
+						<Section>
+							<Label>{t('pets.namePlaceholder')}</Label>
+							<Input
+								placeholder={t('pets.namePlaceholder')}
+								placeholderTextColor="#8b9097"
+								value={name}
+								onChangeText={setName}
+							/>
 
-			<DeletePet
-				visible={showDeleteDialog}
-				setVisible={setShowDeleteDialog}
-				petId={id ?? ''}
-			/>
-			<Padding />
-		</Container>
+							<Label>{t('pets.speciesLabel')}</Label>
+							<RadioGroup
+								radioButtons={radioButtons}
+								onPress={setSpecies}
+								selectedId={species}
+								containerStyle={{
+									flexDirection: 'row',
+									justifyContent: 'space-between',
+								}}
+							/>
+						</Section>
+
+						<Section>
+							<Label>{t('pets.breedPlaceholder')}</Label>
+							<Input
+								placeholder={t('pets.breedPlaceholder')}
+								placeholderTextColor="#8b9097"
+								value={breed}
+								onChangeText={setBreed}
+							/>
+
+							<Label>{t('pets.weightPlaceholder')}</Label>
+							<Input
+								placeholder={t('pets.weightPlaceholder')}
+								placeholderTextColor="#8b9097"
+								keyboardType="numeric"
+								value={weight}
+								onChangeText={handleWeightChange}
+							/>
+
+							<Label>{t('pets.notesPlaceholder')}</Label>
+							<Input
+								placeholder={t('pets.notesPlaceholder')}
+								placeholderTextColor="#8b9097"
+								multiline
+								numberOfLines={5}
+								textAlignVertical="top"
+								style={{ minHeight: 120 }}
+								value={healthNotes}
+								onChangeText={setHealthNotes}
+							/>
+						</Section>
+
+						<Section>
+							<Label>{t('pets.editBirthDateLabel')}</Label>
+							<RadioGroup
+								radioButtons={useBirthDateRadioButtons}
+								onPress={selected => {
+									if (selected === 'yes') {
+										setUseBirthDate(true);
+									} else {
+										setUseBirthDate(false);
+									}
+								}}
+								selectedId={useBirthDate ? 'yes' : 'no'}
+								containerStyle={{
+									flexDirection: 'row',
+									justifyContent: 'center',
+								}}
+							/>
+
+							{useBirthDate && (
+								<>
+									<Label>{t('pets.birthDateLabel')}</Label>
+									<DatePickerCard>
+										<DateTimePicker
+											mode="single"
+											date={date}
+											onChange={change => {
+												if (change.date) {
+													setDate(
+														new Date(
+															String(change.date)
+														)
+													);
+												}
+											}}
+										/>
+									</DatePickerCard>
+								</>
+							)}
+						</Section>
+
+						<Footer>
+							<SubmitButton
+								onPress={handleUpdate}
+								disabled={isSaving}
+							>
+								<SubmitButtonText>
+									{t('common.save')}
+								</SubmitButtonText>
+							</SubmitButton>
+						</Footer>
+					</Content>
+				)}
+
+				{isSaving && (
+					<LoadingOverlay>
+						<Loading />
+					</LoadingOverlay>
+				)}
+
+				<DeletePet
+					visible={showDeleteDialog}
+					setVisible={setShowDeleteDialog}
+					petId={id ?? ''}
+				/>
+				<Padding />
+			</Container>
+		</Screen>
 	);
 };
 

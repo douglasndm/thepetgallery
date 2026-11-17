@@ -1,41 +1,45 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
-const windowWidth = Dimensions.get('window').width;
+const cardWidth = Dimensions.get('window').width - 40;
 
 export default StyleSheet.create({
 	container: {
-		width: '100%',
-		flex: 1,
-		marginBottom: 10,
-		backgroundColor: '#f8cdb9',
+		width: cardWidth,
+		alignSelf: 'center',
+		marginBottom: 20,
+		padding: 14,
+		borderRadius: 22,
+		backgroundColor: '#ffffff',
 		overflow: 'hidden',
 	},
 	titleContainer: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginTop: 10,
-		marginBlock: 10,
-		marginLeft: 7,
+		marginBottom: 12,
 	},
 	title: {
-		fontSize: 24,
-		fontWeight: 'bold',
-		color: '#242424',
-		marginLeft: 7,
+		flex: 1,
+		fontSize: 17,
+		fontWeight: '800',
+		color: '#151515',
+		marginLeft: 10,
+	},
+	media: {
+		width: '100%',
+		height: cardWidth * 0.6,
+		borderRadius: 14,
+		overflow: 'hidden',
 	},
 	sponsored: {
 		alignSelf: 'flex-start',
-		color: '#FFFFFF',
+		color: '#8a5a47',
 		fontSize: 11,
 		fontWeight: '700',
-		letterSpacing: 0.8,
-		textTransform: 'uppercase',
-		backgroundColor: 'rgba(0, 0, 0, 0.28)',
-		paddingHorizontal: 8,
+		letterSpacing: 0.4,
+		backgroundColor: '#f6e3da',
+		paddingHorizontal: 10,
 		paddingVertical: 4,
 		borderRadius: 999,
-		marginBottom: 10,
-		marginTop: 10,
-		marginLeft: 7,
+		marginTop: 12,
 	},
 });

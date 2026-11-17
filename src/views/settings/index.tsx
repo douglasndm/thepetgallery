@@ -4,7 +4,7 @@ import { getAuth, onAuthStateChanged, User } from '@react-native-firebase/auth';
 import { useTranslation } from 'react-i18next';
 
 import { getCurrentLanguage, setAppLanguage } from '@app/i18n';
-import Header from '@components/header';
+import Screen from '@components/screen';
 import Padding from '@components/padding';
 
 import {
@@ -56,93 +56,96 @@ const SettingsView: React.FC = () => {
 	}, [router]);
 
 	return (
-		<Container>
-			<Header />
-			<Hero>
-				<HeroTag>{t('settings.title')}</HeroTag>
-				<Title>{t('settings.title')}</Title>
-				<Description>{t('settings.description')}</Description>
-			</Hero>
+		<Screen>
+			<Container>
+				<Hero>
+					<HeroTag>{t('settings.title')}</HeroTag>
+					<Title>{t('settings.title')}</Title>
+					<Description>{t('settings.description')}</Description>
+				</Hero>
 
-			<SectionCard>
-				<SectionTitle>{t('settings.title')}</SectionTitle>
+				<SectionCard>
+					<SectionTitle>{t('settings.title')}</SectionTitle>
 
-				<ActionItem onPress={handleAuth}>
-					<ActionLeft>
-						<ActionIconWrap>
-							<ActionIcon
-								name={
-									user
-										? 'person-circle-outline'
-										: 'log-in-outline'
-								}
-							/>
-						</ActionIconWrap>
-						<ActionTexts>
-							<ActionTitle>
-								{user
-									? t('settings.viewAccount')
-									: t('settings.login')}
-							</ActionTitle>
-							<ActionSubtitle>
-								{user
-									? 'Veja os dados da sua conta e gerencie o acesso.'
-									: 'Entre para desbloquear recursos ligados a sua conta.'}
-							</ActionSubtitle>
-						</ActionTexts>
-					</ActionLeft>
-					<Chevron />
-				</ActionItem>
+					<ActionItem onPress={handleAuth}>
+						<ActionLeft>
+							<ActionIconWrap>
+								<ActionIcon
+									name={
+										user
+											? 'person-circle-outline'
+											: 'log-in-outline'
+									}
+								/>
+							</ActionIconWrap>
+							<ActionTexts>
+								<ActionTitle>
+									{user
+										? t('settings.viewAccount')
+										: t('settings.login')}
+								</ActionTitle>
+								<ActionSubtitle>
+									{user
+										? 'Veja os dados da sua conta e gerencie o acesso.'
+										: 'Entre para desbloquear recursos ligados a sua conta.'}
+								</ActionSubtitle>
+							</ActionTexts>
+						</ActionLeft>
+						<Chevron />
+					</ActionItem>
 
-				<ActionItem
-					onPress={navigateToAbout}
-					style={{ borderBottomWidth: 0 }}
-				>
-					<ActionLeft>
-						<ActionIconWrap>
-							<ActionIcon name="information-circle-outline" />
-						</ActionIconWrap>
-						<ActionTexts>
-							<ActionTitle>{t('settings.aboutApp')}</ActionTitle>
-							<ActionSubtitle>
-								Conheca mais sobre o aplicativo, creditos e
-								contato.
-							</ActionSubtitle>
-						</ActionTexts>
-					</ActionLeft>
-					<Chevron />
-				</ActionItem>
-			</SectionCard>
+					<ActionItem
+						onPress={navigateToAbout}
+						style={{ borderBottomWidth: 0 }}
+					>
+						<ActionLeft>
+							<ActionIconWrap>
+								<ActionIcon name="information-circle-outline" />
+							</ActionIconWrap>
+							<ActionTexts>
+								<ActionTitle>
+									{t('settings.aboutApp')}
+								</ActionTitle>
+								<ActionSubtitle>
+									Conheca mais sobre o aplicativo, creditos e
+									contato.
+								</ActionSubtitle>
+							</ActionTexts>
+						</ActionLeft>
+						<Chevron />
+					</ActionItem>
+				</SectionCard>
 
-			<SectionCard>
-				<SectionTitle>{t('settings.language')}</SectionTitle>
+				<SectionCard>
+					<SectionTitle>{t('settings.language')}</SectionTitle>
 
-				<LanguageButton
-					active={currentLanguage === 'pt-BR'}
-					onPress={() => setAppLanguage('pt-BR')}
-				>
-					<LanguageTitle active={currentLanguage === 'pt-BR'}>
-						{t('settings.portugueseBrazil')}
-					</LanguageTitle>
-					<LanguageSubtitle active={currentLanguage === 'pt-BR'}>
-						Ideal para quem usa o app em portugues do Brasil.
-					</LanguageSubtitle>
-				</LanguageButton>
+					<LanguageButton
+						active={currentLanguage === 'pt-BR'}
+						onPress={() => setAppLanguage('pt-BR')}
+					>
+						<LanguageTitle active={currentLanguage === 'pt-BR'}>
+							{t('settings.portugueseBrazil')}
+						</LanguageTitle>
+						<LanguageSubtitle active={currentLanguage === 'pt-BR'}>
+							Ideal para quem usa o app em portugues do Brasil.
+						</LanguageSubtitle>
+					</LanguageButton>
 
-				<LanguageButton
-					active={currentLanguage === 'en-US'}
-					onPress={() => setAppLanguage('en-US')}
-				>
-					<LanguageTitle active={currentLanguage === 'en-US'}>
-						{t('settings.englishUS')}
-					</LanguageTitle>
-					<LanguageSubtitle active={currentLanguage === 'en-US'}>
-						Switch the interface and texts to English.
-					</LanguageSubtitle>
-				</LanguageButton>
-			</SectionCard>
-			<Padding />
-		</Container>
+					<LanguageButton
+						active={currentLanguage === 'en-US'}
+						onPress={() => setAppLanguage('en-US')}
+					>
+						<LanguageTitle active={currentLanguage === 'en-US'}>
+							{t('settings.englishUS')}
+						</LanguageTitle>
+						<LanguageSubtitle active={currentLanguage === 'en-US'}>
+							Switch the interface and texts to English.
+						</LanguageSubtitle>
+					</LanguageButton>
+				</SectionCard>
+				<Padding />
+			</Container>
+		</Screen>
 	);
 };
 

@@ -6,15 +6,15 @@ export const Container = styled.ScrollView.attrs(() => ({
 		flexGrow: 1,
 	},
 }))`
-	background-color: #e8e8ea;
+	background-color: #eef0f3;
 `;
 
 export const Content = styled.View`
-	background-color: #f8cdb9;
+	background-color: #ffffff;
 
 	align-self: center;
 	width: 90%;
-	border-radius: 12px;
+	border-radius: 22px;
 
 	padding: 20px;
 `;
@@ -52,9 +52,11 @@ export const InstallationIdValue = styled.Text`
 `;
 
 export const Title = styled.Text`
-	margin-left: 25px;
-	margin-bottom: 10px;
-	font-size: 17px;
+	margin: 0 20px 16px;
+	font-size: 28px;
+	line-height: 34px;
+	font-weight: 800;
+	color: #151515;
 `;
 
 export const AttibuitionContainer = styled.View`

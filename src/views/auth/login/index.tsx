@@ -31,7 +31,7 @@ import {
 import { signInWithGoogle } from '@utils/auth/login/google';
 import { registerLogin } from '@utils/auth/login/register';
 
-import Header from '@components/header';
+import Screen from '@components/screen';
 
 import {
 	Container,
@@ -225,109 +225,110 @@ const Login: React.FC = () => {
 	}, [router]);
 
 	return (
-		<Container>
-			<Header />
-			<PageContent>
-				<TextTitle>{t('login.title')}</TextTitle>
-				<TextDescription>{t('login.description1')}</TextDescription>
+		<Screen>
+			<Container>
+				<PageContent>
+					<TextTitle>{t('login.title')}</TextTitle>
+					<TextDescription>{t('login.description1')}</TextDescription>
 
-				<TextDescription>{t('login.description2')}</TextDescription>
+					<TextDescription>{t('login.description2')}</TextDescription>
 
-				<FormCard>
-					<ModeSelector>
-						<ModeButton
-							active={mode === 'signIn'}
-							onPress={() => setMode('signIn')}
-						>
-							<ModeButtonText active={mode === 'signIn'}>
-								{t('login.mode.signIn')}
-							</ModeButtonText>
-						</ModeButton>
+					<FormCard>
+						<ModeSelector>
+							<ModeButton
+								active={mode === 'signIn'}
+								onPress={() => setMode('signIn')}
+							>
+								<ModeButtonText active={mode === 'signIn'}>
+									{t('login.mode.signIn')}
+								</ModeButtonText>
+							</ModeButton>
 
-						<ModeButton
-							active={mode === 'signUp'}
-							onPress={() => setMode('signUp')}
-						>
-							<ModeButtonText active={mode === 'signUp'}>
-								{t('login.mode.signUp')}
-							</ModeButtonText>
-						</ModeButton>
-					</ModeSelector>
+							<ModeButton
+								active={mode === 'signUp'}
+								onPress={() => setMode('signUp')}
+							>
+								<ModeButtonText active={mode === 'signUp'}>
+									{t('login.mode.signUp')}
+								</ModeButtonText>
+							</ModeButton>
+						</ModeSelector>
 
-					<FieldLabel>{t('login.emailLabel')}</FieldLabel>
-					<Input
-						autoCapitalize="none"
-						autoCorrect={false}
-						keyboardType="email-address"
-						placeholder={t('login.emailPlaceholder')}
-						placeholderTextColor="#7c7c80"
-						textContentType="emailAddress"
-						value={email}
-						onChangeText={setEmail}
-					/>
+						<FieldLabel>{t('login.emailLabel')}</FieldLabel>
+						<Input
+							autoCapitalize="none"
+							autoCorrect={false}
+							keyboardType="email-address"
+							placeholder={t('login.emailPlaceholder')}
+							placeholderTextColor="#7c7c80"
+							textContentType="emailAddress"
+							value={email}
+							onChangeText={setEmail}
+						/>
 
-					<FieldLabel>{t('login.passwordLabel')}</FieldLabel>
-					<Input
-						autoCapitalize="none"
-						autoCorrect={false}
-						placeholder={t('login.passwordPlaceholder')}
-						placeholderTextColor="#7c7c80"
-						secureTextEntry
-						textContentType={
-							mode === 'signUp' ? 'newPassword' : 'password'
-						}
-						value={password}
-						onChangeText={setPassword}
-					/>
+						<FieldLabel>{t('login.passwordLabel')}</FieldLabel>
+						<Input
+							autoCapitalize="none"
+							autoCorrect={false}
+							placeholder={t('login.passwordPlaceholder')}
+							placeholderTextColor="#7c7c80"
+							secureTextEntry
+							textContentType={
+								mode === 'signUp' ? 'newPassword' : 'password'
+							}
+							value={password}
+							onChangeText={setPassword}
+						/>
 
-					<PrimaryButton
-						onPress={handleEmailAuth}
-						disabled={isSigning}
-					>
-						<PrimaryButtonText>
-							{mode === 'signUp'
-								? t('login.actions.createAccount')
-								: t('login.actions.signIn')}
-						</PrimaryButtonText>
-					</PrimaryButton>
-
-					{mode === 'signIn' && (
-						<SecondaryActionButton
-							onPress={handleResetPassword}
+						<PrimaryButton
+							onPress={handleEmailAuth}
 							disabled={isSigning}
 						>
-							<SecondaryActionText>
-								{t('login.actions.resetPassword')}
-							</SecondaryActionText>
-						</SecondaryActionButton>
-					)}
-				</FormCard>
+							<PrimaryButtonText>
+								{mode === 'signUp'
+									? t('login.actions.createAccount')
+									: t('login.actions.signIn')}
+							</PrimaryButtonText>
+						</PrimaryButton>
 
-				{isSigning ? (
-					<Loading />
-				) : (
-					<LoginContainer>
-						{isAppleSignInSupported && (
-							<AppleButton
-								buttonStyle={AppleButton.Style.BLACK}
-								buttonType={AppleButton.Type.CONTINUE}
-								style={{
-									width: 160,
-									height: 45,
-								}}
-								onPress={signInApple}
-							/>
+						{mode === 'signIn' && (
+							<SecondaryActionButton
+								onPress={handleResetPassword}
+								disabled={isSigning}
+							>
+								<SecondaryActionText>
+									{t('login.actions.resetPassword')}
+								</SecondaryActionText>
+							</SecondaryActionButton>
 						)}
+					</FormCard>
 
-						<LoginButton onPress={signInGoogle}>
-							<LoginButtonText>
-								{t('login.signInGoogle')}
-							</LoginButtonText>
-						</LoginButton>
-					</LoginContainer>
-				)}
-			</PageContent>
-		</Container>
+					{isSigning ? (
+						<Loading />
+					) : (
+						<LoginContainer>
+							{isAppleSignInSupported && (
+								<AppleButton
+									buttonStyle={AppleButton.Style.BLACK}
+									buttonType={AppleButton.Type.CONTINUE}
+									style={{
+										width: 160,
+										height: 45,
+									}}
+									onPress={signInApple}
+								/>
+							)}
+
+							<LoginButton onPress={signInGoogle}>
+								<LoginButtonText>
+									{t('login.signInGoogle')}
+								</LoginButtonText>
+							</LoginButton>
+						</LoginContainer>
+					)}
+				</PageContent>
+			</Container>
+		</Screen>
 	);
 };
 

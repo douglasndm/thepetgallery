@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { captureException } from '@services/exceptionsHandler';
 
-import Header from '@components/header';
+import Screen from '@components/screen';
 import Loading from '@components/loading';
 
 import DeleteAccount from './Delete';
@@ -69,76 +69,76 @@ const Profile: React.FC = () => {
 	}, []);
 
 	return (
-		<Container>
-			<Header />
+		<Screen>
+			<Container>
+				<Hero>
+					<HeroTag>{t('settings.viewAccount')}</HeroTag>
+					<HeroTitle>{t('settings.viewAccount')}</HeroTitle>
+					<HeroDescription>
+						Veja seu acesso atual e gerencie a conta com clareza.
+					</HeroDescription>
+				</Hero>
 
-			<Hero>
-				<HeroTag>{t('settings.viewAccount')}</HeroTag>
-				<HeroTitle>{t('settings.viewAccount')}</HeroTitle>
-				<HeroDescription>
-					Veja seu acesso atual e gerencie a conta com clareza.
-				</HeroDescription>
-			</Hero>
+				<ProfileCard>
+					<Avatar>
+						<AvatarIcon />
+					</Avatar>
+					<Name>{user?.displayName || 'The Pet Gallery'}</Name>
+					<Email>{user?.email}</Email>
+				</ProfileCard>
 
-			<ProfileCard>
-				<Avatar>
-					<AvatarIcon />
-				</Avatar>
-				<Name>{user?.displayName || 'The Pet Gallery'}</Name>
-				<Email>{user?.email}</Email>
-			</ProfileCard>
+				<SectionCard>
+					<SectionTitle>{t('settings.title')}</SectionTitle>
 
-			<SectionCard>
-				<SectionTitle>{t('settings.title')}</SectionTitle>
+					<ActionButton onPress={handleLogout}>
+						<ActionLeft>
+							<ActionIconWrap>
+								<ActionIcon name="log-out-outline" />
+							</ActionIconWrap>
+							<ActionTexts>
+								<ActionTitle>{t('profile.logout')}</ActionTitle>
+								<ActionSubtitle>
+									Encerre a sessao atual neste dispositivo.
+								</ActionSubtitle>
+							</ActionTexts>
+						</ActionLeft>
+						<Chevron />
+					</ActionButton>
 
-				<ActionButton onPress={handleLogout}>
-					<ActionLeft>
-						<ActionIconWrap>
-							<ActionIcon name="log-out-outline" />
-						</ActionIconWrap>
-						<ActionTexts>
-							<ActionTitle>{t('profile.logout')}</ActionTitle>
-							<ActionSubtitle>
-								Encerre a sessao atual neste dispositivo.
-							</ActionSubtitle>
-						</ActionTexts>
-					</ActionLeft>
-					<Chevron />
-				</ActionButton>
+					<ActionButton
+						onPress={switchShowDeleteModal}
+						style={{ borderBottomWidth: 0 }}
+					>
+						<ActionLeft>
+							<ActionIconWrap danger>
+								<ActionIcon name="trash-outline" danger />
+							</ActionIconWrap>
+							<ActionTexts>
+								<ActionTitle danger>
+									{t('profile.deleteAccount')}
+								</ActionTitle>
+								<ActionSubtitle>
+									Remove permanentemente sua conta e os dados
+									salvos.
+								</ActionSubtitle>
+							</ActionTexts>
+						</ActionLeft>
+						<Chevron />
+					</ActionButton>
+				</SectionCard>
 
-				<ActionButton
-					onPress={switchShowDeleteModal}
-					style={{ borderBottomWidth: 0 }}
-				>
-					<ActionLeft>
-						<ActionIconWrap danger>
-							<ActionIcon name="trash-outline" danger />
-						</ActionIconWrap>
-						<ActionTexts>
-							<ActionTitle danger>
-								{t('profile.deleteAccount')}
-							</ActionTitle>
-							<ActionSubtitle>
-								Remove permanentemente sua conta e os dados
-								salvos.
-							</ActionSubtitle>
-						</ActionTexts>
-					</ActionLeft>
-					<Chevron />
-				</ActionButton>
-			</SectionCard>
+				{isLoggingOut && (
+					<LoadingOverlay>
+						<Loading />
+					</LoadingOverlay>
+				)}
 
-			{isLoggingOut && (
-				<LoadingOverlay>
-					<Loading />
-				</LoadingOverlay>
-			)}
-
-			<DeleteAccount
-				visible={showDeleteModal}
-				setVisible={setShowDeleteModal}
-			/>
-		</Container>
+				<DeleteAccount
+					visible={showDeleteModal}
+					setVisible={setShowDeleteModal}
+				/>
+			</Container>
+		</Screen>
 	);
 };
 

@@ -1,5 +1,18 @@
-import React, { useCallback, useContext, useState } from 'react';
-import { Modal } from 'react-native';
+import React, {
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from 'react';
+import {
+	Animated,
+	Dimensions,
+	Modal,
+	PanResponder,
+	StatusBar,
+} from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import { useTranslation } from 'react-i18next';
 
@@ -11,15 +24,18 @@ import { saveImageOnGallery } from '@utils/images/save';
 
 import {
 	CloseButton,
-	CloseButtonText,
-	Container,
+	CloseIcon,
 	ImageContainer,
 	ImageView,
 	Button,
 	Text,
 	LoadingContainer,
 	Loading,
+	Hint,
 } from './styles';
+
+const CLOSE_DISTANCE = 120;
+const CLOSE_VELOCITY = 0.8;
 
 const image: React.FC = () => {
 	const photoContext = useContext(CurrentPhotoContext);
@@ -27,66 +43,132 @@ const image: React.FC = () => {
 
 	const [isLoading, setIsLoading] = useState(true);
 
-	const clearPhoto = () => {
+	const translateY = useRef(new Animated.Value(0)).current;
+	const currentPhoto = photoContext?.currentPhoto;
+	const isVisible = !!currentPhoto;
+
+	useEffect(() => {
+		if (isVisible) {
+			translateY.setValue(0);
+			setIsLoading(true);
+		}
+	}, [isVisible, translateY]);
+
+	const clearPhoto = useCallback(() => {
 		photoContext?.setCurrentPhoto(null);
-	};
+	}, [photoContext]);
+
+	const dismissWithAnimation = useCallback(() => {
+		Animated.timing(translateY, {
+			toValue: Dimensions.get('window').height,
+			duration: 220,
+			useNativeDriver: true,
+		}).start(clearPhoto);
+	}, [translateY, clearPhoto]);
+
+	const panResponder = useMemo(
+		() =>
+			PanResponder.create({
+				onMoveShouldSetPanResponder: (_, { dx, dy }) =>
+					dy > 8 && Math.abs(dy) > Math.abs(dx) * 1.5,
+				onPanResponderMove: (_, { dy }) => {
+					translateY.setValue(Math.max(0, dy));
+				},
+				onPanResponderRelease: (_, { dy, vy }) => {
+					if (dy > CLOSE_DISTANCE || vy > CLOSE_VELOCITY) {
+						dismissWithAnimation();
+						return;
+					}
+
+					Animated.spring(translateY, {
+						toValue: 0,
+						useNativeDriver: true,
+						bounciness: 6,
+					}).start();
+				},
+				onPanResponderTerminate: () => {
+					Animated.spring(translateY, {
+						toValue: 0,
+						useNativeDriver: true,
+					}).start();
+				},
+			}),
+		[translateY, dismissWithAnimation]
+	);
+
+	const backgroundOpacity = translateY.interpolate({
+		inputRange: [0, 300],
+		outputRange: [1, 0.2],
+		extrapolate: 'clamp',
+	});
 
 	const savePhoto = useCallback(async () => {
-		if (!photoContext?.currentPhoto) {
+		if (!currentPhoto) {
 			return;
 		}
 
 		try {
-			const { url } = photoContext?.currentPhoto;
+			await saveImageOnGallery(currentPhoto.url);
 
-			await saveImageOnGallery(url);
-
-			photoContext.setCurrentPhoto(null);
+			clearPhoto();
 		} catch (error) {
 			captureException({ error, showAlert: true });
 		}
-	}, [photoContext]);
-
-	const onLoadEnd = () => {
-		setIsLoading(false);
-	};
-
-	const onLoadStart = () => {
-		setIsLoading(true);
-	};
+	}, [currentPhoto, clearPhoto]);
 
 	return (
 		<Modal
-			visible={!!photoContext?.currentPhoto}
+			visible={isVisible}
 			onRequestClose={clearPhoto}
+			animationType="fade"
+			transparent
+			statusBarTranslucent
 		>
-			<Container>
-				<CloseButton onPress={clearPhoto}>
-					<CloseButtonText>X</CloseButtonText>
+			<StatusBar barStyle="light-content" />
+
+			<Animated.View
+				style={{
+					flex: 1,
+					backgroundColor: '#000',
+					opacity: backgroundOpacity,
+					position: 'absolute',
+					top: 0,
+					bottom: 0,
+					left: 0,
+					right: 0,
+				}}
+			/>
+
+			<Animated.View
+				style={{ flex: 1, transform: [{ translateY }] }}
+				{...panResponder.panHandlers}
+			>
+				<CloseButton onPress={clearPhoto} hitSlop={10}>
+					<CloseIcon name="close" />
 				</CloseButton>
 
 				{isLoading && (
-					<LoadingContainer>
-						<Loading />
+					<LoadingContainer pointerEvents="none">
+						<Loading color="#fff" />
 					</LoadingContainer>
 				)}
 
 				<ImageContainer>
-					{!!photoContext?.currentPhoto?.url && (
+					{!!currentPhoto?.url && (
 						<ImageView
-							source={{
-								uri: photoContext?.currentPhoto?.url,
-							}}
-							onLoadStart={onLoadStart}
-							onLoadEnd={onLoadEnd}
+							source={{ uri: currentPhoto.url }}
+							onLoadStart={() => setIsLoading(true)}
+							onLoadEnd={() => setIsLoading(false)}
 						/>
 					)}
 
 					<Button onPress={savePhoto}>
 						<Text>{t('common.save')}</Text>
 					</Button>
+
+					<Hint />
 				</ImageContainer>
-			</Container>
+			</Animated.View>
 
 			<FlashMessage
 				duration={7000}

@@ -9,7 +9,7 @@ import { captureException } from '@services/exceptionsHandler';
 
 import { savePet } from '@utils/pets/save';
 
-import Header from '@components/header';
+import Screen from '@components/screen';
 import Padding from '@components/padding';
 import Loading from '@components/loading';
 
@@ -131,121 +131,127 @@ const AddPet: React.FC = () => {
 	);
 
 	return (
-		<Container>
-			<Header />
+		<Screen>
+			<Container>
+				<Hero>
+					<HeroTag>{t('pets.addPet')}</HeroTag>
+					<HeroTitle>{t('pets.addPet')}</HeroTitle>
+					<HeroDescription>
+						{t('pets.addDescription')}
+					</HeroDescription>
+				</Hero>
 
-			<Hero>
-				<HeroTag>{t('pets.addPet')}</HeroTag>
-				<HeroTitle>{t('pets.addPet')}</HeroTitle>
-				<HeroDescription>{t('pets.addDescription')}</HeroDescription>
-			</Hero>
+				<Content>
+					<Section>
+						<Label>{t('pets.namePlaceholder')}</Label>
+						<Input
+							placeholder={t('pets.namePlaceholder')}
+							placeholderTextColor="#8b9097"
+							value={name}
+							onChangeText={setName}
+						/>
 
-			<Content>
-				<Section>
-					<Label>{t('pets.namePlaceholder')}</Label>
-					<Input
-						placeholder={t('pets.namePlaceholder')}
-						placeholderTextColor="#8b9097"
-						value={name}
-						onChangeText={setName}
-					/>
+						<Label>{t('pets.speciesLabel')}</Label>
+						<RadioGroup
+							radioButtons={radioButtons}
+							onPress={setSpecies}
+							selectedId={species}
+							containerStyle={{
+								flexDirection: 'row',
+								justifyContent: 'space-between',
+							}}
+						/>
+					</Section>
 
-					<Label>{t('pets.speciesLabel')}</Label>
-					<RadioGroup
-						radioButtons={radioButtons}
-						onPress={setSpecies}
-						selectedId={species}
-						containerStyle={{
-							flexDirection: 'row',
-							justifyContent: 'space-between',
-						}}
-					/>
-				</Section>
+					<Section>
+						<Label>{t('pets.breedPlaceholder')}</Label>
+						<Input
+							placeholder={t('pets.breedPlaceholder')}
+							placeholderTextColor="#8b9097"
+							value={breed}
+							onChangeText={setBreed}
+						/>
 
-				<Section>
-					<Label>{t('pets.breedPlaceholder')}</Label>
-					<Input
-						placeholder={t('pets.breedPlaceholder')}
-						placeholderTextColor="#8b9097"
-						value={breed}
-						onChangeText={setBreed}
-					/>
+						<Label>{t('pets.weightPlaceholder')}</Label>
+						<Input
+							placeholder={t('pets.weightPlaceholder')}
+							placeholderTextColor="#8b9097"
+							keyboardType="numeric"
+							value={weight?.toString()}
+							onChangeText={handleWeightChange}
+						/>
 
-					<Label>{t('pets.weightPlaceholder')}</Label>
-					<Input
-						placeholder={t('pets.weightPlaceholder')}
-						placeholderTextColor="#8b9097"
-						keyboardType="numeric"
-						value={weight?.toString()}
-						onChangeText={handleWeightChange}
-					/>
+						<Label>{t('pets.notesPlaceholder')}</Label>
+						<Input
+							placeholder={t('pets.notesPlaceholder')}
+							placeholderTextColor="#8b9097"
+							multiline
+							numberOfLines={5}
+							textAlignVertical="top"
+							style={{ minHeight: 120 }}
+							value={healthNotes}
+							onChangeText={setHealthNotes}
+						/>
+					</Section>
 
-					<Label>{t('pets.notesPlaceholder')}</Label>
-					<Input
-						placeholder={t('pets.notesPlaceholder')}
-						placeholderTextColor="#8b9097"
-						multiline
-						numberOfLines={5}
-						textAlignVertical="top"
-						style={{ minHeight: 120 }}
-						value={healthNotes}
-						onChangeText={setHealthNotes}
-					/>
-				</Section>
+					<Section>
+						<Label>{t('pets.addBirthDateLabel')}</Label>
+						<RadioGroup
+							radioButtons={useBirthDateRadioButtons}
+							onPress={selected => {
+								if (selected === 'yes') {
+									setUseBirthDate(true);
+								} else {
+									setUseBirthDate(false);
+								}
+							}}
+							selectedId={useBirthDate ? 'yes' : 'no'}
+							containerStyle={{
+								flexDirection: 'row',
+								justifyContent: 'center',
+							}}
+						/>
 
-				<Section>
-					<Label>{t('pets.addBirthDateLabel')}</Label>
-					<RadioGroup
-						radioButtons={useBirthDateRadioButtons}
-						onPress={selected => {
-							if (selected === 'yes') {
-								setUseBirthDate(true);
-							} else {
-								setUseBirthDate(false);
-							}
-						}}
-						selectedId={useBirthDate ? 'yes' : 'no'}
-						containerStyle={{
-							flexDirection: 'row',
-							justifyContent: 'center',
-						}}
-					/>
+						{useBirthDate && (
+							<>
+								<Label>{t('pets.birthDateLabel')}</Label>
+								<DatePickerCard>
+									<DateTimePicker
+										mode="single"
+										date={date}
+										onChange={change => {
+											if (change.date) {
+												setDate(
+													new Date(
+														String(change.date)
+													)
+												);
+											}
+										}}
+									/>
+								</DatePickerCard>
+							</>
+						)}
+					</Section>
 
-					{useBirthDate && (
-						<>
-							<Label>{t('pets.birthDateLabel')}</Label>
-							<DatePickerCard>
-								<DateTimePicker
-									mode="single"
-									date={date}
-									onChange={change => {
-										if (change.date) {
-											setDate(
-												new Date(String(change.date))
-											);
-										}
-									}}
-								/>
-							</DatePickerCard>
-						</>
-					)}
-				</Section>
+					<Footer>
+						<SubmitButton onPress={handleSave} disabled={isSaving}>
+							<SubmitButtonText>
+								{t('common.save')}
+							</SubmitButtonText>
+						</SubmitButton>
+					</Footer>
+				</Content>
 
-				<Footer>
-					<SubmitButton onPress={handleSave} disabled={isSaving}>
-						<SubmitButtonText>{t('common.save')}</SubmitButtonText>
-					</SubmitButton>
-				</Footer>
-			</Content>
+				{isSaving && (
+					<LoadingOverlay>
+						<Loading />
+					</LoadingOverlay>
+				)}
 
-			{isSaving && (
-				<LoadingOverlay>
-					<Loading />
-				</LoadingOverlay>
-			)}
-
-			<Padding />
-		</Container>
+				<Padding />
+			</Container>
+		</Screen>
 	);
 };
 

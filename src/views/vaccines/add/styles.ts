@@ -4,7 +4,7 @@ import { initialWindowMetrics } from 'react-native-safe-area-context';
 import Ionicons from '@react-native-vector-icons/ionicons/static';
 
 export const Container = styled.ScrollView.attrs(() => ({
-	contentInsetAdjustmentBehavior: 'automatic',
+	contentInsetAdjustmentBehavior: 'never',
 	alwaysBounceVertical: true,
 	contentContainerStyle: {
 		flexGrow: 1,

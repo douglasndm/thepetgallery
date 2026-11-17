@@ -12,7 +12,7 @@ import { getCurrentLanguage } from '@app/i18n';
 import { getUserPetsReference } from '@services/firebase/firestore';
 import { captureException } from '@services/exceptionsHandler';
 
-import Header from '@components/header';
+import Screen from '@components/screen';
 import Loading from '@components/loading';
 
 import {
@@ -107,68 +107,70 @@ const VaccinesDetails: React.FC = () => {
 	}, [router, petId, id]);
 
 	return (
-		<Container>
-			<Header />
+		<Screen>
+			<Container>
+				{!isLoading && (
+					<ActionButtonContainer onPress={navigateToEditVaccine}>
+						<ActionButtonIcon name="create-outline" />
+						<ActionButtonText>
+							{t('vaccines.editVaccine')}
+						</ActionButtonText>
+					</ActionButtonContainer>
+				)}
 
-			{!isLoading && (
-				<ActionButtonContainer onPress={navigateToEditVaccine}>
-					<ActionButtonIcon name="create-outline" />
-					<ActionButtonText>
-						{t('vaccines.editVaccine')}
-					</ActionButtonText>
-				</ActionButtonContainer>
-			)}
+				{isLoading ? (
+					<Loading />
+				) : (
+					<>
+						<HeroCard>
+							<Name>{vaccine?.name}</Name>
+							<Subtitle>
+								{t('vaccines.detailsDescription')}
+							</Subtitle>
+						</HeroCard>
 
-			{isLoading ? (
-				<Loading />
-			) : (
-				<>
-					<HeroCard>
-						<Name>{vaccine?.name}</Name>
-						<Subtitle>{t('vaccines.detailsDescription')}</Subtitle>
-					</HeroCard>
+						<Content>
+							<InfoCard>
+								{!!vaccine?.date_administered && (
+									<InfoRow>
+										<InfoLabel>
+											{t('vaccines.appliedOnPrefix')}
+										</InfoLabel>
+										<InfoValue>
+											{vaccine.date_administered.toLocaleDateString(
+												getCurrentLanguage()
+											)}
+										</InfoValue>
+									</InfoRow>
+								)}
 
-					<Content>
-						<InfoCard>
-							{!!vaccine?.date_administered && (
-								<InfoRow>
-									<InfoLabel>
-										{t('vaccines.appliedOnPrefix')}
-									</InfoLabel>
-									<InfoValue>
-										{vaccine.date_administered.toLocaleDateString(
-											getCurrentLanguage()
-										)}
-									</InfoValue>
-								</InfoRow>
-							)}
+								{!!vaccine?.next_dose_date && (
+									<InfoRow>
+										<InfoLabel>
+											{t('vaccines.nextDosePrefix')}
+										</InfoLabel>
+										<InfoValue>
+											{vaccine.next_dose_date.toLocaleDateString(
+												getCurrentLanguage()
+											)}
+										</InfoValue>
+									</InfoRow>
+								)}
 
-							{!!vaccine?.next_dose_date && (
-								<InfoRow>
-									<InfoLabel>
-										{t('vaccines.nextDosePrefix')}
-									</InfoLabel>
-									<InfoValue>
-										{vaccine.next_dose_date.toLocaleDateString(
-											getCurrentLanguage()
-										)}
-									</InfoValue>
-								</InfoRow>
-							)}
-
-							{!!vaccine?.notes && (
-								<InfoRow style={{ borderBottomWidth: 0 }}>
-									<InfoLabel>
-										{t('vaccines.notesPrefix')}
-									</InfoLabel>
-									<InfoValue>{vaccine.notes}</InfoValue>
-								</InfoRow>
-							)}
-						</InfoCard>
-					</Content>
-				</>
-			)}
-		</Container>
+								{!!vaccine?.notes && (
+									<InfoRow style={{ borderBottomWidth: 0 }}>
+										<InfoLabel>
+											{t('vaccines.notesPrefix')}
+										</InfoLabel>
+										<InfoValue>{vaccine.notes}</InfoValue>
+									</InfoRow>
+								)}
+							</InfoCard>
+						</Content>
+					</>
+				)}
+			</Container>
+		</Screen>
 	);
 };
 

@@ -68,8 +68,9 @@ const AppNativeAd: React.FC = () => {
 						<NativeAsset assetType={NativeAssetType.ICON}>
 							<Image
 								source={{ uri: nativeAd.icon.url }}
-								width={24}
-								height={24}
+								width={32}
+								height={32}
+								style={{ borderRadius: 8 }}
 							/>
 						</NativeAsset>
 					)}
@@ -79,7 +80,7 @@ const AppNativeAd: React.FC = () => {
 					</NativeAsset>
 				</View>
 
-				<NativeMediaView />
+				<NativeMediaView style={styles.media} />
 
 				<Text style={styles.sponsored}>Sponsored</Text>
 			</NativeAdView>

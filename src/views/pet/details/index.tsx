@@ -7,7 +7,7 @@ import { getCurrentLanguage } from '@app/i18n';
 import { getUserPetsReference } from '@services/firebase/firestore';
 import { captureException } from '@services/exceptionsHandler';
 
-import Header from '@components/header';
+import Screen from '@components/screen';
 import Loading from '@components/loading';
 import Button from '@components/button';
 
@@ -138,94 +138,98 @@ const PetDetails: React.FC = () => {
 	}, [router, id]);
 
 	return (
-		<Container>
-			<Header />
+		<Screen>
+			<Container>
+				{!isLoading && (
+					<ActionButtonContainer onPress={navigateToEditPet}>
+						<ActionButtonIcon name="create-outline" />
+						<ActionButtonText>{t('pets.editPet')}</ActionButtonText>
+					</ActionButtonContainer>
+				)}
 
-			{!isLoading && (
-				<ActionButtonContainer onPress={navigateToEditPet}>
-					<ActionButtonIcon name="create-outline" />
-					<ActionButtonText>{t('pets.editPet')}</ActionButtonText>
-				</ActionButtonContainer>
-			)}
+				{isLoading ? (
+					<Loading />
+				) : (
+					<>
+						<HeroCard>
+							{!!iconName && <Icon name={iconName} />}
+							<Name>{petInfo?.name}</Name>
+							<Subtitle>
+								{petInfo?.species === 'dog'
+									? t('pets.dog')
+									: petInfo?.species === 'cat'
+										? t('pets.cat')
+										: t('pets.other')}
+							</Subtitle>
+						</HeroCard>
 
-			{isLoading ? (
-				<Loading />
-			) : (
-				<>
-					<HeroCard>
-						{!!iconName && <Icon name={iconName} />}
-						<Name>{petInfo?.name}</Name>
-						<Subtitle>
-							{petInfo?.species === 'dog'
-								? t('pets.dog')
-								: petInfo?.species === 'cat'
-									? t('pets.cat')
-									: t('pets.other')}
-						</Subtitle>
-					</HeroCard>
-
-					<Content>
-						<InfoCard>
-							<InfoRow>
-								<InfoLabel>{t('pets.speciesPrefix')}</InfoLabel>
-								<InfoValue>
-									{petInfo?.species === 'dog'
-										? t('pets.dog')
-										: petInfo?.species === 'cat'
-											? t('pets.cat')
-											: t('pets.other')}
-								</InfoValue>
-							</InfoRow>
-
-							{!!petInfo?.breed && (
+						<Content>
+							<InfoCard>
 								<InfoRow>
 									<InfoLabel>
-										{t('pets.breedPrefix')}
-									</InfoLabel>
-									<InfoValue>{petInfo?.breed}</InfoValue>
-								</InfoRow>
-							)}
-
-							{!!birthDate && (
-								<InfoRow>
-									<InfoLabel>
-										{t('pets.birthPrefix')}
-									</InfoLabel>
-									<InfoValue>{birthDate}</InfoValue>
-								</InfoRow>
-							)}
-
-							{!!petInfo?.weight && (
-								<InfoRow>
-									<InfoLabel>
-										{t('pets.weightPrefix')}
-									</InfoLabel>
-									<InfoValue>{petInfo?.weight} KG</InfoValue>
-								</InfoRow>
-							)}
-
-							{!!petInfo?.health_notes && (
-								<InfoRow style={{ borderBottomWidth: 0 }}>
-									<InfoLabel>
-										{t('pets.extraDataPrefix')}
+										{t('pets.speciesPrefix')}
 									</InfoLabel>
 									<InfoValue>
-										{petInfo?.health_notes}
+										{petInfo?.species === 'dog'
+											? t('pets.dog')
+											: petInfo?.species === 'cat'
+												? t('pets.cat')
+												: t('pets.other')}
 									</InfoValue>
 								</InfoRow>
-							)}
-						</InfoCard>
-					</Content>
-				</>
-			)}
 
-			<Footer>
-				<Button
-					title={t('pets.viewVaccines')}
-					onPress={navigateToVaccines}
-				/>
-			</Footer>
-		</Container>
+								{!!petInfo?.breed && (
+									<InfoRow>
+										<InfoLabel>
+											{t('pets.breedPrefix')}
+										</InfoLabel>
+										<InfoValue>{petInfo?.breed}</InfoValue>
+									</InfoRow>
+								)}
+
+								{!!birthDate && (
+									<InfoRow>
+										<InfoLabel>
+											{t('pets.birthPrefix')}
+										</InfoLabel>
+										<InfoValue>{birthDate}</InfoValue>
+									</InfoRow>
+								)}
+
+								{!!petInfo?.weight && (
+									<InfoRow>
+										<InfoLabel>
+											{t('pets.weightPrefix')}
+										</InfoLabel>
+										<InfoValue>
+											{petInfo?.weight} KG
+										</InfoValue>
+									</InfoRow>
+								)}
+
+								{!!petInfo?.health_notes && (
+									<InfoRow style={{ borderBottomWidth: 0 }}>
+										<InfoLabel>
+											{t('pets.extraDataPrefix')}
+										</InfoLabel>
+										<InfoValue>
+											{petInfo?.health_notes}
+										</InfoValue>
+									</InfoRow>
+								)}
+							</InfoCard>
+						</Content>
+					</>
+				)}
+
+				<Footer>
+					<Button
+						title={t('pets.viewVaccines')}
+						onPress={navigateToVaccines}
+					/>
+				</Footer>
+			</Container>
+		</Screen>
 	);
 };
 

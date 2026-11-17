@@ -7,35 +7,38 @@ export const Container = styled.ScrollView.attrs(() => ({
 		flexGrow: 1,
 	},
 }))`
-	background-color: #e8e8ea;
+	background-color: #eef0f3;
 	flex: 1;
 `;
 
 export const Title = styled.Text`
-	margin: 0px 22px 15px;
-	font-size: 18px;
+	margin: 0 20px 16px;
+	font-size: 28px;
+	line-height: 34px;
+	font-weight: 800;
+	color: #151515;
 `;
 
 export const Content = styled.View``;
 
 export const PlaceStateContainer = styled.View`
-	background-color: #f8cdb9;
-	margin: 5px 20px;
-	padding: 20px;
-	border-radius: 20px;
+	background-color: #ffffff;
+	margin: 0 20px 14px;
+	padding: 18px;
+	border-radius: 22px;
 `;
 
 export const PlaceStateText = styled.Text`
-	font-weight: bold;
+	font-weight: 800;
 	font-size: 18px;
-	color: #fff;
+	color: #151515;
 `;
 
 export const PlaceCityContainer = styled.View``;
 
 export const PlaceCityText = styled.Text`
-	color: rgb(80, 79, 79);
-	margin: 5px 0 0;
+	color: #616772;
+	margin: 4px 0 0;
 `;
 
 export const PlaceButton = styled.TouchableOpacity`
@@ -46,8 +49,7 @@ export const PlaceButton = styled.TouchableOpacity`
 	flex-direction: row;
 	align-items: center;
 
-	background-color: #fff;
-	opacity: 0.85;
+	background-color: #f6e3da;
 `;
 
 export const PlaceName = styled.Text`

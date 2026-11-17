@@ -4,16 +4,10 @@ import { useTranslation } from 'react-i18next';
 
 import { fetchPictures } from '@services/api';
 
-import Header from '@components/header';
+import Screen from '@components/screen';
 import PhotosList from '@components/listanimals';
 
-import {
-	Container,
-	PageContent,
-	PhotosContainer,
-	PhotosTitleContainer,
-	PhotosTitle,
-} from './styles';
+import { PhotosTitleContainer, PhotosTitle } from './styles';
 
 const ListPics: React.FC = () => {
 	const { t } = useTranslation();
@@ -52,8 +46,6 @@ const ListPics: React.FC = () => {
 	const ListHeader = useCallback(() => {
 		return (
 			<>
-				<Header />
-
 				<PhotosTitleContainer>
 					<PhotosTitle>{t('photos.catsTitle')}</PhotosTitle>
 				</PhotosTitleContainer>
@@ -75,17 +67,13 @@ const ListPics: React.FC = () => {
 	};
 
 	return (
-		<Container>
-			<PageContent>
-				<PhotosContainer>
-					<PhotosList
-						ListHeaderComponent={ListHeader}
-						onScroll={handleScroll}
-						images={images}
-					/>
-				</PhotosContainer>
-			</PageContent>
-		</Container>
+		<Screen>
+			<PhotosList
+				ListHeaderComponent={ListHeader}
+				onScroll={handleScroll}
+				images={images}
+			/>
+		</Screen>
 	);
 };
 
