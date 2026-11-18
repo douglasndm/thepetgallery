@@ -2,7 +2,7 @@
 # O comportamento e o mesmo em todo app; so o bloco "Configuracao do app" muda.
 #
 # Envio (nunca builda: o build e sempre pelos scripts build:ios / build:android):
-#   bundle exec fastlane ios release                     # ultimo build local -> TestFlight
+#   bundle exec fastlane ios release                     # ultimo build local -> TestFlight (e cria a versao na App Store, se nao existir, com as notas)
 #   bundle exec fastlane ios release store:true          # -> App Store, enviado para revisao
 #   bundle exec fastlane android release                 # ultimo build local -> Play (track internal)
 #   bundle exec fastlane android release track:production # producao fica como rascunho no Play Console
@@ -169,6 +169,46 @@ def ios_release_notes
   end.to_h
 end
 
+# Garante a versao editavel na App Store (com as notas de metadata/) para o IPA enviado ao TestFlight.
+# Ja existe uma versao editavel ou a versao ja foi publicada: nao mexe em nada. O binario ja foi enviado,
+# entao uma falha aqui vira aviso, nao derruba o release.
+def ensure_app_store_version!(api_key, ipa)
+  version = get_ipa_info_plist_value(ipa: ipa, key: "CFBundleShortVersionString").to_s
+  UI.user_error!("Versao nao encontrada no IPA") if version.empty?
+
+  app = Spaceship::ConnectAPI::App.find(IOS_BUNDLE_ID)
+  UI.user_error!("App #{IOS_BUNDLE_ID} nao encontrado no App Store Connect") unless app
+
+  platform = Spaceship::ConnectAPI::Platform::IOS
+  edit = app.get_edit_app_store_version(platform: platform)
+  live = app.get_live_app_store_version(platform: platform)
+  if edit
+    UI.message("Versao #{edit.version_string} ja existe na App Store (#{edit.app_store_state}); nada a criar")
+    return
+  end
+  if live&.version_string == version
+    UI.message("Versao #{version} ja esta publicada na App Store; nada a criar")
+    return
+  end
+
+  upload_to_app_store(
+    api_key: api_key,
+    app_identifier: IOS_BUNDLE_ID,
+    app_version: version,
+    metadata_path: METADATA_DIR,
+    skip_binary_upload: true,
+    skip_screenshots: true,
+    skip_app_version_update: false,
+    submit_for_review: false,
+    run_precheck_before_submit: false,
+    ignore_language_directory_validation: true,
+    force: true,
+  )
+  UI.success("Versao #{version} criada na App Store com as notas de metadata/")
+rescue StandardError => e
+  UI.important("Binario enviado, mas a versao da App Store nao foi criada: #{e.message}")
+end
+
 # ---------------------------------------------------------------- Notas de versao
 
 desc "Reescreve as notas de versao em metadata/ (sem texto, volta ao padrao de listing_texts.js)"
@@ -280,6 +320,7 @@ platform :ios do
         changelog: notes["en-US"] || notes.values.first,
         localized_build_info: notes.transform_values { |text| { whats_new: text } },
       )
+      ensure_app_store_version!(api_key, ipa)
     end
     UI.success("#{File.basename(ipa)} enviado para #{options[:store] ? 'revisao da App Store' : 'TestFlight'}")
   end
