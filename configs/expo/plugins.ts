@@ -39,6 +39,7 @@ const configs: plugins = [
 	'./configs/expo/withFirebaseLinkerFix',
 	'./configs/expo/withGoogleMobileAdsStaticFramework',
 	'./configs/expo/withKotlinMetadataFix',
+	'./configs/expo/withOptionalHardwareFeatures',
 	'expo-font',
 	'expo-image',
 	[
