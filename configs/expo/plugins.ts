@@ -49,7 +49,7 @@ const configs: plugins = [
 			savePhotosPermission: 'Allow $(PRODUCT_NAME) to save photos.',
 			preventAutomaticLimitedAccessAlert: true,
 			isAccessMediaLocationEnabled: false,
-			granularPermissions: ['photo'],
+			granularPermissions: [],
 		},
 	],
 	[

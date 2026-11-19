@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import { Directory, File, Paths } from 'expo-file-system';
 import { Album, Asset, requestPermissionsAsync } from 'expo-media-library';
 import { showMessage } from 'react-native-flash-message';
@@ -8,9 +9,13 @@ import { captureException } from '@services/exceptionsHandler';
 
 async function saveImageOnGallery(path: string): Promise<void> {
 	const albumName = 'The Pet Gallery';
-	const { granted, accessPrivileges } = await requestPermissionsAsync(false, [
-		'photo',
-	]);
+	// No Android o app só salva imagens (write-only), sem precisar de
+	// READ_MEDIA_IMAGES (política do Google Play).
+	const isAndroid = Platform.OS === 'android';
+	const { granted, accessPrivileges } = await requestPermissionsAsync(
+		isAndroid,
+		['photo']
+	);
 
 	if (!granted) {
 		showMessage({
@@ -20,8 +25,11 @@ async function saveImageOnGallery(path: string): Promise<void> {
 		return;
 	}
 
+	// Organizar em álbum exige leitura; no Android sem READ_MEDIA_IMAGES a
+	// imagem é salva direto via MediaStore.
 	const hasFullAccess =
-		accessPrivileges === undefined || accessPrivileges === 'all';
+		!isAndroid &&
+		(accessPrivileges === undefined || accessPrivileges === 'all');
 
 	const cacheDirectory = new Directory(Paths.cache, 'images');
 	cacheDirectory.create({ idempotent: true, intermediates: true });
