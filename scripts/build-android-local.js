@@ -482,11 +482,13 @@ async function main() {
 	try {
 		// Assinatura injetada (mesmo mecanismo do "Generate Signed Bundle" do Android Studio):
 		// sobrescreve o signingConfig do build.gradle sem editar arquivos.
+		// Keystore PKCS12 (padrão do EAS) pode vir sem keyPassword: a chave usa a senha do store, como no EAS CLI.
+		// Sem esse fallback o `null` vira a string "null" e o Gradle falha com "Given final block not properly padded".
 		Object.assign(process.env, {
 			'ORG_GRADLE_PROJECT_android.injected.signing.store.file': KEYSTORE_PATH,
 			'ORG_GRADLE_PROJECT_android.injected.signing.store.password': keystore.keystorePassword,
 			'ORG_GRADLE_PROJECT_android.injected.signing.key.alias': keystore.keyAlias,
-			'ORG_GRADLE_PROJECT_android.injected.signing.key.password': keystore.keyPassword,
+			'ORG_GRADLE_PROJECT_android.injected.signing.key.password': keystore.keyPassword ?? keystore.keystorePassword,
 		});
 		log(`./gradlew ${task} --build-cache`);
 		run('./gradlew', [task, '--build-cache'], { cwd: ANDROID_DIR });
