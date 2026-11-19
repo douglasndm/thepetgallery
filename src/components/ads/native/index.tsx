@@ -13,6 +13,8 @@ import {
 
 import Env from '@services/env';
 
+import { setupTrackingAndAds } from '@utils/permissions/tracking';
+
 import styles from './styles';
 
 const AppNativeAd: React.FC = () => {
@@ -26,6 +28,9 @@ const AppNativeAd: React.FC = () => {
 		} else if (Platform.OS === 'android' && !__DEV__) {
 			adUnitId = Env.ANDROID_ADMOB_ADUNITID_NATIVE_BETWEEN_PETS_PICUTRES;
 		}
+
+		// No ad request before the ATT prompt has been answered.
+		await setupTrackingAndAds();
 
 		NativeAd.createForAdRequest(TestIds.NATIVE)
 			.then(setNativeAd)

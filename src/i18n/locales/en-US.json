@@ -54,6 +54,11 @@
 		"description1": "When you sign in, you enable personalized notifications such as vaccine reminders, medications, and other important care for your pet. Never miss an important date and keep your pet healthy.",
 		"description2": "If you don't have an account yet, sign up now and start enjoying all benefits!",
 		"signInGoogle": "Continue with Google",
+		"ageConfirmation": "I confirm that I am at least {{age}} years old.",
+		"legalPrefix": "By continuing you agree to our ",
+		"legalAnd": " and our ",
+		"terms": "Terms of Use",
+		"privacy": "Privacy Policy",
 		"emailLabel": "Email",
 		"emailPlaceholder": "Enter your email",
 		"passwordLabel": "Password",
@@ -87,7 +92,8 @@
 			"genericSignIn": "Could not sign you in right now. Try again.",
 			"genericSignUp": "Could not create your account right now. Try again.",
 			"genericResetPassword": "Could not send the reset email right now. Try again.",
-			"socialSignIn": "Could not complete social sign-in. Try again."
+			"socialSignIn": "Could not complete social sign-in. Try again.",
+			"ageRequired": "You must be at least {{age}} years old to create an account."
 		}
 	},
 	"profile": {

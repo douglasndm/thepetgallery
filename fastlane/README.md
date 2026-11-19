@@ -42,6 +42,14 @@ Envio para Android e iOS (em sequencia, com as mesmas opcoes)
 
 Envia o AAB (ultimo build ou aab:) para o Google Play com as notas de metadata/
 
+### android upload_patch_notes
+
+```sh
+[bundle exec] fastlane android upload_patch_notes
+```
+
+Envia so as notas de metadata/ para o release do Google Play (sem binario), no version_code do ultimo build
+
 ### android download_listing
 
 ```sh
@@ -70,6 +78,14 @@ Envia titulo, descricao curta e completa de store_listing/android (sem binario, 
 ```
 
 Envia o IPA (ultimo build ou ipa:) para o TestFlight, ou para revisao da App Store com store:true
+
+### ios upload_patch_notes
+
+```sh
+[bundle exec] fastlane ios upload_patch_notes
+```
+
+Envia so as notas de metadata/ para a versao editavel da App Store (sem binario nem revisao)
 
 ### ios download_listing
 

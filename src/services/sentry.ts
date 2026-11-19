@@ -12,20 +12,13 @@ Sentry.init({
 	sendDefaultPii: true,
 	enableLogs: true,
 
-	sampleRate: 0.45,
+	sampleRate: 1.0,
 	profilesSampleRate: 0.45,
 	tracesSampleRate: 0.45,
-	replaysSessionSampleRate: 0.5,
-	replaysOnErrorSampleRate: 1.0,
 
 	integrations: [
 		Sentry.consoleLoggingIntegration({
 			levels: ['log', 'debug', 'info', 'warn', 'error'],
-		}),
-		Sentry.mobileReplayIntegration({
-			maskAllText: false,
-			maskAllImages: false,
-			maskAllVectors: false,
 		}),
 	],
 });

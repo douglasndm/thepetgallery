@@ -23,6 +23,7 @@ ErrorUtils.setGlobalHandler((error, isFatal) => {
 import '@services/sentry';
 import { setupInstallationId } from '@services/sentry';
 import '@utils/permissions/notifications';
+import { setupTrackingAndAds } from '@utils/permissions/tracking';
 import { useAutoApplyUpdates } from '@utils/updates/useAutoApplyUpdates';
 import '@app/i18n';
 
@@ -54,6 +55,10 @@ const RootLayout: React.FC = () => {
 
 	useEffect(() => {
 		Observe.logEvent('app_started');
+	}, []);
+
+	useEffect(() => {
+		setupTrackingAndAds();
 	}, []);
 
 	useEffect(() => {

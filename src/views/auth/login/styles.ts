@@ -127,3 +127,26 @@ export const Loading = styled.ActivityIndicator.attrs(() => ({
 	color: '#f8cdb9',
 	marginBottom: 24,
 }))``;
+
+export const AgeGateRow = styled.TouchableOpacity`
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: 14px;
+`;
+
+export const AgeGateText = styled.Text`
+	flex: 1;
+	color: #000000;
+	font-size: 14px;
+`;
+
+export const LegalText = styled.Text`
+	color: #444444;
+	font-size: 12px;
+	margin-bottom: 14px;
+`;
+
+export const LegalLink = styled.Text`
+	color: #d3977b;
+	text-decoration-line: underline;
+`;

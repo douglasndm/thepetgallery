@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
-import { Platform } from 'react-native';
+import { Platform, Linking } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import {
 	getAuth,
@@ -9,6 +9,7 @@ import {
 	sendPasswordResetEmail,
 } from '@react-native-firebase/auth';
 import { useTranslation } from 'react-i18next';
+import { Checkbox } from 'react-native-paper';
 import { showMessage } from 'react-native-flash-message';
 import {
 	appleAuth,
@@ -52,7 +53,17 @@ import {
 	LoginButton,
 	LoginButtonText,
 	Loading,
+	AgeGateRow,
+	AgeGateText,
+	LegalText,
+	LegalLink,
 } from './styles';
+
+const TERMS_URL = 'https://douglasndm.dev/terms';
+const PRIVACY_URL = 'https://douglasndm.dev/privacy';
+
+// Minimum age required to create an account (kept at 16 to cover GDPR-K).
+const MINIMUM_AGE = 16;
 
 type AuthMode = 'signIn' | 'signUp';
 
@@ -65,6 +76,7 @@ const Login: React.FC = () => {
 	const [mode, setMode] = useState<AuthMode>('signIn');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [ageConfirmed, setAgeConfirmed] = useState(false);
 
 	const isAppleSignInSupported =
 		Platform.OS === 'android'
@@ -99,15 +111,29 @@ const Login: React.FC = () => {
 			return false;
 		}
 
+		if (mode === 'signUp' && !ageConfirmed) {
+			showAuthMessage(
+				t('login.errors.ageRequired', { age: MINIMUM_AGE })
+			);
+			return false;
+		}
+
 		if (mode === 'signUp' && password.trim().length < 6) {
 			showAuthMessage(t('login.errors.weakPassword'));
 			return false;
 		}
 
 		return true;
-	}, [mode, normalizedEmail, password, showAuthMessage, t]);
+	}, [ageConfirmed, mode, normalizedEmail, password, showAuthMessage, t]);
 
 	const signInGoogle = useCallback(async () => {
+		if (!ageConfirmed) {
+			showAuthMessage(
+				t('login.errors.ageRequired', { age: MINIMUM_AGE })
+			);
+			return;
+		}
+
 		try {
 			setIsSigning(true);
 
@@ -121,9 +147,16 @@ const Login: React.FC = () => {
 		} finally {
 			setIsSigning(false);
 		}
-	}, [showAuthMessage, t]);
+	}, [ageConfirmed, showAuthMessage, t]);
 
 	const signInApple = useCallback(async () => {
+		if (!ageConfirmed) {
+			showAuthMessage(
+				t('login.errors.ageRequired', { age: MINIMUM_AGE })
+			);
+			return;
+		}
+
 		try {
 			setIsSigning(true);
 
@@ -142,7 +175,7 @@ const Login: React.FC = () => {
 		} finally {
 			setIsSigning(false);
 		}
-	}, [showAuthMessage, t]);
+	}, [ageConfirmed, showAuthMessage, t]);
 
 	const handleEmailAuth = useCallback(async () => {
 		if (!validateCredentials()) return;
@@ -230,6 +263,33 @@ const Login: React.FC = () => {
 		return unsubscribe;
 	}, [router, redirectTo]);
 
+	const ageGate = (
+		<AgeGateRow
+			onPress={() => setAgeConfirmed(value => !value)}
+			accessibilityRole="checkbox"
+			accessibilityState={{ checked: ageConfirmed }}
+		>
+			<Checkbox status={ageConfirmed ? 'checked' : 'unchecked'} />
+			<AgeGateText>
+				{t('login.ageConfirmation', { age: MINIMUM_AGE })}
+			</AgeGateText>
+		</AgeGateRow>
+	);
+
+	const legalLinks = (
+		<LegalText>
+			{t('login.legalPrefix')}
+			<LegalLink onPress={() => Linking.openURL(TERMS_URL)}>
+				{t('login.terms')}
+			</LegalLink>
+			{t('login.legalAnd')}
+			<LegalLink onPress={() => Linking.openURL(PRIVACY_URL)}>
+				{t('login.privacy')}
+			</LegalLink>
+			.
+		</LegalText>
+	);
+
 	return (
 		<Screen showBack>
 			<Container>
@@ -286,6 +346,9 @@ const Login: React.FC = () => {
 							onChangeText={setPassword}
 						/>
 
+						{mode === 'signUp' && ageGate}
+						{mode === 'signUp' && legalLinks}
+
 						<PrimaryButton
 							onPress={handleEmailAuth}
 							disabled={isSigning}
@@ -313,6 +376,9 @@ const Login: React.FC = () => {
 						<Loading />
 					) : (
 						<LoginContainer>
+							{mode === 'signIn' && ageGate}
+							{mode === 'signIn' && legalLinks}
+
 							{isAppleSignInSupported && (
 								<AppleButton
 									buttonStyle={AppleButton.Style.BLACK}

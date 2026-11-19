@@ -20,9 +20,7 @@ async function registerLogin(): Promise<void> {
 		const device_id = await DeviceInfo.getUniqueId();
 		const device_so = await DeviceInfo.getSystemName();
 		const device_so_version = await DeviceInfo.getSystemVersion();
-		const device_mac = await DeviceInfo.getMacAddress();
 
-		const user_ip = await DeviceInfo.getIpAddress();
 		const messagingToken = await getToken(getMessaging());
 
 		const app_version = await DeviceInfo.getVersion();
@@ -37,8 +35,6 @@ async function registerLogin(): Promise<void> {
 					device_id,
 					device_so,
 					device_so_version,
-					device_mac,
-					user_ip,
 					messagingToken,
 					app_version,
 					app_build,

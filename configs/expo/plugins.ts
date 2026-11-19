@@ -60,6 +60,13 @@ const configs: plugins = [
 		},
 	],
 	'expo-router',
+	[
+		'expo-tracking-transparency',
+		{
+			userTrackingPermission:
+				'This identifier will be used to deliver personalized ads to you.',
+		},
+	],
 	'expo-secure-store',
 	'expo-status-bar',
 	[
@@ -67,8 +74,7 @@ const configs: plugins = [
 		{
 			androidAppId: process.env.ANDROID_ADMOB_APPID,
 			iosAppId: process.env.IOS_ADMOB_APPID,
-			userTrackingUsageDescription:
-				'This identifier will be used to deliver personalized ads to you.',
+			delayAppMeasurementInit: true,
 		},
 	],
 ];
